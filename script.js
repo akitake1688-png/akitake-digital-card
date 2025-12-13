@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 1. UI 交互与修复部分 (Navigation & UI Fixes)
+    // *** 此部分保持不变，确保稳定性 ***
     // ==========================================
     
     // --- 元素获取 ---
@@ -21,9 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const linkBilibili = document.getElementById('linkBilibili');
 
 
-    // ====== 导航逻辑彻底修复 (最关键区域) ======
+    // ====== 导航逻辑彻底修复 (保持不变) ======
 
-    // 初始卡片 -> 菜单卡片
     if (expandButton && initialCard && menuCard) {
         expandButton.addEventListener('click', () => {
             initialCard.classList.add('hidden');
@@ -31,31 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 返回按钮 (从菜单卡片返回初始卡片)
     if (backButton && initialCard && menuCard) {
         backButton.addEventListener('click', () => {
-            // 确保所有内容详情卡片隐藏
             contentCards.forEach(card => card.classList.add('hidden'));
-            // 切换回初始卡片
             menuCard.classList.add('hidden');
             initialCard.classList.remove('hidden');
         });
     }
 
-    // 【核心修复】菜单卡片 -> 内容详情卡片
     if (menuButtons.length > 0 && menuCard) {
         menuButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const targetId = e.currentTarget.dataset.target;
                 const targetCard = document.getElementById(targetId);
                 
-                // 1. 隐藏菜单卡片
                 menuCard.classList.add('hidden');
-
-                // 2. 隐藏其他所有内容详情卡片
                 contentCards.forEach(card => card.classList.add('hidden')); 
 
-                // 3. 显示目标详情卡片
                 if (targetCard) {
                     targetCard.classList.remove('hidden');
                 }
@@ -63,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 关闭详情卡片 -> 返回菜单卡片
     if (closeButtons.length > 0 && menuCard) {
         closeButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -71,16 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (parentCard) {
                     parentCard.classList.add('hidden');
                 }
-                // 返回主菜单卡片
                 menuCard.classList.remove('hidden');
             });
         });
         
     }
 
-
-    // ====== 外部链接跳转 (详情页内) ======
-    
     if (linkFreeMechanism) {
         linkFreeMechanism.addEventListener('click', () => {
             window.open('https://www.zhihu.com/people/dong-da-ri-ben-qiu-wu-lao-shi', '_blank'); 
@@ -94,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ====== 聊天功能核心逻辑 ======
+    // ====== 聊天功能核心逻辑 (handleUserMessage 中新增 SNS 模式检查) ======
 
     if (sendBtn && userInput && chatBody) {
         sendBtn.addEventListener('click', handleUserMessage);
@@ -108,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = userInput.value.trim();
         if (!text) return;
 
-        // 【新機能】SNS_COMMENT_GENERATOR 模式检查
         if (text.startsWith("生成评论或回复：")) {
             const prompt = text.replace("生成评论或回复：", "").trim();
             enterSNSCommentGeneratorMode(prompt);
@@ -123,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             removeTypingIndicator();
-            const response = generateAIResponse(text);
+            const response = generateAIResponse(text); // 调用新的生成函数
             appendMessage('ai', response);
         }, 1500); 
     }
@@ -160,13 +146,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * 【SNS_COMMENT_GENERATOR 模式】
+     * (此功能保持不变)
      */
     function enterSNSCommentGeneratorMode(prompt) {
         showTypingIndicator();
         setTimeout(() => {
             removeTypingIndicator();
             
-            // 采用秋武老师的专业风格，并暗示文理交叉背景
             let comment = `
 【秋武老师・終局思考のプロコメント】
 针对当前热议话题：「${prompt}」
@@ -183,11 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
 👉 *[专业且中肯]* 细节规划请直接添加秋武老师微信（ID: qiuwu999）进行一对一深度诊断。
             `.trim();
 
-            // 输出高亮、专业的评论文案。SNS-comment CSS类已在 style.css 中定义
             const commentDiv = document.createElement('div');
             commentDiv.classList.add('message', 'ai-message', 'sns-comment'); 
             
-            // 使用替换来模拟强烈的视觉区分度
             commentDiv.innerHTML = comment
                 .replace(/\n/g, '<br>')
                 .replace(/【(.*?)】/g, '<strong>【$1】</strong>') 
@@ -204,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * 输入预处理层：增强容错、术语归一化
+     * (此功能保持不变)
      */
     function normalizeInput(text) {
         let normalized = text.toLowerCase();
@@ -214,17 +199,34 @@ document.addEventListener('DOMContentLoaded', () => {
             '私塾': '辅导机构', '修士': '研究生/硕士', '中介': '机构', '就职': '就活',
             '大学院': '硕士', '研究室': '导师', '研究生': '预科生', '早大': '早稻田大学',
             '志望': '志望理由书', '研究': '研究计划书', '草稿': '面试草稿', '面试': '面试训练',
-            '林业': '文理融合', '生态': '文理融合', '社会学': '文理融合'
+            '林业': '文理融合', '生态': '文理融合', '社会学': '文理融合', '健康保险费': '保险', '年金': '保险'
         };
 
         for (const [key, value] of Object.entries(mapping)) {
+            // 使用正则表达式替换，确保精确匹配（可选：仅将保险和年金添加到mapping，不改变其他逻辑）
             normalized = normalized.replace(new RegExp(key, 'g'), value);
         }
         return normalized;
     }
 
+
+    // 【新增】非严肃/幽默提问识别器
+    function checkNonSeriousIntent(rawText) {
+        const humorKeywords = ['偶像周边', '搞笑', '有趣', '幽默', '笑话', '好吃吗', '遣返'];
+        const nonSeriousPhrases = ['跨文化心理研究的需要', '全部用来买'];
+        
+        const text = rawText.toLowerCase();
+
+        // 匹配到关键幽默词汇或非严肃短语
+        const isHumorous = humorKeywords.some(kw => text.includes(kw));
+        const isNonSerious = nonSeriousPhrases.some(p => text.includes(p));
+
+        return isHumorous || isNonSerious;
+    }
+
+
     /**
-     * 知识库：结构化、专业深度回复 (最终优化版)
+     * 知识库：结构化、专业深度回复 (保持不变)
      */
     const knowledgeBase = [
         // 1. 文书区分 - 研究计划书 (最高优先级)
@@ -262,13 +264,35 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['eju', '分数', '留考', '难'],
             priority: 9,
             response: "【EJU与考学底层逻辑】📚 EJU只是敲门砖，**软实力**才是核心。\n\n秋武老师常说：合格的底层逻辑是**不要放弃任何试错机会**。很多大学申报时只需‘受験票’，放弃6月留考会失去临场体验校内考的机会。\n\n1. **策略：** 我们将您的EJU成绩视为**‘学术强项’**的证明。即使成绩有‘破绽’，我们也会将其转化为独特视角，引导教授提问。\n\n💡 **行动指南：** 请告诉我您的EJU目标分数段和最没信心的科目，我们从策略上进行重构！"
+        },
+        // 7. 日本生活合规问题（较低优先级，避免被严肃学术问题覆盖）
+        {
+            keywords: ['签证', '遣返', '法律', '保险', '年金'],
+            priority: 5, // 降低优先级，但仍能响应
+            response: "【日本生活与合规性】🇯🇵\n\n**健康保险和国民年金**是您在日本合法生活和学习的**基础保障**。任何故意逃避缴纳或滥用资金的行为都可能影响您的**签证更新审查**。\n\n1. **秋武建议：** 建议您将精力重新聚焦于您的**留学目标和学术规划**上来，确保所有生活和学习活动都在**合规透明**的框架下进行。\n2. **风险评估：** 签证问题属于高风险领域，请严肃对待。\n\n💡 **下一步：** 您可以告诉我您的留学目标，我们专注于**学术上的逻辑重构**。"
         }
     ];
 
     /**
-     * 响应生成器 (Dialogue Strategy Layer)
+     * 响应生成器 (Dialogue Strategy Layer) - 【重点修改】
      */
     function generateAIResponse(rawText) {
+        
+        // 【第一步：幽默/非严肃识别 - 恢复人性化】
+        if (checkNonSeriousIntent(rawText)) {
+            // 匹配到幽默/非严肃，直接返回预设的幽默回复
+            return `
+👉 哈哈，您这个问题太有趣了，秋武老师也被您的 *幽默感逗笑了！😊 \n 
+不过，从专业的角度看，请务必保持对日本法律和生活规范的尊重和遵守。 \n 
+*健康保险和国民年金是您在日本合法生活和学习的**基础保障**，它们与偶像周边是两个完全不同的范畴。 \n 
+任何故意逃避缴纳或滥用资金的行为都可能影响您的 *签证更新审查，这是风险极高的行为。 \n 
+我们建议您将精力重新聚焦于您的 *留学目标和学术规划上来，确保所有生活和学习活动都在 *合规透明的框架下进行。\n 
+💡 本系统提供快速、结构化的咨询服务。如果您的提问较为复杂、涉及个人详细情况或需要 *终局思维下的逻辑重构，建议添加秋武老师微信进行 *一对一深度沟通。\n 
+～～🌸東大ノ秋書堂
+            `.trim();
+        }
+
+        // 【第二步：核心知识库匹配】
         const text = normalizeInput(rawText);
         
         let bestMatch = null;
@@ -292,11 +316,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (bestMatch && maxScore > 0) {
-            // 彻底移除AI味儿，使用专业、中肯的表达
+            // 专业回复，移除情绪化表情
             return bestMatch.response.replace(/🌸|😊|🤔/g, ''); 
         }
 
-        // デフォルト応答 (终局思考に基づく誘導)
-        return "そのご質問は、秋武先生的**「终局思维」**需要分析的主题。\n\n每个人的留学情况都是独一无二的。为了给出最负责任的建议，我需要了解更多背景。\n\n💡 **最中肯的解决方案：** 您可以直接添加秋武老师微信（ID: qiuwu999），进行文理融合视角下的**一对一深度诊断**。";
+        // 【第三步：默认响应 - 终局思维下的引导（针对长文/复杂问题）】
+        return `
+そのご質問は、秋武先生的**「终局思维」**需要分析的主题。
+\n
+您的提问较为复杂，涉及**多维度逻辑拆解**，可能需要文理融合的视角来重新构建。\n
+\n
+💡 **最中肯的解决方案：** 您可以直接添加秋武老师微信（ID: qiuwu999），进行文理融合视角下的**一对一深度诊断**，我们将专注于对您个人情况的**逻辑重构**。
+        `;
     }
 });
