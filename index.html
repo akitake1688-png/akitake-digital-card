@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>東大日本秋武老师 - 数字名片</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,9 @@
 </head>
 <body>
     <div class="main-layout">
+        
         <div class="card-container">
+            
             <div class="card initial-card">
                 <div class="profile-pic-container">
                     <video class="profile-pic" autoplay loop muted playsinline poster="profile.jpg">
@@ -34,10 +36,12 @@
                     <button class="menu-button" data-target="strengths">
                         <span class="icon"> ✨ </span> 核心优势
                     </button>
-                    <button class="menu-button" data-target="mode">
+                    
+                    <button class="menu-button btn-free" data-target="mode">
                         <span class="icon"> 🎓 </span> 辅导模式
                     </button>
-                    <button class="menu-button" data-target="more">
+                    
+                    <button class="menu-button btn-bilibili" data-target="more">
                         <span class="icon"> 🚀 </span> 成功案例/更多
                     </button>
                 </div>
@@ -106,20 +110,27 @@
                 </div>
                 <div class="header-info">
                     <h3>秋武 AI 咨询室</h3>
-                    <span class="status-dot"></span> 在线
+                    <div class="status-indicator">
+                        <span class="status-dot"></span> <span class="status-text">在线 | 智能回复中</span>
+                    </div>
                 </div>
             </div>
-            <div class="chat-messages" id="chatMessages">
+            
+            <div class="chat-messages" id="chat-body">
                 <div class="message ai-message">
-                    你好！我是秋武老师的 AI 助理。关于日本考学、研究计划书或面试技巧，随时问我！
+                    你好！我是秋武老师的 AI 助理。🌸<br>
+                    关于日本考学、研究计划书或面试技巧，随时问我！<br>
+                    <span style="font-size: 0.85em; opacity: 0.8;">(例如试着问：签证难吗？或者 EJU没考好怎么办？)</span>
                 </div>
             </div>
+            
             <div class="chat-input-area">
-                <input type="text" id="chatInput" placeholder="输入你的问题... (例如: 面试技巧)">
-                <button id="sendButton">发送</button>
+                <input type="text" id="user-input" placeholder="输入你的问题... (例如: 签证, 费用)">
+                <button id="send-btn">发送</button>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
