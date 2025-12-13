@@ -1,133 +1,494 @@
-:root {
-    --primary-color: #4a90e2;
-    --text-color: #333;
-    --glass-bg: rgba(255, 255, 255, 0.15);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    --blur-amount: 20px;
-}
+/* ================================== */
+/* 字体设置 */
+/* ================================== */
 body {
     font-family: 'Noto Sans SC', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
+}
+
+/* ================================== */
+/* 主布局 */
+/* ================================== */
+.main-layout {
+    display: flex;
+    width: 95%; /* 适应大部分屏幕 */
+    max-width: 1200px; /* 最大宽度限制 */
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
     overflow: hidden;
+    min-height: 80vh;
 }
+
+/* ================================== */
+/* 左侧：数字名片/菜单区域 */
+/* ================================== */
 .card-container {
-    position: relative;
-    width: 360px;
-    height: 640px;
-    perspective: 1000px;
-}
-.card {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(var(--blur-amount));
-    -webkit-backdrop-filter: blur(var(--blur-amount));
-    border-radius: 24px;
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    padding: 30px;
-    box-sizing: border-box;
-    text-align: center;
-    color: #fff;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
+    width: 350px;
+    min-width: 300px;
+    padding: 20px;
+    background-color: #e8f5e9; /* 淡绿色背景，营造专业感和治愈感 */
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: relative; /* 用于内容详情卡片的定位 */
+    overflow-y: auto; /* 确保内容可以滚动 */
+    flex-shrink: 0;
 }
-.initial-card { z-index: 2; }
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.initial-card h1 {
+    font-size: 1.8em;
+    color: #0d47a1; /* 深蓝色 */
+    margin: 10px 0 5px 0;
+}
+
+.initial-card .slogan {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
 .profile-pic-container {
-    width: 140px; height: 140px;
-    border-radius: 50%; overflow: hidden;
-    margin-bottom: 25px;
-    border: 4px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    border: 3px solid #66bb6a; /* 绿色边框 */
 }
-.profile-pic { width: 100%; height: 100%; object-fit: cover; display: block; }
-h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 10px 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
-.slogan { font-size: 1rem; font-weight: 300; line-height: 1.6; margin-bottom: 40px; opacity: 0.9; }
-button { font-family: inherit; cursor: pointer; outline: none; }
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .expand-button {
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: white; padding: 12px 40px;
-    border-radius: 50px; font-size: 1.1rem; font-weight: 500;
-    transition: all 0.3s ease; backdrop-filter: blur(5px);
+    background-color: #43a047; /* 绿色 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
 }
-.expand-button:hover { background: rgba(255, 255, 255, 0.4); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-.menu-card { transform: rotateY(180deg); z-index: 1; justify-content: flex-start; padding-top: 60px; }
-.menu-header { margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; }
-.small-profile { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.5); margin-bottom: 10px; }
-.small-profile img { width: 100%; height: 100%; object-fit: cover; }
-.menu-buttons { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+
+.expand-button:hover {
+    background-color: #388e3c;
+}
+
+/* 菜单卡片样式 */
+.menu-card {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.small-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
 .menu-button {
-    background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white; padding: 15px 20px; border-radius: 15px;
-    font-size: 1rem; text-align: left; display: flex; align-items: center;
-    transition: all 0.2s ease;
+    background-color: #f0f4c3; /* 淡黄色，强调功能 */
+    color: #43a047;
+    border: 1px solid #cddc39;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 1em;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
 }
-.menu-button:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.02); }
-.menu-button .icon { margin-right: 15px; font-size: 1.2rem; }
-.back-button { margin-top: auto; background: transparent; border: none; color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; padding: 10px; }
-.back-button:hover { color: white; text-decoration: underline; }
+
+.menu-button:hover {
+    background-color: #e6ee9c;
+    transform: translateY(-2px);
+}
+
+.menu-button .icon {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.back-button {
+    background: none;
+    color: #0d47a1;
+    border: 1px solid #0d47a1;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #e3f2fd;
+}
+
+/* 内容详情卡片 (Content Card) */
 .content-card {
-    position: absolute; top: 50%; left: 50%; width: 90%; max-height: 85%;
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(30px);
-    border-radius: 20px; padding: 25px; box-sizing: border-box;
-    color: #333; transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    z-index: 10; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    display: flex; flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10; /* 确保它浮在菜单卡片上方 */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
-.content-card.visible { transform: translate(-50%, -50%) scale(1); opacity: 1; visibility: visible; }
-.content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0, 0, 0, 0.1); padding-bottom: 10px; }
-.content-header h2 { margin: 0; font-size: 1.4rem; color: #333; }
-.close-icon { background: none; border: none; font-size: 2rem; color: #999; line-height: 1; padding: 0; }
-.content-body { overflow-y: auto; flex-grow: 1; text-align: left; }
-.content-body ul { padding-left: 20px; margin: 0; }
-.content-body li { margin-bottom: 15px; line-height: 1.5; font-size: 0.95rem; color: #555; }
-.content-body li strong { color: #222; display: block; margin-bottom: 4px; }
-.highlight { color: #e74c3c; font-weight: 500; margin: 5px 0 0 0; }
-.link-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-.article-link { display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 10px; text-decoration: none; color: #333; transition: background 0.2s; border: 1px solid #eee; }
-.article-link:hover { background: #e9ecef; }
-.flipped .initial-card { transform: rotateY(-180deg); }
-.flipped .menu-card { transform: rotateY(0deg); }
-.main-layout { display: flex; gap: 50px; align-items: center; padding: 20px; max-width: 1200px; }
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.content-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.4em;
+}
+
+.close-icon {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.2s;
+}
+
+.close-icon:hover {
+    color: #333;
+}
+
+.content-body ul {
+    list-style: none;
+    padding: 0;
+}
+
+.content-body li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.content-body li strong {
+    color: #0d47a1;
+}
+
+.content-body li::before {
+    content: "•";
+    color: #43a047;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.highlight {
+    background-color: #fffde7;
+    color: #d84315;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px dashed #ffb300;
+    font-weight: 500;
+    margin: 10px 0;
+    display: block;
+}
+
+.sub-text {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: -5px;
+    margin-bottom: 15px;
+}
+
+.link-list .article-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #0d47a1;
+    padding: 8px 0;
+    border-bottom: 1px dotted #ccc;
+    font-size: 0.9em;
+}
+
+.link-list .article-link:hover {
+    color: #43a047;
+}
+
+.link-arrow {
+    font-weight: bold;
+}
+
+.action-link-button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #66bb6a;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+.action-link-button:hover {
+    background-color: #43a047;
+    transform: translateY(-1px);
+}
+
+
+/* ================================== */
+/* 右侧：AI 咨询聊天窗口 */
+/* ================================== */
 .chat-container {
-    width: 400px; height: 640px; background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(var(--blur-amount)); -webkit-backdrop-filter: blur(var(--blur-amount));
-    border-radius: 24px; border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow); display: flex; flex-direction: column;
-    overflow: hidden; animation: fadeIn 1s ease-out;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fcfcfc;
 }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.chat-header { padding: 20px; background: rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center; gap: 15px; }
-.ai-avatar { width: 45px; height: 45px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.6); }
-.ai-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.header-info h3 { margin: 0; font-size: 1.1rem; color: white; font-weight: 500; }
-.status-dot { display: inline-block; width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; margin-right: 5px; }
-.header-info { font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); }
-.chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-.chat-messages::-webkit-scrollbar { width: 6px; }
-.chat-messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
-.message { border-bottom-left-radius: 4px; padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; font-size: 0.95rem; }
-.ai-message { background: rgba(255, 255, 255, 0.9); color: #333; align-self: flex-start; border-bottom-left-radius: 2px; }
-.user-message { align-self: flex-end; background: var(--primary-color); color: white; border-bottom-right-radius: 2px; box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3); }
-.chat-input-area { padding: 20px; background: rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2); display: flex; gap: 10px; }
-#chatInput { flex-grow: 1; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 25px; padding: 12px 20px; color: white; outline: none; transition: background 0.3s; }
-#chatInput::placeholder { color: rgba(255, 255, 255, 0.6); }
-#sendButton { background: white; color: var(--primary-color); border: none; padding: 0 25px; border-radius: 25px; font-weight: 600; transition: transform 0.2s; }
-@media (max-width: 900px) {
-    .main-layout { flex-direction: column; height: auto; padding-top: 40px; padding-bottom: 40px; }
-    .card-container, .chat-container { width: 100%; max-width: 360px; height: 600px; }
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.ai-avatar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.header-info h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    color: #777;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #43a047; /* 在线绿色 */
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(67, 160, 71, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(67, 160, 71, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(67, 160, 71, 0); }
+}
+
+/* 聊天记录区域 */
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto; /* 确保聊天内容可滚动 */
+    background-color: #fff;
+}
+
+.message {
+    max-width: 80%;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    font-size: 0.95em;
+}
+
+.user-message {
+    background-color: #0d47a1; /* 用户消息蓝色 */
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+}
+
+.ai-message {
+    background-color: #e8f5e9; /* AI 消息浅绿色 */
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+}
+
+/* 思考中指示器 */
+#typing-indicator {
+    background-color: #fafafa;
+    color: #999;
+    font-style: italic;
+    animation: flash 1.5s infinite alternate;
+}
+
+@keyframes flash {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+
+/* 输入区域 */
+.chat-input-area {
+    display: flex;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    background-color: #fcfcfc;
+}
+
+.chat-input-area input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 1em;
+    margin-right: 10px;
+}
+
+.chat-input-area button {
+    background-color: #43a047;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.chat-input-area button:hover {
+    background-color: #388e3c;
+}
+
+/* ================================== */
+/* 关键修复与 SNS 评论模式样式 */
+/* ================================== */
+
+/* 【左侧导航修复】确保 JS 的隐藏/显示逻辑优先级最高 */
+/* 这是修复左侧导航的核心 CSS 规则，确保 .hidden 不被其他样式覆盖 */
+.hidden {
+    display: none !important;
+}
+
+/* 【SNS 评论模式】实现高亮、专业效果 (对应 JS 中的 sns-comment 类) */
+.sns-comment {
+    max-width: 95%; /* 占用更多空间以示重要 */
+    background-color: #fffde7; /* 浅黄色背景 */
+    border-left: 5px solid #ffb300; /* 琥珀色专业线条 */
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #333;
+    white-space: pre-wrap; 
+    box-shadow: 0 2px 5px rgba(255, 179, 0, 0.3);
+}
+
+.sns-comment strong {
+    color: #d84315; /* 强调标题和关键词 */
+}
+.sns-comment em {
+    font-style: normal;
+    background-color: #ffe0b2; /* 内部轻微高亮 */
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* ================================== */
+/* 响应式设计：手机视图优化 */
+/* ================================== */
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .card-container {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        padding: 15px;
+        border-radius: 0;
+    }
+
+    .chat-container {
+        height: calc(100vh - 350px); 
+    }
+
+    .content-card {
+        /* 在移动端，内容详情卡片应该覆盖整个容器 */
+        position: fixed; 
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        border-radius: 0;
+    }
 }
