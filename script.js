@@ -1,29 +1,89 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
-    // 1. UI 交互与修复部分 (UI Fixes)
+    // 1. UI 交互与修复部分 (UI Fixes & Navigation)
     // ==========================================
     
-    const chatBody = document.getElementById('chat-body'); // 确保HTML中有这个ID
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
+    // --- 聊天窗口元素 ---
+    const chatBody = document.getElementById('chat-body'); // 聊天记录区域
+    const userInput = document.getElementById('user-input'); // 输入框
+    const sendBtn = document.getElementById('send-btn'); // 发送按钮
 
-    // 修复左侧按钮链接 (假设HTML中按钮有对应的ID或类名)
-    // 请根据您实际HTML修改选择器，这里是示例
-    const btnFree = document.querySelector('.btn-free'); // 对应"免费机制"
-    const btnBilibili = document.querySelector('.btn-bilibili'); // 对应B站或其他
+    // --- 卡片导航元素 ---
+    const initialCard = document.querySelector('.initial-card');
+    const menuCard = document.querySelector('.menu-card');
+    const contentCards = document.querySelectorAll('.content-card');
+    
+    // --- 按钮元素 ---
+    const expandButton = document.getElementById('expandButton');
+    const backButton = document.getElementById('backButton');
+    const menuButtons = document.querySelectorAll('.menu-button');
+    const closeButtons = document.querySelectorAll('.close-content');
 
-    if (btnFree) {
-        btnFree.addEventListener('click', () => {
-            // 这里替换为您希望跳转的真实链接，比如咨询微信二维码页面或知乎专栏
+    // --- 新增的外部链接按钮 ---
+    const linkFreeMechanism = document.getElementById('linkFreeMechanism'); // 辅导模式详情页按钮
+    const linkBilibili = document.getElementById('linkBilibili'); // 成功案例详情页按钮
+
+
+    // ====== 导航逻辑 ======
+
+    // 初始卡片 -> 菜单卡片
+    expandButton.addEventListener('click', () => {
+        initialCard.classList.add('hidden');
+        menuCard.classList.remove('hidden');
+    });
+
+    // 返回按钮 (从菜单卡片返回初始卡片)
+    backButton.addEventListener('click', () => {
+        menuCard.classList.add('hidden');
+        initialCard.classList.remove('hidden');
+    });
+
+    // 菜单卡片 -> 内容详情卡片
+    menuButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const targetId = e.currentTarget.dataset.target;
+            const targetCard = document.getElementById(targetId);
+            
+            // 隐藏菜单卡片并显示目标详情卡片
+            menuCard.classList.add('hidden');
+            contentCards.forEach(card => card.classList.add('hidden')); // 确保其他详情卡片都隐藏
+            if (targetCard) {
+                targetCard.classList.remove('hidden');
+            }
+        });
+    });
+
+    // 关闭详情卡片 -> 返回菜单卡片
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // 隐藏当前详情卡片
+            const parentCard = button.closest('.content-card');
+            if (parentCard) {
+                parentCard.classList.add('hidden');
+            }
+            // 显示菜单卡片
+            menuCard.classList.remove('hidden');
+        });
+    });
+
+    // ====== 外部链接跳转修复 ======
+    
+    // 辅导模式详情页的跳转按钮 (知乎)
+    if (linkFreeMechanism) {
+        linkFreeMechanism.addEventListener('click', () => {
             window.open('https://www.zhihu.com/people/dong-da-ri-ben-qiu-wu-lao-shi', '_blank'); 
         });
     }
 
-    if (btnBilibili) {
-        btnBilibili.addEventListener('click', () => {
+    // 成功案例详情页的跳转按钮 (B站)
+    if (linkBilibili) {
+        linkBilibili.addEventListener('click', () => {
             window.open('https://space.bilibili.com/323700487/lists', '_blank');
         });
     }
+
+
+    // ====== 聊天功能逻辑 ======
 
     // 发送消息事件
     sendBtn.addEventListener('click', handleUserMessage);
@@ -66,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         chatBody.appendChild(msgDiv);
         
-        // 【关键修复】强制滚动到底部
+        // 【滚动修复】强制滚动到底部
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
@@ -94,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function normalizeInput(text) {
         let normalized = text.toLowerCase();
         
-        // 常见错别字与术语修正 (基于您提供的背景)
+        // 常见错别字与术语修正 (高容错率)
         const mapping = {
             'egu': 'eju',
             '流学': '留学',
@@ -159,6 +219,11 @@ document.addEventListener('DOMContentLoaded', () => {
             keywords: ['文科', '理科', '专业', '选什么'],
             priority: 8,
             response: "选专业确实是头等大事。在AI时代，单纯的技术或死记硬背的专业确实面临挑战。\n\n我们建议您关注‘复合型’领域或者国家资本主导的行业（如电力、基建与AI的结合）。如果您是文科生，‘人味知性’——即深度沟通和跨文化理解能力，将是您不可替代的竞争优势。\n\n您目前对哪个方向比较感兴趣呢？我们可以一起分析下前景。"
+        },
+        {
+            keywords: ['免费', '收费', '价格'],
+            priority: 9,
+            response: "您好，谢谢您咨询。我们有收费项目，也有免费辅导渠道模式。💰\n\n**免费辅导模式**：通过秋武老师的推荐进入合作私塾或语言学校学习，机构会替您支付秋武老师的一对一辅导费用。\n\n**收费项目**：提供高度定制化的文书（研究计划书、志望理由书）辅导、一问一答式面试答辩草稿编辑、模拟训练等。\n\n详细收费标准和流程，请加微信（qiuwu999）直接沟通。"
         }
     ];
 
@@ -196,6 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 默认回复 (兜底逻辑 - 引导用户提供更多信息)
-        return "这个问题很有深度！🤔\n\n每个人的留学情况都是独一无二的，为了给出最负责任的建议，我需要了解更多背景。\n\n比如：您的目前日语/英语水平如何？或者您心仪的大学/专业方向大概是什么？\n\n或者，您可以直接添加秋武老师微信（ID: qiuwu999），进行一对一的深度诊断。";
+        return "这个问题很有深度！🤔\n\n每个人的留学情况都是独一无二的，为了给出最负责任的建议，我需要了解更多背景。\n\n比如：您的目前日语/英语水平如何？或者您心仪的大学/专业方向大概是什么？\n\n💡 建议：您可以直接添加秋武老师微信（ID: qiuwu999），进行终局思维下的一对一深度诊断。";
     }
 });
