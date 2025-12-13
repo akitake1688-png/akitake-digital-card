@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
-    // 1. UI 交互与修复部分 (UI Fixes & Navigation)
+    // 1. UI 交互与修复部分 (Navigation & UI Fixes)
     // ==========================================
     
     // --- 聊天窗口元素 ---
@@ -16,57 +16,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 按钮元素 ---
     const expandButton = document.getElementById('expandButton');
     const backButton = document.getElementById('backButton');
-    const menuButtons = document.querySelectorAll('.menu-button');
+    const menuButtons = document.querySelectorAll('.menu-button'); // 核心优势、辅导模式、成功案例
     const closeButtons = document.querySelectorAll('.close-content');
 
-    // --- 新增的外部链接按钮 ---
-    const linkFreeMechanism = document.getElementById('linkFreeMechanism'); // 辅导模式详情页按钮
-    const linkBilibili = document.getElementById('linkBilibili'); // 成功案例详情页按钮
+    // --- 外部链接按钮 (新增在详情卡片中) ---
+    const linkFreeMechanism = document.getElementById('linkFreeMechanism');
+    const linkBilibili = document.getElementById('linkBilibili');
 
 
-    // ====== 导航逻辑 ======
+    // ====== 导航逻辑修复 ======
 
     // 初始卡片 -> 菜单卡片
-    expandButton.addEventListener('click', () => {
-        initialCard.classList.add('hidden');
-        menuCard.classList.remove('hidden');
-    });
-
-    // 返回按钮 (从菜单卡片返回初始卡片)
-    backButton.addEventListener('click', () => {
-        menuCard.classList.add('hidden');
-        initialCard.classList.remove('hidden');
-    });
-
-    // 菜单卡片 -> 内容详情卡片
-    menuButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const targetId = e.currentTarget.dataset.target;
-            const targetCard = document.getElementById(targetId);
-            
-            // 隐藏菜单卡片并显示目标详情卡片
-            menuCard.classList.add('hidden');
-            contentCards.forEach(card => card.classList.add('hidden')); // 确保其他详情卡片都隐藏
-            if (targetCard) {
-                targetCard.classList.remove('hidden');
-            }
-        });
-    });
-
-    // 关闭详情卡片 -> 返回菜单卡片
-    closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // 隐藏当前详情卡片
-            const parentCard = button.closest('.content-card');
-            if (parentCard) {
-                parentCard.classList.add('hidden');
-            }
-            // 显示菜单卡片
+    if (expandButton && initialCard && menuCard) {
+        expandButton.addEventListener('click', () => {
+            initialCard.classList.add('hidden');
             menuCard.classList.remove('hidden');
         });
-    });
+    }
 
-    // ====== 外部链接跳转修复 ======
+    // 返回按钮 (从菜单卡片返回初始卡片)
+    if (backButton && initialCard && menuCard) {
+        backButton.addEventListener('click', () => {
+            menuCard.classList.add('hidden');
+            initialCard.classList.remove('hidden');
+        });
+    }
+
+    // 【关键修复】菜单卡片 -> 内容详情卡片
+    if (menuButtons.length > 0 && menuCard) {
+        menuButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.currentTarget.dataset.target;
+                const targetCard = document.getElementById(targetId);
+                
+                // 确保所有详情卡片隐藏
+                contentCards.forEach(card => card.classList.add('hidden')); 
+
+                // 隐藏菜单卡片并显示目标详情卡片
+                menuCard.classList.add('hidden');
+                if (targetCard) {
+                    targetCard.classList.remove('hidden');
+                }
+            });
+        });
+    }
+
+    // 关闭详情卡片 -> 返回菜单卡片
+    if (closeButtons.length > 0 && menuCard) {
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const parentCard = button.closest('.content-card');
+                if (parentCard) {
+                    parentCard.classList.add('hidden');
+                }
+                menuCard.classList.remove('hidden');
+            });
+        });
+    }
+
+
+    // ====== 外部链接跳转 ======
     
     // 辅导模式详情页的跳转按钮 (知乎)
     if (linkFreeMechanism) {
@@ -83,39 +92,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ====== 聊天功能逻辑 ======
+    // ====== 聊天功能核心逻辑 ======
 
     // 发送消息事件
-    sendBtn.addEventListener('click', handleUserMessage);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleUserMessage();
-    });
-
-    // ==========================================
-    // 2. 核心逻辑部分 (Core Logic & AI Brain)
-    // ==========================================
-
+    if (sendBtn && userInput && chatBody) {
+        sendBtn.addEventListener('click', handleUserMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserMessage();
+        });
+    }
+    
+    // --- 聊天功能辅助函数 ---
     function handleUserMessage() {
         const text = userInput.value.trim();
         if (!text) return;
 
-        // 显示用户消息
         appendMessage('user', text);
         userInput.value = '';
 
-        // 模拟AI思考时间 (增加真实感)
         showTypingIndicator();
         
         setTimeout(() => {
             removeTypingIndicator();
             const response = generateAIResponse(text);
             appendMessage('ai', response);
-        }, 800); // 0.8秒延迟
+        }, 1200); // 增加思考时间，匹配深度回复
     }
 
-    /**
-     * 消息追加与滚动修复
-     */
     function appendMessage(sender, message) {
         const msgDiv = document.createElement('div');
         msgDiv.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
@@ -125,8 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
         msgDiv.innerHTML = formattedMessage;
         
         chatBody.appendChild(msgDiv);
-        
-        // 【滚动修复】强制滚动到底部
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const typingDiv = document.createElement('div');
         typingDiv.id = 'typing-indicator';
         typingDiv.classList.add('message', 'ai-message');
-        typingDiv.innerText = '秋武AI 思考中...';
+        typingDiv.innerText = '秋武AI 正在深度思考中...';
         chatBody.appendChild(typingDiv);
         chatBody.scrollTop = chatBody.scrollHeight;
     }
@@ -144,99 +145,83 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typingDiv) typingDiv.remove();
     }
 
+
     // ==========================================
-    // 3. AI 智能处理层 (Knowledge & Intent)
+    // 2. AI 深度优化层 (Knowledge & Intent)
     // ==========================================
 
     /**
-     * 输入预处理层：拼写容错、术语归一化
+     * 输入预处理层：增强容错、术语归一化
      */
     function normalizeInput(text) {
         let normalized = text.toLowerCase();
         
-        // 常见错别字与术语修正 (高容错率)
+        // 增强常见错别字与术语修正 (高容错率)
         const mapping = {
-            'egu': 'eju',
-            '流学': '留学',
-            '留考': 'eju',
-            'jlpt': '日语能力考',
-            '托业': 'toeic',
-            '托福': 'toefl',
-            '东大': '东京大学',
-            '京大': '京都大学',
-            '私塾': '辅导机构',
-            '修士': '研究生/硕士',
-            '中介': '机构'
+            'egu': 'eju', '流学': '留学', '留考': 'eju', 'jlpt': '日语能力考', 
+            '托业': 'toeic', '托福': 'toefl', '东大': '东京大学', '京大': '京都大学',
+            '私塾': '辅导机构', '修士': '研究生/硕士', '中介': '机构', '就职': '就活',
+            '大学院': '硕士', '研究生': '预科生', '研究室': '导师', '早大': '早稻田大学'
         };
 
         for (const [key, value] of Object.entries(mapping)) {
+            // 使用正则表达式进行全局替换
             normalized = normalized.replace(new RegExp(key, 'g'), value);
         }
         return normalized;
     }
 
     /**
-     * 知识库：融合秋武老师语录与高情商回复指南
-     * 结构：keywords(触发词), response(回复), priority(权重)
+     * 知识库：结构化、专业深度回复
      */
     const knowledgeBase = [
         {
-            keywords: ['签证', '难吗', '拒签', '怕'],
+            keywords: ['签证', '难吗', '拒签', '怕', '入管局'],
             priority: 10,
-            response: "哎呀，签证这事儿确实像第一次吃纳豆——看起来黏黏的，但准备好了就顺滑多了！🌸\n\n首先，理解您的担心。日本签证现在非常注重真实性和完整性。基于2024年的数据，只要材料合规（如资金证明、明确的学习计划），拒签率其实很低。\n\n我们建议您先不要焦虑，我们可以帮您一起梳理材料。要不您先分享一下您的基本情况？我们一步步来。"
+            response: "【签证与安心】🇯🇵 安心感是留学成功的第一步。\n\n我完全理解您对签证的担忧，它就像第一次吃纳豆——看起来黏黏的，但准备充分就顺滑多了！🌸\n\n1. **专业视角：** 日本签证注重申请材料的**真实性**和**资金的透明性**。只要您有明确的学习计划和稳定的经济支持，目前批签率是比较高的。\n2. **风险提醒：** 故意逃避缴纳国民年金或健康保险等行为，会严重影响您后续的签证更新审查，这是高风险行为。\n\n💡 **下一步建议：** 我们可以帮您先梳理最关键的材料，比如资金证明和学习计划书。请问您计划在哪个时间段递交申请呢？"
         },
         {
-            keywords: ['费用', '钱', '预算', '花销', '贵'],
+            keywords: ['费用', '钱', '预算', '花销', '贵', '打工'],
             priority: 10,
-            response: "家长/同学您好，我完全理解这份对投资的慎重。💰\n\n日本留学的平均年费用（学费+生活费）大约在15-20万人民币左右，相比欧美确实性价比很高。而且日本允许合法打工，很多同学都能通过勤工俭学覆盖生活费。\n\n更重要的是回报：日本教育强调独立思考和细节，这对未来的职业底蕴是巨大的提升。我们可以帮您具体算算您的预算，看看怎么规划最经济实惠。"
+            response: "【费用与投资回报】💰 留学是一笔严肃的投资。\n\n我理解家长对投资回报的慎重。日本留学平均年费用（学费+生活费）大约在15-20万人民币，确实是高性价比的选择。\n\n1. **回报分析：** 日本教育体系强调独立思考和团队协作（跨文化优势），这对您未来进入日企或外企，乃至回国发展，都是宝贵的职场底蕴。\n2. **勤工俭学：** 日本允许留学生合法打工，很多同学能通过打工覆盖大部分生活费，减轻经济压力。\n\n💡 **秋武老师建议：** 我们不是简单地省钱，而是要让每一分钱都投在‘终局思维’的规划上。您最关注的是生活费还是学费呢？"
         },
         {
-            keywords: ['孤独', '适应', '生活', '朋友'],
+            keywords: ['eju', '留考', '分数', '校内考', '难'],
+            priority: 11, // 最高权重
+            response: "【EJU与考学底层逻辑】📚 不要陷入‘大家都在做的’思维。\n\nEJU 只是敲门砖，真正的落差在于**软实力**（校内考、面试、小论文）。秋武老师常说：合格的底层逻辑是**不要放弃任何试错机会**。\n\n1. **策略偏差：** 很多大学在申报时只需要 EJU **准考证**，而不是具体成绩。放弃 6 月留考，您将失去临场体验校内考的机会，尤其是面试沟通部分，那是软实力的核心。\n2. **破绽利用：** 如果 EJU 成绩有‘破绽’，我们必须通过研究计划书和面试，将其转化为独特的视角，引导教授提问。\n\n💡 **行动指南：** 请告诉我您的 EJU 目标分数段和最没信心的科目，我们从策略上进行重构！"
+        },
+        {
+            keywords: ['孤独', '适应', '文化', '读空气', '朋友'],
             priority: 9,
-            response: "孤独感是留学常见的‘小Boss’，但打败它就像玩游戏——多探索地图就通关了！🎮\n\n心理学上这叫‘文化适应期’，通常3-6个月就会好转。日本社会虽然讲究‘读空气’，但这也意味着一旦融入，关系会很稳固。建议您多参加社团或利用我们的前辈群。放心，您不是一个人在战斗！"
+            response: "【文化适应与高情商】孤独感是留学常见‘小Boss’，但打败它就像玩《塞尔达》一样，多探索就通关了！🎮\n\n1. **心理适应：** 文化适应期通常是 3-6 个月。日本职场中的‘读空气’（空気を読む）对习惯直接表达的中国学生确实是挑战。但它的核心是**和谐与体贴**。\n2. **日式治愈：** 建议将此视为‘自我提升’，而非压力。我们鼓励您多参加大学社团，学习用间接的方式表达体贴，最终您会爱上这种和谐。\n\n💡 **我们一起：** 您目前最担心的是哪方面的文化差异，是学习还是生活习惯？"
         },
         {
-            keywords: ['eju', '分数', '考不上', '难'],
+            keywords: ['修士', '大学院', '研究计划', '研究室', '法学', '经济'],
             priority: 10,
-            response: "关于EJU，秋武老师常说：不要陷入‘大家的思维’，只顾着刷题。📚\n\nEJU只是敲门砖。很多同学总分不高，但因为策略得当（比如利用好了校内考、面试、小论文），依然逆袭了名校。真正的竞争往往在‘软实力’。\n\n如果您觉得EJU没底，我们可以聊聊您的强项科目，帮您制定一个‘扬长避短’的策略。您现在的日语水平大约在什么程度呢？"
+            response: "【修士直考与研究计划】这是决定您未来的核心战役。⚔️\n\n您提到法学背景、托业 800+、N1 长期学习，这都是很好的基础。但直考修士的几率，最终取决于：\n\n1. **逻辑重构：** 您的法学背景如何支撑您转到经济学？研究计划书需要展现出**跨学科的深度思考**，而不是简单的知识堆砌。\n2. **终局思维：** 秋武老师在面试中会问：毕业后的打算？只有明确目标，才能倒推阐述您在此专业中学习的重点和学以致用的计划。\n\n💡 **下一步：** 请将您目前的研究计划书发给我们，我将用‘东大基准’的逻辑为您指出可以被‘利用’的破绽和亮点！"
         },
         {
-            keywords: ['托福', '英语', '托业'],
-            priority: 8,
-            response: "在日本考学，英语确实是那把‘隐形的钥匙’。🔑\n\n如果您的目标是国立大学或顶尖私立，托福/托业成绩能极大弥补其他方面的不足。但如果您英语暂时不好，也不要焦虑，我们策略上可以先避开强英语要求的专业，或者寻找可以用日语弥补的路径。\n\n您现在有考过英语相关的证书吗？"
-        },
-        {
-            keywords: ['私塾', '机构', '避雷', '推荐'],
+            keywords: ['私塾', '机构', '避雷', '推荐', '合作'],
             priority: 9,
-            response: "找私塾确实要擦亮眼睛，这关系到您的未来。👀\n\n秋武老师的建议是：不要只看规模，要看‘匹配度’。很多大机构流水线作业，可能会忽略您的个性化需求。真正的辅导，应该是像‘画龙点睛’一样，在您的基础上提升逻辑和表达，而不是给您套模板。\n\n我们可以提供免费的咨询评估，帮您判断您目前最需要补强的是哪部分能力。"
+            response: "【私塾/机构的选择】🔍 找私塾不是找最大，而是找‘最匹配’。\n\n1. **秋武老师的建议：** 很多大机构是流水线作业，缺乏对您个人经历的深度挖掘。真正的辅导，应该是像‘画龙点睛’一样，在您的基础上提升逻辑和表达，而不是给您套模板。\n2. **免费模式：** 我们的**免费辅导模式**就是基于利益深度绑定的原则——通过我推荐进入合作机构，他们会替您支付我的辅导费，确保您享受高端一对一服务。\n\n💡 **现在行动：** 请告诉我您主要想辅导哪个阶段（EJU、校内考、修士文书），我来帮您匹配最合适的策略。"
         },
         {
-            keywords: ['秋武', '老师', '是谁'],
+            keywords: ['免费', '收费', '价格', '盈利模式'],
             priority: 10,
-            response: "哈哈，您对秋武老师感兴趣呀！🎓\n\n秋武老师是东大修士毕业，拥有10年一线辅导经验。他的特点是不灌输鸡汤，而是提供‘东大基准’的逻辑重构。他最擅长帮学生挖掘自己都没想到亮点。\n\n如果您的问题比较复杂，或者需要‘终局思维’下的深度规划，建议直接添加秋武老师微信（ID: qiuwu999）进行一对一深度沟通。"
-        },
-        {
-            keywords: ['文科', '理科', '专业', '选什么'],
-            priority: 8,
-            response: "选专业确实是头等大事。在AI时代，单纯的技术或死记硬背的专业确实面临挑战。\n\n我们建议您关注‘复合型’领域或者国家资本主导的行业（如电力、基建与AI的结合）。如果您是文科生，‘人味知性’——即深度沟通和跨文化理解能力，将是您不可替代的竞争优势。\n\n您目前对哪个方向比较感兴趣呢？我们可以一起分析下前景。"
-        },
-        {
-            keywords: ['免费', '收费', '价格'],
-            priority: 9,
-            response: "您好，谢谢您咨询。我们有收费项目，也有免费辅导渠道模式。💰\n\n**免费辅导模式**：通过秋武老师的推荐进入合作私塾或语言学校学习，机构会替您支付秋武老师的一对一辅导费用。\n\n**收费项目**：提供高度定制化的文书（研究计划书、志望理由书）辅导、一问一答式面试答辩草稿编辑、模拟训练等。\n\n详细收费标准和流程，请加微信（qiuwu999）直接沟通。"
+            response: "【收费模式与免费机制】🤝 透明度是合作的基石。\n\n1. **免费辅导模式：** 这是我们强烈推荐的模式。通过秋武老师的推荐进入合作私塾/语言学校，机构会支付介绍费，这笔费用等同于替您支付了秋武老师的一对一辅导费。您省钱，机构获客，我们获益，三方共赢。\n2. **收费项目：** 单独针对高度定制化的文书打磨、一问一答式面试草稿编辑、深度逻辑重构等服务是收费的。\n\n💡 **详细沟通：** 由于需要评估您的具体情况，详细收费标准和流程，请加微信（qiuwu999）直接沟通。"
         }
     ];
 
     /**
-     * 响应生成器 (The Dialogue Strategy Layer)
+     * 响应生成器 (Dialogue Strategy Layer)
      */
     function generateAIResponse(rawText) {
+        // ... (省略 generateAIResponse 内部的匹配逻辑，与之前提供的代码一致)
         const text = normalizeInput(rawText);
         
         let bestMatch = null;
         let maxScore = 0;
 
-        // 简单的加权匹配算法
         knowledgeBase.forEach(item => {
             let matchCount = 0;
             item.keywords.forEach(keyword => {
@@ -246,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (matchCount > 0) {
-                // 计算得分：匹配关键词数量 * 权重
                 const score = matchCount * item.priority;
                 if (score > maxScore) {
                     maxScore = score;
@@ -255,12 +239,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 找到匹配项
         if (bestMatch && maxScore > 0) {
             return bestMatch.response;
         }
 
         // 默认回复 (兜底逻辑 - 引导用户提供更多信息)
-        return "这个问题很有深度！🤔\n\n每个人的留学情况都是独一无二的，为了给出最负责任的建议，我需要了解更多背景。\n\n比如：您的目前日语/英语水平如何？或者您心仪的大学/专业方向大概是什么？\n\n💡 建议：您可以直接添加秋武老师微信（ID: qiuwu999），进行终局思维下的一对一深度诊断。";
+        return "这个问题很有深度！🤔\n\n每个人的留学情况都是独一无二的，为了给出最负责任的建议，我需要了解更多背景。\n\n比如：您的目前日语/英语水平如何？或者您心仪的大学/专业方向大概是什么？\n\n💡 **建议：** 您可以直接添加秋武老师微信（ID: qiuwu999），进行终局思维下的一对一深度诊断。";
     }
 });
