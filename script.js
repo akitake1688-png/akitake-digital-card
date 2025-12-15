@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
 
     /**
-     * 【新功能】异步加载知识库，解决脚本过长导致的不稳定问题
+     * 异步加载知识库，解决脚本过长导致的不稳定问题
      */
     async function loadKnowledgeBase() {
         if (sendBtn) sendBtn.disabled = true;
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
-     * 【优化】核心匹配逻辑：精确短语加权 > 关键词数量
+     * 核心匹配逻辑：精确短语加权 > 关键词数量
      */
     function getBestMatch(rawText) {
         if (!knowledgeBase) return null; // 知识库未加载，无法匹配
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 【优化】SNS_COMMENT_GENERATOR 模式：动态抽取核心逻辑
+     * SNS_COMMENT_GENERATOR 模式：动态抽取核心逻辑
      */
     function enterSNSCommentGeneratorMode(prompt) {
         appendMessage('user', '生成评论或回复：' + prompt);
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 该问题绝非单维度可解。结合秋武老师的 *理工科逻辑与东大社会学视角*，我们需从**系统论**或**行为经济学**角度进行深度剖析。
 
 **2. 核心逻辑重构 (动态注入)：**
-真正的难点在于：${matchTitle}。您的核心症结在于：**${dynamicInsight}**。建议在[资源配置/策略制定]时，必须遵循**“终局思维”**反推。避免陷入[盲目随大流/短期利益]的陷阱。
+真正的难点在于：${matchTitle}。您的核心症结在于：**${dynamicInsight}**。建议在[资源配置/策略制定]时，必须遵循**“终局策略”**反推。避免陷入[盲目随大流/短期利益]的陷阱。
 
 **3. 中肯行动建议：**
 留学是一笔严肃的投资。请务必优先进行**一问一答式的面试答辩草稿编辑**，确保您的软实力武装到位。这是将‘破绽’转化为优势的关键。
@@ -261,6 +261,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+     * 【重要升级】处理未匹配情况的动态回复生成
+     */
+    function handleUnknownQuery(query) {
+        // 尝试提取用户提问中的关键名词或短语（简单粗暴的提取方法）
+        // 匹配长度至少为2的非标点符号字符
+        const keywords = query.match(/[^\s,，。？！?\.]{2,}/g) || []; 
+        let dynamic_keywords = "";
+        
+        // 提取最前面的1到2个有意义的短语
+        if (keywords.length > 0) {
+            // 尝试去除一些通用的词语，如“想知道”、“能不能”等
+            const stopWords = ["想知道", "能不能", "怎么样", "如何", "是", "吗", "的", "和", "问题", "什么", "这个", "那个"];
+            const filteredKeywords = keywords.filter(k => !stopWords.some(s => k.includes(s)));
+            
+            // 选取前两个非通用词
+            if (filteredKeywords.length > 0) {
+                dynamic_keywords = '您提到的“' + filteredKeywords.slice(0, 2).join('”、“') + '”等';
+            } else {
+                // 如果过滤后没词，就用通用的短语
+                dynamic_keywords = '您提到的“个人情况”、“未来规划”等';
+            }
+        } else {
+            dynamic_keywords = '您提到的“复杂细节”';
+        }
+
+        return `💖 谢谢您的咨询！\n\n系统未能找到精确匹配的知识点。${dynamic_keywords}属于高度定制化的**“终局判断”**主题。\n\n**最中肯的解决方案:** 您可以立即添加秋武老师微信(ID: **qiuwu999**)，进行**文理融合**视角下的**一对一深度诊断**，我们将专注于对您个人情况的**逻辑重构**。`;
+    }
+
+    /**
      * 响应生成器 (Dialogue Strategy Layer)
      */
     function generateAIResponse(rawText) {
@@ -278,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
 *健康保险和国民年金是您在日本合法生活和学习的**基础保障**，它们与偶像周边是两个完全不同的范畴。 \n 
 任何故意逃避缴纳或滥用资金的行为都可能影响您的 *签证更新审查，这是风险极高的行为。 \n 
 我们建议您将精力重新聚焦于您的 *留学目标和学术规划上来，确保所有生活和学习活动都在 *合规透明的框架下进行。\n 
-💡 本系统提供快速、结构化的咨询服务。如果您的提问较为复杂、涉及个人详细情况或需要 *终局思维下的逻辑重构，建议添加秋武老师微信进行 *一对一深度沟通。\n 
+💡 本系统提供快速、结构化的咨询服务。如果您的提问较为复杂、涉及个人详细情况或需要 *终局策略下的逻辑重构，建议添加秋武老师微信进行 *一对一深度沟通。\n 
 ～～🌸東大ノ秋書堂
             `.trim();
         }
@@ -292,14 +321,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 【第三步：默认响应 - 终局思维下的引导（针对长文/复杂问题）】
-        // 这种回复只有在精确匹配失败时才会出现，次数将大大减少。
-        return `
-そのご質問は、秋武先生的**「终局思维」**需要分析的主题。
-\n
-您的提问较为复杂，涉及**多维度逻辑拆解**，系统未能找到精确匹配的知识点。\n
-\n
-💡 **最中肯的解决方案：** 您可以直接添加秋武老师微信（ID: qiuwu999），进行文理融合视角下的**一对一深度诊断**，我们将专注于对您个人情况的**逻辑重构**。
-        `;
+        // 使用新函数 handleUnknownQuery 来生成更自然的、带动态关键词的回复
+        return handleUnknownQuery(rawText);
     }
     
     // ====== 聊天功能核心逻辑 (handleUserMessage 中新增 SNS 模式检查) ======
