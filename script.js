@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. 普通关键词匹配 (低优先级，作为补充)
             if (item.keywords && Array.isArray(item.keywords)) {
                 item.keywords.forEach(keyword => {
+                    // 确保匹配的关键词是小写的，因为 normalizeInput 已经转为小写
                     if (text.includes(keyword)) {
-                        // 确保匹配的关键词是小写的，因为 normalizeInput 已经转为小写
                         matchScore += KEYWORD_WEIGHT;
                     }
                 });
@@ -151,9 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // 3. 结合权重和优先级
             const finalScore = matchScore + (matchScore > 0 ? item.priority : 0);
             
-            if (finalScore > maxScore) {
+            // 修正：只有当匹配到内容时，才纳入优先级评分
+            if (matchScore > 0 && finalScore > maxScore) {
                 maxScore = finalScore;
                 bestMatch = item;
+            } else if (matchScore > 0 && finalScore === maxScore) {
+                // 解决分数相同时的随机性，倾向于保留旧的bestMatch
+                // 暂时不处理，保持简单性，因为优先级已作为二次权重
             }
         });
 
@@ -166,42 +170,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
+     * 【新增函数】从提问中提取 1-2 个核心名词或短语
+     */
+    function getDynamicKeywords(query) {
+        // 匹配长度至少为2的非标点符号字符
+        const keywords = query.match(/[^\s,，。？！?\.]{2,}/g) || []; 
+        
+        // 尝试去除一些通用的词语，如“想知道”、“能不能”、“问题”、“什么”等
+        const stopWords = ["想知道", "能不能", "怎么样", "如何", "是", "吗", "的", "和", "问题", "什么", "这个", "那个", "我", "你", "请问", "希望", "给出", "专业", "中肯", "观点", "请", "要", "求"];
+        const filteredKeywords = keywords.filter(k => !stopWords.some(s => k.includes(s) || s.includes(k)));
+        
+        // 选取前两个非通用词作为动态目标
+        if (filteredKeywords.length > 0) {
+            return filteredKeywords.slice(0, 2).join(' / ');
+        }
+        
+        // 实在没有就返回一个通用的概念
+        return '您提到的“留学策略”';
+    }
+
+
+    /**
      * SNS_COMMENT_GENERATOR 模式：动态抽取核心逻辑
      */
     function enterSNSCommentGeneratorMode(prompt) {
+        
+        // 1. 动态获取用户提问中的核心关键词
+        const dynamic_target = getDynamicKeywords(prompt);
+
         appendMessage('user', '生成评论或回复：' + prompt);
         showTypingIndicator();
         
-        // 尝试匹配最相关的知识点
+        // 2. 尝试匹配最相关的知识点，提取洞察
         const bestMatch = getBestMatch(prompt);
-        let dynamicInsight = "对不起，知识库中未能找到与您提问高度匹配的核心逻辑，请尝试更精准的关键词。";
-        let matchTitle = "【终局思维】";
+        let dynamicInsight = "对不起，知识库中未能找到与此提问高度匹配的核心逻辑。";
+        let matchTitle = "【终局策略】"; 
+        let actionSuggestion = "请加微信 ID: qiuwu999 进行精准定位与策略调整。";
 
         if (bestMatch) {
-            // 提取匹配条目的标题和核心观点，作为动态内容
+            // 提取匹配条目的标题
             matchTitle = bestMatch.response.split('\n')[0].replace(/【|】/g, ''); 
-            // 尝试提取核心要点（假设是第4行或第5行，即1. 或 2. 的内容）
+            
+            // 尝试提取核心要点（假设是包含数字编号的内容）
             const lines = bestMatch.response.split('\n');
             dynamicInsight = lines.find(line => line.trim().startsWith('1.') || line.trim().startsWith('2.')) || lines[1] || lines[lines.length - 1];
             // 清理并注入到模板中
             dynamicInsight = dynamicInsight.replace(/<\/?(strong|em)>/g, '').trim(); 
+            
+            // 提取行动建议
+            const actionLine = lines.find(line => line.trim().startsWith('💡'));
+            if(actionLine) {
+                 actionSuggestion = actionLine.replace('💡 行动：', '').trim();
+            }
         }
 
         setTimeout(() => {
             removeTypingIndicator();
             
+            // 3. 构建动态 SNS 评论模板
             let comment = `
 【秋武老师・終局思考のプロコメント】
-针对当前热议话题：「${prompt}」
+针对您关注的焦点：**「${dynamic_target}」**
 
-**1. 跨学科洞察 (文理融合)：**
-该问题绝非单维度可解。结合秋武老师的 *理工科逻辑与东大社会学视角*，我们需从**系统论**或**行为经济学**角度进行深度剖析。
+**1. 跨学科洞察 (逻辑重构)：**
+该问题绝非单维度可解。您的核心症结在于：${matchTitle}。秋武老师建议必须从**系统论**或**行为经济学**角度进行深度剖析。
 
-**2. 核心逻辑重构 (动态注入)：**
-真正的难点在于：${matchTitle}。您的核心症结在于：**${dynamicInsight}**。建议在[资源配置/策略制定]时，必须遵循**“终局策略”**反推。避免陷入[盲目随大流/短期利益]的陷阱。
+**2. 核心观点注入 (动态灵活)：**
+真正的难点在于：**${dynamicInsight}**。建议在[资源配置/策略制定]时，必须遵循**“终局策略”**反推。避免陷入[盲目随大流/短期利益]的陷阱。
 
 **3. 中肯行动建议：**
-留学是一笔严肃的投资。请务必优先进行**一问一答式的面试答辩草稿编辑**，确保您的软实力武装到位。这是将‘破绽’转化为优势的关键。
+${actionSuggestion}
 
 👉 *[专业且中肯]* 细节规划请直接添加秋武老师微信（ID: qiuwu999）进行一对一深度诊断。
             `.trim();
@@ -223,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 输入预处理层：增强容错、术语归一化 (保持不变)
+     * 输入预处理层：增强容错、术语归一化
      */
     function normalizeInput(text) {
         let normalized = text.toLowerCase();
@@ -246,10 +284,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /**
-     * 【新增】非严肃/幽默提问识别器 (保持不变)
+     * 非严肃/幽默提问识别器
      */
     function checkNonSeriousIntent(rawText) {
-        const humorKeywords = ['偶像周边', '搞笑', '有趣', '幽默', '笑话', '好吃', '遣返', '味道'];
+        const humorKeywords = ['偶像周边', '搞笑', '有趣', '幽默', '笑话', '好吃', '遣返', '味道', '猫文化'];
         const nonSeriousPhrases = ['跨文化心理研究的需要', '全部用来买', '秋武老师好吃吗'];
         
         const text = rawText.toLowerCase();
@@ -262,29 +300,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * 【重要升级】处理未匹配情况的动态回复生成
+     * （与SNS模式共享 getDynamicKeywords 函数）
      */
     function handleUnknownQuery(query) {
-        // 尝试提取用户提问中的关键名词或短语（简单粗暴的提取方法）
-        // 匹配长度至少为2的非标点符号字符
-        const keywords = query.match(/[^\s,，。？！?\.]{2,}/g) || []; 
-        let dynamic_keywords = "";
-        
-        // 提取最前面的1到2个有意义的短语
-        if (keywords.length > 0) {
-            // 尝试去除一些通用的词语，如“想知道”、“能不能”等
-            const stopWords = ["想知道", "能不能", "怎么样", "如何", "是", "吗", "的", "和", "问题", "什么", "这个", "那个"];
-            const filteredKeywords = keywords.filter(k => !stopWords.some(s => k.includes(s)));
-            
-            // 选取前两个非通用词
-            if (filteredKeywords.length > 0) {
-                dynamic_keywords = '您提到的“' + filteredKeywords.slice(0, 2).join('”、“') + '”等';
-            } else {
-                // 如果过滤后没词，就用通用的短语
-                dynamic_keywords = '您提到的“个人情况”、“未来规划”等';
-            }
-        } else {
-            dynamic_keywords = '您提到的“复杂细节”';
-        }
+        // 尝试提取用户提问中的关键名词或短语
+        const dynamic_keywords = getDynamicKeywords(query);
 
         return `💖 谢谢您的咨询！\n\n系统未能找到精确匹配的知识点。${dynamic_keywords}属于高度定制化的**“终局判断”**主题。\n\n**最中肯的解决方案:** 您可以立即添加秋武老师微信(ID: **qiuwu999**)，进行**文理融合**视角下的**一对一深度诊断**，我们将专注于对您个人情况的**逻辑重构**。`;
     }
@@ -304,10 +324,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
 👉 哈哈，您这个问题太有趣了，秋武老师也被您的 *幽默感逗笑了！😊 \n 
 不过，从专业的角度看，请务必保持对日本法律和生活规范的尊重和遵守。 \n 
-*健康保险和国民年金是您在日本合法生活和学习的**基础保障**，它们与偶像周边是两个完全不同的范畴。 \n 
+*健康保险和国民年金是您在日本合法生活和学习的基础保障，它们与偶像周边是两个完全不同的范畴。 \n 
 任何故意逃避缴纳或滥用资金的行为都可能影响您的 *签证更新审查，这是风险极高的行为。 \n 
 我们建议您将精力重新聚焦于您的 *留学目标和学术规划上来，确保所有生活和学习活动都在 *合规透明的框架下进行。\n 
-💡 本系统提供快速、结构化的咨询服务。如果您的提问较为复杂、涉及个人详细情况或需要 *终局策略下的逻辑重构，建议添加秋武老师微信进行 *一对一深度沟通。\n 
+💡 本系统提供快速、结构化的咨询服务。如果您的提问较为复杂、涉及个人详细情况或需要 *终局思维下的逻辑重构，建议添加秋武老师微信进行 *一对一深度沟通。\n 
 ～～🌸東大ノ秋書堂
             `.trim();
         }
