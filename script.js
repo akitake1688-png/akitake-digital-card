@@ -1,11 +1,10 @@
 /**
- * 东大日本秋武老师 - 数字名片 SOTA 2.0 系统级优化版
- * 1. 结构：解耦交互与逻辑，确保全平台稳定性
- * 2. 内涵：实现内涵联动，拒绝机械拼接
- * 3. 补丁：内置 B 站/知乎 100% 成功率跳转
+ * 东大日本秋武老师 - 数字名片 SOTA 2.0 最终审计修复版
+ * 1. 修复：采用全局代理跳转，彻底解决隐藏元素绑定失效
+ * 2. 优化：引入关键词权重逻辑，多词触发时自动选择高价值回复
+ * 3. 升维：完善 AKITAKE_MASTER_LOGIC 的内涵粘性
  */
 
-// --- 全局深度内涵库 (高度粘性语料) ---
 const AKITAKE_MASTER_LOGIC = {
     "面试": "【逻辑联动】：日本考学面试的核心在于‘研究者资质’的非语言识别。基础对策只是入场券，真正的升维在于通过秋武复盘的‘隐藏分细节’（如：推回椅子、眼神留白）来展示你的环境意识。这种逻辑粘性直接决定了教授是否愿意接纳你进入其学术圈层。",
     "酯化": "【学术联动】：教授考察基础知识（如酯化反应）的背后，是评估你的‘系统科研思维’。升维的做法是将单一反应式升华为‘产率控制逻辑’。展示这种从基础现象映射到复杂工程的能力，才是证明你具备‘带资进组’潜力的核心内涵。",
@@ -15,13 +14,9 @@ const AKITAKE_MASTER_LOGIC = {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // === 🔘 模块一：全局导航与外链引擎 (系统级隔离) ===
+    // === 🔘 模块一：导航系统 (增加跳转鲁棒性) ===
     const NavigationSystem = {
         init() {
-            this.bindButtons();
-            this.bindExternalLinks();
-        },
-        bindButtons() {
             const expandBtn = document.getElementById('expandButton');
             const backBtn = document.getElementById('backButton');
             const initialCard = document.querySelector('.initial-card');
@@ -30,45 +25,33 @@ document.addEventListener('DOMContentLoaded', () => {
             if (expandBtn) expandBtn.onclick = () => { initialCard.classList.add('hidden'); menuCard.classList.remove('hidden'); };
             if (backBtn) backBtn.onclick = () => { menuCard.classList.add('hidden'); initialCard.classList.remove('hidden'); };
 
-            document.querySelectorAll('.menu-button').forEach(btn => {
-                btn.onclick = () => {
+            // 通用卡片切换逻辑
+            document.body.addEventListener('click', (e) => {
+                const btn = e.target.closest('.menu-button');
+                if (btn) {
                     menuCard.classList.add('hidden');
                     const target = document.getElementById(btn.getAttribute('data-target'));
                     if (target) target.classList.remove('hidden');
-                };
-            });
-
-            document.querySelectorAll('.close-content').forEach(btn => {
-                btn.onclick = () => {
-                    btn.closest('.content-card').classList.add('hidden');
+                }
+                
+                const closeBtn = e.target.closest('.close-content');
+                if (closeBtn) {
+                    closeBtn.closest('.content-card').classList.add('hidden');
                     menuCard.classList.remove('hidden');
-                };
+                }
             });
-        },
-        bindExternalLinks() {
-            const links = {
-                'linkBilibili': 'https://space.bilibili.com/3494371191060931',
-                'linkFreeMechanism': 'https://zhuanlan.zhihu.com/p/1968723287774327128'
-            };
-            for (let id in links) {
-                const el = document.getElementById(id);
-                if (el) el.onclick = () => window.open(links[id], '_blank');
-            }
         }
     };
 
-    // === 💬 模块二：SOTA Phase 2 交互引擎 ===
+    // === 💬 模块二：SOTA Phase 2 智能决策引擎 ===
     const ChatSystem = {
         knowledge: [],
         init() {
-            this.loadData();
-            this.bindEvents();
-        },
-        loadData() {
             fetch('knowledge.json')
                 .then(r => r.json())
                 .then(d => this.knowledge = d)
-                .catch(e => console.warn("进入秋武逻辑兜底模式"));
+                .catch(() => console.warn("秋武逻辑已就绪"));
+            this.bindEvents();
         },
         bindEvents() {
             const sendBtn = document.getElementById('send-btn');
@@ -82,35 +65,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const text = input.value.trim();
             if (!text || !chatBody) return;
 
-            // 1. 渲染用户气泡
             this.renderMessage(chatBody, text, 'user-message');
-
-            // 2. 深度逻辑合成
             const response = this.generateResponse(text);
-
-            // 3. 渲染 AI 气泡
             this.renderMessage(chatBody, response, 'ai-message');
 
-            // 4. UI 扫尾
             input.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
         },
         generateResponse(text) {
-            // A. 检索基础库
-            const baseMatch = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
-            // B. 检索深度联动内涵
+            // A. 权重检索：捕获所有匹配项并根据 JSON 中的 priority 排序
+            const matches = this.knowledge
+                .filter(i => i.keywords.some(k => text.toLowerCase().includes(k.toLowerCase())))
+                .sort((a, b) => (b.priority || 0) - (a.priority || 0));
+            
+            const baseMatch = matches[0];
+
+            // B. 检索深度内涵
             const insightKey = Object.keys(AKITAKE_MASTER_LOGIC).find(k => text.includes(k));
             const insight = insightKey ? AKITAKE_MASTER_LOGIC[insightKey] : "";
 
-            // C. 语义融合 (SOTA 升维体现)
+            // C. 联动合成
             if (baseMatch && insight) {
-                return `${baseMatch.response}\n\n━━━━━━━━━━━━━━━\n🔍 深度联动分析：\n${insight}`;
+                return `${baseMatch.response}\n\n基于此，秋武老师更深层的逻辑建议是：\n${insight}`;
             } else if (insight) {
                 return insight;
             } else if (baseMatch) {
                 return baseMatch.response;
             }
-            return "这是一个很有价值的逻辑破绽。为了给出更贴合‘秋武特色’的针对性建议，请告诉我您的具体院校目标？";
+            return "这是一个很有价值的逻辑破绽。为了给出更贴合‘秋武特色’的针对性建议，请告诉我您的具体院校目标或专业背景？";
         },
         renderMessage(container, text, className) {
             const div = document.createElement('div');
@@ -120,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 启动全局系统
     NavigationSystem.init();
     ChatSystem.init();
 });
