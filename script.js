@@ -1,124 +1,126 @@
 /**
- * 秋武老师数字名片核心引擎 - 2025 SOTA 全量重构版
- * 安全级别：最高（非侵入式挂载）
- * 稳定性：双重兜底逻辑
+ * 秋武老师数字名片 - 2025 全量重构 SOTA 2.0 (稳定增强版)
+ * 检查日期：2025/12/16
+ * 修复重点：消除点击延迟、确保发送稳定、隔离错误风险
  */
 
-// --- 1. SOTA Phase 2 深度答辩模块 (基于秋武数据➋及全部感悟重构) ---
-const SUB_MODULES = {
+// 1. 深度答辩数据常量 (直接写入 JS，确保脱离 JSON 也能独立运行，提高稳定性)
+const QA_MODULES = {
     "面试": {
         "title": "🎖️ 秋武深度预判：面试 10 分项细节",
-        "content": "【细节重构】：根据秋武数据➋，教授极其看重‘研究者潜质’。离开座位时【将椅子推回原位】直接区分了 0 分与 10 分。关门前与教授的【最后眼神交汇】是建立职业信心的关键。",
-        "hook": "💡 提示：教授通常会追问你对课程大纲的了解，想知道如何通过具体课程展示‘进学意欲’吗？"
+        "content": "根据秋武数据➋：教授看重‘研究者素养’。离开座位【推回椅子】价值 10 分；关门前【最后眼神交汇】是区分普通留学生的关键。",
+        "hook": "💡 想知道如何通过‘课程大纲’展示进学意欲吗？"
     },
-    "酯化反应": {
-        "title": "🧪 学术底层重构：酯化反应的‘逻辑链’",
-        "content": "【深入浅出】：酸和醇‘手拉手’脱水。不要死记硬背，要强调这是‘可逆反应’。提及‘浓硫酸脱水/催化’和‘平衡移动’，这能向教授证明你拥有解决复杂问题的系统思维。",
-        "hook": "💡 追问预判：如果教授问‘如何提高转化率’，你知道如何用‘勒夏特列原理’降维打击吗？"
+    "酯化": {
+        "title": "🧪 学术底层重构：酯化反应思维",
+        "content": "酸醇‘手拉手’脱水。记住这是‘可逆反应’，浓硫酸是催化剂并吸水打破平衡。展现逻辑比背公式更重要。",
+        "hook": "💡 教授若问‘如何提高产率’，你想知道如何用逻辑救场吗？"
     },
     "跨专业": {
-        "title": "🔄 认知重构：跨专业/理转文的‘王牌逻辑’",
-        "content": "【认知突围】：跨专业不是基础薄弱，而是‘背景稀缺’。利用理科的实证思维去重构文科研究计划，告诉教授你的‘跨界视角’能发现别人看不见的学术破绽。这是 10 分级的答辩逻辑。",
-        "hook": "💡 应对‘为什么要转行’这个必问考点，你想知道秋武老师总结的‘唯一性公式’吗？"
+        "title": "🔄 认知重构：理转文王牌逻辑",
+        "content": "跨专业面试的 10 分项在于【逻辑严密性】。用理科的实证思维去重构文科研究计划，告诉教授你的‘背景差异’正是你的‘学术王牌’。",
+        "hook": "💡 面对‘为什么要转行’这个考点，想知道秋武老师总结的‘唯一性公式’吗？"
     },
     "费用": {
-        "title": "💰 商业透明：秋武的费用容错策略",
-        "content": "【要件定义】：留学收费贵是因为信息差。秋武推崇‘按需定制’，核心在于文书逻辑。通过优质合作机构，可实现 0 额外支出的顶级辅导，将预算花在真正能提升录取率的刀刃上。",
-        "hook": "💡 想要实现 0 额外支出获得东大级辅导？请联系微信：qiuwu999 详细拆解。"
+        "title": "💰 商业透明：秋武费用逻辑",
+        "content": "秋武主张‘按需定制’。通过优质合作机构，可实现 0 额外支出的顶级辅导，将预算花在文书逻辑等刀刃上。",
+        "hook": "💡 想要实现 0 额外支出？请联系微信：qiuwu999"
     }
 };
 
-// --- 2. 核心功能函数 ---
-
-// 微信ID一键复制功能 (已确认安全有效)
-async function copyTextToClipboard(text) {
-    try {
-        await navigator.clipboard.writeText(text);
-        alert('微信 ID 已复制！请前往微信搜索添加秋武老师。');
-    } catch (err) {
-        // 容错处理：如果浏览器屏蔽了剪贴板权限，则手动弹窗
-        window.prompt("请手动复制微信号：", text);
-    }
-}
-
-// Phase 2 逻辑增强器 (这是 99% 优化的核心，不会崩溃)
-function enhanceResponse(matchedKey, originalResponse) {
-    // 寻找匹配的子模块关键词
-    const key = Object.keys(SUB_MODULES).find(k => matchedKey.includes(k));
-    const extra = SUB_MODULES[key];
-
-    if (extra) {
-        // 返回原回复 + 深度逻辑模块
-        return `${originalResponse}
-
-------------------------------------------
-${extra.title}
-${extra.content}
-
-${extra.hook}`;
-    }
-    return originalResponse; // 兜底：无增强内容时返回原样
-}
-
-// 主回复匹配引擎 (优先级拦截：费用 > 专业场景 > 默认)
-function generateResponse(userInput, knowledgeBase) {
+// 2. 核心逻辑：意图识别与回复增强
+function getFinalResponse(userInput, database) {
     const input = userInput.toLowerCase();
-    
-    // 1. 优先级拦截：费用与价格
+    let response = "这是一个很好的切入点。为了给出‘秋武级’建议，请告诉我您的目标院校或专业背景？或添加微信 qiuwu999。";
+
+    // 优先级 1：拦截费用/价格
     if (input.includes("贵") || input.includes("钱") || input.includes("费") || input.includes("多少")) {
-        const baseRes = knowledgeBase["费用"] || "关于费用，我始终主张透明、按需定制。";
-        return enhanceResponse("费用", baseRes);
+        const base = database["费用"] || "关于费用，我主张透明与定制。";
+        return applyEnhancement("费用", base);
     }
 
-    // 2. 关键词循环匹配
-    for (let key in knowledgeBase) {
-        if (input.includes(key.toLowerCase())) {
-            return enhanceResponse(key, knowledgeBase[key]);
+    // 优先级 2：关键词匹配
+    for (let key in database) {
+        if (input.includes(key)) {
+            response = database[key];
+            return applyEnhancement(key, response);
         }
     }
 
-    // 3. 默认兜底回复 (容错率保证)
-    return "这是一个非常好的切入点。为了给出准确的‘秋武级’建议，请告诉我您的目标院校或专业背景？或者添加我的微信 qiuwu999 详细拆解。";
+    return response;
 }
 
-// --- 3. 页面交互逻辑 (DOMContentLoaded 确保元素已加载) ---
-document.addEventListener('DOMContentLoaded', () => {
-    const sendBtn = document.getElementById('send-btn');
-    const chatInput = document.getElementById('chat-input');
-    const chatBox = document.getElementById('chat-box');
+// 附加 SOTA 模块的逻辑 (确保无副作用)
+function applyEnhancement(key, baseText) {
+    // 模糊匹配子模块关键词
+    const subKey = Object.keys(QA_MODULES).find(k => key.includes(k) || k.includes(key));
+    const extra = QA_MODULES[subKey];
+    if (extra) {
+        return `${baseText}\n\n--------------------------\n${extra.title}\n${extra.content}\n\n${extra.hook}`;
+    }
+    return baseText;
+}
 
-    // 异步加载 JSON 数据库
+// 微信复制功能
+async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        alert('微信 ID 已复制！');
+    } catch (e) {
+        window.prompt("复制微信号：", text);
+    }
+}
+
+// 3. 页面交互 (彻底修复点击发不出的问题)
+let cachedData = {}; // 预加载数据
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('send-btn');
+    const input = document.getElementById('chat-input');
+    const box = document.getElementById('chat-box');
+
+    // --- 重点：提前加载数据，避免点击时延迟 ---
     fetch('knowledge.json')
         .then(res => res.json())
-        .then(data => {
-            // 点击发送按钮
-            sendBtn.addEventListener('click', () => {
-                const text = chatInput.value.trim();
-                if (!text) return;
+        .then(data => { cachedData = data; })
+        .catch(e => console.warn("JSON 加载受阻，使用内置逻辑兜底"));
 
-                // 1. 显示用户提问
-                const userDiv = document.createElement('div');
-                userDiv.className = 'user-msg';
-                userDiv.innerText = text;
-                chatBox.appendChild(userDiv);
+    // 核心执行逻辑
+    const executeSend = () => {
+        const val = input.value.trim();
+        if (!val || !box) return;
 
-                // 2. 智能匹配并生成回复
-                const aiDiv = document.createElement('div');
-                aiDiv.className = 'ai-msg';
-                aiDiv.innerText = generateResponse(text, data);
-                chatBox.appendChild(aiDiv);
+        // 渲染用户端
+        const u = document.createElement('div');
+        u.className = 'user-msg';
+        u.innerText = val;
+        box.appendChild(u);
 
-                // 3. UI 优化：清空输入框、自动滚动
-                chatInput.value = '';
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
+        // 渲染回复端 (使用缓存好的数据，秒回，不卡死)
+        const a = document.createElement('div');
+        a.className = 'ai-msg';
+        a.innerText = getFinalResponse(val, cachedData);
+        box.appendChild(a);
 
-            // 快捷键支持：回车发送
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendBtn.click();
-            });
-        })
-        .catch(err => {
-            console.error("数据库加载失败，请检查 knowledge.json 文件路径:", err);
-        });
+        input.value = '';
+        box.scrollTop = box.scrollHeight;
+    };
+
+    // 绑定点击事件 (旧版 onclick 覆盖，防冲突)
+    if (btn) {
+        btn.onclick = (e) => {
+            e.preventDefault(); // 阻止默认刷新行为
+            executeSend();
+        };
+    }
+
+    // 绑定回车事件
+    if (input) {
+        input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                executeSend();
+            }
+        };
+    }
 });
