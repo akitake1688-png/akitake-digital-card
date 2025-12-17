@@ -4,35 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>東大日本秋武老师 - 数字名片</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
-    <style>
-        /* 之前的样式保持不变 */
-        :root { --primary: #2e7d32; }
-        body { font-family: sans-serif; margin: 0; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        .main-layout { display: flex; width: 95vw; max-width: 1000px; height: 90vh; background: white; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); overflow: hidden; position: relative; }
-        .card-side { width: 350px; border-right: 1px solid #eee; padding: 30px; text-align: center; }
-        .chat-side { flex: 1; display: flex; flex-direction: column; background: #f9f9f9; }
-        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        .msg { padding: 12px; border-radius: 12px; font-size: 14px; max-width: 85%; line-height: 1.6; }
-        .msg.ai { background: #e8f5e9; align-self: flex-start; }
-        .msg.user { background: #e3f2fd; align-self: flex-end; }
-        .input-area { padding: 20px; background: white; border-top: 1px solid #eee; display: flex; }
-        input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
-        button { margin-left: 10px; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="main-layout">
-    <div class="card-side">
-        <div style="width:120px; height:120px; border-radius:50%; overflow:hidden; margin: 0 auto 20px; border:3px solid var(--primary);">
-            <video autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+    <div class="card-side" id="initialCard">
+        <div class="avatar-container">
+            <video autoplay loop muted playsinline class="avatar-video">
                 <source src="video_final.mp4" type="video/mp4">
             </video>
         </div>
         <h3>東大日本秋武老师</h3>
-        <p>微信：qiuwu999</p>
+        <p class="wechat-id">微信：qiuwu999</p>
+        <button class="action-btn" onclick="copyToClipboard('qiuwu999')">一键咨询</button>
+        <button class="action-btn secondary" id="expandButton">查看更多详情</button>
+    </div>
+
+    <div class="content-card" id="detailCard">
+        <button class="close-content" id="backButton">← 返回对话</button>
+        <div class="detail-content">
+            <h3>秋武流核心体系</h3>
+            <p>正在从 PDF 数据中同步...</p>
+            </div>
     </div>
 
     <div class="chat-side">
@@ -40,50 +41,12 @@
             <div class="msg ai">数据已迁回。你好，我是秋武 AI。请输入“费用”、“面试”或“化学反应”进行测试。</div>
         </div>
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="输入关键字...">
-            <button onclick="handleChat()">发送</button>
+            <input type="text" id="userInput" placeholder="输入关键字（如：面试、定义）...">
+            <button id="sendBtn">发送</button>
         </div>
     </div>
 </div>
 
-<script>
-    let knowledgeBase = [];
-
-    // 自动迁回并加载 JSON 文件
-    fetch('knowledge.json')
-        .then(response => response.json())
-        .then(data => {
-            knowledgeBase = data;
-            console.log("秋武逻辑库加载成功");
-        })
-        .catch(err => console.error("JSON加载失败，请确保在服务器环境下运行:", err));
-
-    function handleChat() {
-        const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if(!text) return;
-
-        appendMsg(text, 'user');
-        input.value = '';
-
-        setTimeout(() => {
-            // 模糊匹配逻辑
-            const match = knowledgeBase.find(k => k.keywords.some(key => text.includes(key)));
-            const reply = match ? match.response : "这个问题建议加微信 qiuwu999 深度重构逻辑。";
-            appendMsg(reply, 'ai');
-        }, 400);
-    }
-
-    function appendMsg(t, c) {
-        const b = document.getElementById('chat-box');
-        const d = document.createElement('div');
-        d.className = `msg ${c}`;
-        d.innerHTML = t.replace(/\n/g, '<br>');
-        b.appendChild(d);
-        b.scrollTop = b.scrollHeight;
-        if(window.MathJax) MathJax.typesetPromise([d]);
-    }
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
