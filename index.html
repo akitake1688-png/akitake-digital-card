@@ -16,7 +16,7 @@
 <body>
     <div class="main-layout">
         <div class="card-container">
-            <div class="card initial-card">
+            <div class="card initial-card" id="initialCard">
                 <div class="profile-pic-container">
                     <video class="profile-pic" autoplay loop muted playsinline poster="profile.jpg">
                         <source src="video_final.mp4" type="video/mp4">
@@ -27,7 +27,7 @@
                 <button id="expandButton" class="expand-button">查看详情</button>
             </div>
 
-            <div class="card menu-card hidden">
+            <div class="card menu-card hidden" id="menuCard">
                 <div class="menu-header"><h3>秋武特色服务</h3></div>
                 <div class="menu-buttons">
                     <button class="menu-button" data-target="strengths">✨ 核心优势</button>
@@ -41,12 +41,29 @@
                 <div class="content-header"><h2>核心优势</h2><button class="close-content">×</button></div>
                 <div class="content-body">
                     <ul>
-                        <li><strong>东大基准:</strong> 10年日本考学博弈经验。</li>
-                        <li><strong>文理融合:</strong> 拒绝流水线，重构研究逻辑。</li>
+                        <li><strong>东大基准:</strong> 10年博弈经验。</li>
+                        <li><strong>文理融合:</strong> 拒绝流水线模板。</li>
+                        <li><strong>逻辑重构:</strong> 专注校内考口试。</li>
                     </ul>
                 </div>
             </div>
+
+            <div id="mode" class="content-card">
+                <div class="content-header"><h2>辅导模式</h2><button class="close-content">×</button></div>
+                <div class="content-body">
+                    <p class="highlight">合作机构承担费用，0负担享受高端指导。</p>
+                    <p>通过指定渠道进入合作机构，秋武老师为您提供 1:1 的专业文书重构与面试心理辅导。</p>
+                </div>
             </div>
+
+            <div id="more" class="content-card">
+                <div class="content-header"><h2>联系方式</h2><button class="close-content">×</button></div>
+                <div class="content-body">
+                    <p>微信：<strong>qiuwu999</strong></p>
+                    <button onclick="copyToClipboard('qiuwu999')" class="action-link-button">一键复制微信号</button>
+                </div>
+            </div>
+        </div>
 
         <div class="chat-container">
             <div class="chat-header">
@@ -56,7 +73,7 @@
                 </div>
             </div>
             <div id="chat-body" class="chat-messages">
-                <div class="message ai-message">你好！我是秋武 AI。关于面试细节、理科口试或费用逻辑，随时问我。</div>
+                <div class="message ai-message">你好！我是秋武 AI。关于面试细节、理科口试（如酯化、微分定义）或费用逻辑，随时问我。</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" id="user-input" placeholder="输入关键字 (如: 费用, 面试)...">
