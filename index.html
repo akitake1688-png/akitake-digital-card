@@ -2,80 +2,48 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>東大日本秋武老师 - 数字名片</title>
+    <title>東大日本秋武老师</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="main-layout">
         <div class="card-container">
-            <div class="card initial-card">
+            <div id="initialCard" class="card initial-card">
                 <div class="profile-pic-container">
                     <video class="profile-pic" autoplay loop muted playsinline>
                         <source src="video_final.mp4" type="video/mp4">
                     </video>
                 </div>
                 <h1>東大日本秋武老师</h1>
-                <p class="slogan">跨越文理，点亮思路<br>用“破绽”引导成功</p>
+                <p class="slogan">跨越文理，点亮思路</p>
                 <button id="expandButton" class="expand-button">点击展开</button>
             </div>
 
-            <div class="card menu-card hidden">
-                <div class="menu-header">
-                    <div class="small-profile">
-                        <img src="avatar.jpg" alt="秋武" onerror="this.src='https://via.placeholder.com/40'">
-                    </div>
-                    <h3>探索更多 (秋武特色)</h3>
-                </div>
+            <div id="menuCard" class="card menu-card hidden">
                 <div class="menu-buttons">
-                    <button class="menu-button" data-target="strengths"><span class="icon">✨</span>核心优势</button>
-                    <button class="menu-button" data-target="mode"><span class="icon">🎓</span>辅导模式</button>
-                    <button class="menu-button" data-target="more"><span class="icon">🚀</span>成功案例</button>
+                    <button class="menu-button" data-target="strengths">✨ 核心优势</button>
+                    <button class="menu-button" data-target="mode">🎓 辅导模式</button>
                 </div>
-                <button id="backButton" class="back-button">返回名片</button>
+                <button id="backButton" class="back-button">返回首页</button>
             </div>
 
             <div id="strengths" class="content-card hidden">
-                <div class="content-header">
-                    <h2>核心优势</h2>
-                    <button class="close-icon close-content">×</button>
-                </div>
-                <div class="content-body">
-                    <ul>
-                        <li><strong>跨学科思维:</strong> 本科理工 × 硕士东大农学。</li>
-                        <li><strong>逻辑重构:</strong> 从教授视角反推你的“独特性”。</li>
-                    </ul>
-                </div>
+                <div class="content-header"><h2>核心优势</h2><button class="close-x">×</button></div>
+                <div class="content-body"><ul><li>东大修士背景</li><li>10年博弈经验</li></ul></div>
             </div>
-
             <div id="mode" class="content-card hidden">
-                <div class="content-header">
-                    <h2>辅导模式</h2>
-                    <button class="close-icon close-content">×</button>
-                </div>
-                <div class="content-body">
-                    <p class="highlight">💡 秋武特色“免费模式”</p>
-                    <p>通过我推荐进入合作私塾或语校，辅导费由机构承担。</p>
-                </div>
+                <div class="content-header"><h2>辅导模式</h2><button class="close-x">×</button></div>
+                <div class="content-body"><p>辅导费由机构承担，详情加微信：qiuwu999</p></div>
             </div>
         </div>
 
         <div class="chat-container">
             <div class="chat-header">
-                <div class="ai-avatar">
-                    <img src="avatar.jpg" alt="AI" onerror="this.src='https://via.placeholder.com/45'">
-                </div>
-                <div class="header-info">
-                    <h3>秋武 AI 咨询室</h3>
-                    <div class="status-indicator">
-                        <div class="status-dot"></div> <span>在线 (秋武大脑同步中)</span>
-                    </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div><span>在线咨询</span>
                 </div>
             </div>
-            <div class="chat-messages" id="chat-body">
-                <div class="message ai-message">你好！我是秋武 AI。关于国立报考逻辑或面试细节，随时问我。</div>
-            </div>
+            <div id="chat-body" class="chat-messages"></div>
             <div class="chat-input-area">
                 <input type="text" id="user-input" placeholder="输入问题...">
                 <button id="send-btn">发送</button>
