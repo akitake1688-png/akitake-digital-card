@@ -1,28 +1,74 @@
-/* 让详情页支持不同的主题色 */
-.content-card {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #ffffff;
+body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    margin: 0; padding: 0; background-color: #f0f2f5;
+    display: flex; justify-content: center; align-items: center; min-height: 100vh;
 }
 
-/* 核心优势的对比样式 */
-.logic-comparison { margin-bottom: 20px; }
-.logic-item { padding: 12px; border-radius: 8px; font-size: 0.9em; margin-bottom: 8px; }
-.logic-item.legacy { background: #f5f5f5; color: #888; text-decoration: line-through; }
-.logic-item.qiuwu { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #43a047; font-weight: bold; }
-
-/* 辅导模式的主题感 */
-.mode-theme { background-color: #fffde7; } /* 暖黄色营造信任 */
-.highlight-banner { 
-    background: linear-gradient(135deg, #fbc02d, #f57f17);
-    color: white; padding: 15px; border-radius: 12px; 
-    text-align: center; font-weight: bold; margin-bottom: 20px;
+.main-layout {
+    display: flex; width: 95%; max-width: 1000px; height: 85vh;
+    background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden;
 }
 
-/* 更多资源的主题感 */
-.more-theme { background-color: #f3f4f7; }
-.sns-grid { display: grid; gap: 15px; }
-.sns-item { 
-    background: white; padding: 20px; border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center;
+/* 左侧名片 */
+.card-container {
+    width: 350px; background-color: #f9fbf9; padding: 25px;
+    position: relative; border-right: 1px solid #eee; flex-shrink: 0;
 }
-.sns-item.link { color: #0d47a1; text-decoration: none; font-weight: bold; border: 1px solid #0d47a1; }
+
+.card {
+    background: white; border-radius: 15px; padding: 30px;
+    height: 100%; box-sizing: border-box; text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.profile-pic-container {
+    width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+    margin: 0 auto 20px; border: 4px solid #43a047; background: #eee;
+}
+
+.profile-pic { width: 100%; height: 100%; object-fit: cover; }
+
+h1 { font-size: 1.5em; color: #1a237e; margin: 10px 0; }
+.slogan { font-size: 0.9em; color: #666; line-height: 1.6; margin-bottom: 25px; }
+
+.expand-button, .back-button {
+    background: #43a047; color: white; border: none; padding: 10px 25px;
+    border-radius: 20px; cursor: pointer; font-weight: 500; transition: 0.3s;
+}
+
+.menu-button {
+    width: 100%; text-align: left; padding: 15px; margin-bottom: 12px;
+    border: 1px solid #e0e0e0; border-radius: 10px; background: #fff;
+    color: #333; cursor: pointer; transition: 0.2s;
+}
+.menu-button:hover { background: #f1f8e9; border-color: #43a047; }
+
+/* 右侧聊天区 */
+.chat-container { flex-grow: 1; display: flex; flex-direction: column; background: #fff; }
+
+.chat-header { padding: 15px 25px; border-bottom: 1px solid #f0f0f0; }
+.header-info h3 { margin: 0; font-size: 1.1em; color: #333; }
+.status-indicator { font-size: 0.8em; color: #888; display: flex; align-items: center; margin-top: 4px; }
+.status-dot { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; margin-right: 6px; }
+
+.chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; background: #fafafa; }
+.message { max-width: 80%; margin-bottom: 15px; padding: 12px 16px; border-radius: 15px; font-size: 0.95em; line-height: 1.6; }
+.ai-message { background: #fff; border: 1px solid #eee; margin-right: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+.user-message { background: #1a237e; color: white; margin-left: auto; }
+
+/* SNS 点评框 */
+.sns-comment {
+    background: #fff8e1; border-left: 4px solid #ffb300; padding: 12px;
+    margin-bottom: 15px; border-radius: 6px; font-size: 0.9em; color: #5d4037;
+}
+
+.chat-input-area { padding: 20px; display: flex; gap: 10px; border-top: 1px solid #eee; }
+.chat-input-area input { flex-grow: 1; padding: 12px 18px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
+.chat-input-area button { background: #43a047; color: white; border: none; padding: 0 20px; border-radius: 25px; cursor: pointer; }
+
+.hidden { display: none !important; }
+
+/* 详情卡片内容样式 */
+.content-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; padding: 30px; box-sizing: border-box; }
+.content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.highlight { background: #fffde7; padding: 15px; border-radius: 8px; border: 1px dashed #ffd54f; color: #e65100; font-weight: bold; }
