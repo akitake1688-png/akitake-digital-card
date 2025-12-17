@@ -3,21 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
     const detailCard = document.getElementById('detailCard');
+    const brandSide = document.getElementById('brandSide');
 
     let kb = [];
-    const fallbackMsg = "【调度建议】逻辑库网络抖动，请直接对齐微信：qiuwu999";
 
-    // 1. 增强型数据加载
+    // 加载逻辑库并处理容错
     fetch('knowledge.json')
         .then(r => r.json())
-        .then(data => { kb = data; console.log("秋武逻辑库注入成功"); })
-        .catch(e => { console.error("数据加载降级"); kb = []; });
+        .then(data => { kb = data; console.log("✅ 逻辑库就绪"); })
+        .catch(() => { console.warn("降级模式启动"); });
 
-    // 2. 分层调度函数
+    // 调度：打开/关闭详情
     window.openDetail = () => detailCard.classList.add('active');
     window.closeDetail = () => detailCard.classList.remove('active');
 
-    // 3. 增强型对话逻辑
     function handleSend() {
         const text = userInput.value.trim();
         if (!text) return;
@@ -25,12 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
         append(text, 'user');
         userInput.value = '';
 
-        // 模拟 AI 思考感
+        // 交互反馈：左侧卡片微动暗示 AI 响应
+        brandSide.style.transform = "scale(0.98)";
+        setTimeout(() => brandSide.style.transform = "scale(1)", 100);
+
         setTimeout(() => {
             const match = kb.find(item => item.keywords.some(k => text.includes(k)));
-            const reply = match ? match.response : fallbackMsg;
+            const reply = match ? match.response : "【逻辑未对齐】建议直接联系秋武老师微信：qiuwu999。";
             append(reply, 'ai');
-        }, 500);
+        }, 600);
     }
 
     function append(t, type) {
@@ -40,31 +42,27 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.appendChild(d);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        // 关键：动态触发 MathJax 渲染 LaTeX 公式
+        // 强制公式重绘
         if (window.MathJax && MathJax.typesetPromise) {
             MathJax.typesetPromise([d]);
         }
     }
 
-    // 4. 增强型复制（解决微信兼容性）
-    window.copyToClipboard = (str) => {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(str).then(() => alert('逻辑已复制')).catch(() => fallbackCopy(str));
+    // 复制功能适配微信
+    window.copyToClipboard = (s) => {
+        const fallback = () => {
+            const el = document.createElement('textarea');
+            el.value = s; document.body.appendChild(el); el.select();
+            document.execCommand('copy'); document.body.removeChild(el);
+            alert('微信号已复制');
+        };
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(s).then(() => alert('微信号已复制')).catch(fallback);
         } else {
-            fallbackCopy(str);
+            fallback();
         }
     };
 
-    function fallbackCopy(str) {
-        const el = document.createElement('textarea');
-        el.value = str;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        alert('微信号已复制（兼容模式）');
-    }
-
-    if (sendBtn) sendBtn.onclick = handleSend;
+    sendBtn.onclick = handleSend;
     userInput.onkeyup = (e) => { if (e.key === 'Enter') handleSend(); };
 });
