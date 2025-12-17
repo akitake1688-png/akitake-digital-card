@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         bindEvents() {
-            // 聊天发送
+            // 1. 聊天逻辑
             const btn = document.getElementById('send-btn');
             const input = document.getElementById('user-input');
             if (btn) btn.onclick = () => this.handleAction();
             if (input) input.onkeydown = (e) => { if (e.key === 'Enter') this.handleAction(); };
 
-            // 名片展开与返回 (针对 HTML 结构)
+            // 2. 名片卡片切换
             const expandBtn = document.getElementById('expandButton');
             const backBtn = document.getElementById('backButton');
             const initialCard = document.querySelector('.initial-card');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            // 详情展示与关闭
+            // 3. 详情卡片显示/隐藏
             document.querySelectorAll('.menu-button').forEach(b => {
                 b.onclick = () => {
                     const target = document.getElementById(b.dataset.target);
@@ -82,12 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         generateResponse(text) {
             let match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
-            if (!match) return "这个问题触及了考学的底层逻辑。建议先告知你的**专业方向**或咨询**‘费用模式’**。";
+            if (!match) return "这个问题触及了考学的底层逻辑。建议先告知你的**专业方向**，或者咨询关于**‘费用模式’**与**‘面试细节’**。";
 
             let responseHtml = match.response;
+            // 缝合逻辑：如果识别到背景，且内容属于学术/面试类，则添加导师点评
             if (this.currentSubject && (match.category.startsWith('academic') || text.includes('什么'))) {
                 const prefix = `<div style="border-left:4px solid #ff4d4f; background:rgba(255,77,79,0.05); padding:12px; margin-bottom:15px; border-radius:4px;">
-                    📢 <strong>秋武导师点评：</strong><br>既然你具备【${this.currentSubject}】背景，处理“${text.substring(0,10)}...”时要展现研究者的本能。</div>`;
+                    📢 <strong>秋武导师点评：</strong><br>既然你具备【${this.currentSubject}】背景，在处理“${text.substring(0,10)}...”这类问题时，绝对不能背答案，要展现研究者的本能。</div>`;
                 responseHtml = prefix + responseHtml;
             }
             return responseHtml.replace(/\n/g, '<br>');
