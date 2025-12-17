@@ -1,79 +1,34 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>東大日本秋武老师 - 数字名片</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<body>
-    <div class="main-layout">
-        <div class="card-container">
-            <div class="card initial-card">
-                <div class="profile-pic-container">
-                    <video class="profile-pic" autoplay loop muted playsinline poster="profile.jpg">
-                        <source src="video_final.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <h1>東大日本秋武老师</h1>
-                <p class="slogan">跨越文理，点亮思路<br>用“破绽”引导成功</p>
-                <button id="expandButton" class="expand-button">查看详情</button>
-            </div>
-
-            <div class="card menu-card hidden">
-                <div class="menu-header"><h3>秋武特色考学服务</h3></div>
-                <div class="menu-buttons">
-                    <button class="menu-button" data-target="strengths">✨ 核心优势 (文理融合)</button>
-                    <button class="menu-button" data-target="mode">🎓 辅导模式 (免费定制)</button>
-                    <button class="menu-button" data-target="more">🚀 成功案例/联系方式</button>
-                </div>
-                <button id="backButton" class="back-button">返回首页</button>
-            </div>
-
-            <div id="strengths" class="content-card hidden">
-                <div class="content-header"><h2>核心优势</h2><button class="close-content">×</button></div>
-                <div class="content-body">
-                    <ul>
-                        <li><strong>东大基准:</strong> 10年博弈经验。</li>
-                        <li><strong>跨学科视角:</strong> 文理融合，拒绝流水线模版。</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div id="mode" class="content-card hidden">
-                <div class="content-header"><h2>辅导模式</h2><button class="close-content">×</button></div>
-                <div class="content-body">
-                    <p class="highlight">合作机构承担辅导费，您 0 负担享受高端指导。</p>
-                </div>
-            </div>
-
-            <div id="more" class="content-card hidden">
-                <div class="content-header"><h2>更多资源</h2><button class="close-content">×</button></div>
-                <div class="content-body">
-                    <p>微信：<strong>qiuwu999</strong></p>
-                    <a href="https://zhuanlan.zhihu.com/p/691198840" target="_blank">知乎：终局思维解析 →</a>
-                </div>
-            </div>
+<div id="strengths" class="content-card hidden">
+    <div class="content-header"><h2>✨ 核心优势</h2><button class="close-content">×</button></div>
+    <div class="content-body">
+        <div class="logic-comparison">
+            <div class="logic-item legacy"><strong>传统中介：</strong> 话术堆砌，流水线模板。</div>
+            <div class="logic-item qiuwu"><strong>秋武博弈：</strong> 10年东大基准，解构“破绽”引教授上钩。</div>
         </div>
+        <ul class="feature-list">
+            <li><strong>跨学科视角:</strong> 文理融合，理系口试与文系研究计划逻辑一致化。</li>
+            <li><strong>资源独占:</strong> 深度连接合作私塾，确保情报优先权。</li>
+        </ul>
+    </div>
+</div>
 
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="header-info">
-                    <h3>秋武 AI 咨询室</h3>
-                    <div class="status-indicator"><span class="status-dot"></span> 逻辑库已在线 | 随时提问</div>
-                </div>
-            </div>
-            <div id="chat-body" class="chat-messages">
-                <div class="message ai-message">你好！我是秋武 AI。关于面试、理科口试或费用，随时问我。</div>
-            </div>
-            <div class="chat-input-area">
-                <input type="text" id="user-input" placeholder="输入关键字 (如: 费用, 面试)...">
-                <button id="send-btn">发送</button>
-            </div>
+<div id="mode" class="content-card hidden mode-theme">
+    <div class="content-header"><h2>🎓 辅导模式</h2><button class="close-content">×</button></div>
+    <div class="content-body">
+        <div class="highlight-banner">辅导费由机构承担，您 0 负担</div>
+        <div class="mode-description">
+            <p><strong>为何免费？</strong> 我是合作机构的官方推荐渠道，机构将获客成本直接回馈到您的教学质量中。</p>
+            <p class="tag"># 利益一致原则 # 拒绝中间商</p>
         </div>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+</div>
+
+<div id="more" class="content-card hidden more-theme">
+    <div class="content-header"><h2>🚀 更多资源</h2><button class="close-content">×</button></div>
+    <div class="content-body">
+        <div class="sns-grid">
+            <div class="sns-item"><span>微信:</span> <strong>qiuwu999</strong></div>
+            <a href="https://zhuanlan.zhihu.com/p/691198840" target="_blank" class="sns-item link">知乎：终局思维解析 →</a>
+        </div>
+    </div>
+</div>
