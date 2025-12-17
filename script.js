@@ -4,27 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('sendBtn');
     const detailCard = document.getElementById('detailCard');
 
-    // 1. 逻辑库配置 (直接整合你的 JSON 数据)
+    // 模拟从 knowledge.json 加载的逻辑库
     const knowledgeBase = [
         {
-            "keywords": ["酯化", "反应式", "催化剂", "さくさん", "浓硫酸"],
-            "response": "【秋武流：理系口頭試問——酯化反应】\\n\\n⚗️ **核心公式**：\\n$CH_3COOH + CH_3CH_2OH \\xrightleftharpoons[\\Delta]{H_2SO_4(浓)} CH_3COOCH_2CH_3 + H_2O$\\n\\n🧪 **考点**：强调浓硫酸的吸水性，产物醋酸乙酯有香味。"
+            "keywords": ["费用", "免费", "模式"],
+            "response": "【秋武辅导模式：透明、靠谱的商业逻辑】🧡\\n\\n留学的每一分钱都该花在刀刃上。我们提供清晰透明的收费模式。\\n\\n1. **强推免费模式**：通过秋武老师推荐进入合作私塾，辅导费由机构支付。您 **0 额外支出**。\\n2. **定制收费**：若不走机构渠道，也提供独立的文书修改服务。"
         },
         {
-            "keywords": ["微分", "定义", "导数", "limit"],
-            "response": "【秋武流：理系口頭試問——微分定义】\\n\\n📐 **严谨表述**：\\n必须强调极限 $\\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$ **存在**。\\n\\n⚠️ **避坑**：不要写成 $x \\to 0$。"
-        },
-        {
-            "keywords": ["面试", "礼仪", "椅子", "推回"],
-            "response": "【秋武流：面试隐藏评分】\\n\\n🪑 **致命细节**：\\n离场时请将椅子推回原位。这是考查“读空气”能力及学术敬畏心。"
-        },
-        {
-            "keywords": ["费用", "钱", "多少钱", "价格"],
-            "response": "【秋武流：服务模式】\\n\\n💰 **免费机制**：\\n通过合作机构申请可享 0 额外费用的导师级文书辅导。由我亲自控卷。"
+            "keywords": ["微分", "导数"],
+            "response": "【秋武流：理科思维】📐\\n\\n必须强调极限 $\\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$ 的存在性。在东大基准下，逻辑的严密性高于答案的正确性。"
         }
     ];
 
-    // 2. 基础功能
     window.openDetail = () => detailCard.classList.add('active');
     window.closeDetail = () => detailCard.classList.remove('active');
 
@@ -36,14 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         userInput.value = '';
 
         setTimeout(() => {
-            // 自动检索逻辑
-            let match = knowledgeBase.find(item => 
-                item.keywords.some(kw => text.includes(kw))
-            );
-
-            let response = match ? match.response : "【秋武流：逻辑对齐中】建议尝试关键词：面试、微分、费用。微信：qiuwu999";
+            let match = knowledgeBase.find(item => item.keywords.some(kw => text.includes(kw)));
+            let response = match ? match.response : "💡 **秋武建议**：您提问的角度很有趣！建议针对“面试礼仪”、“跨专业”或“研究计划书”进行深入提问。";
             appendMsg(response, 'ai');
-        }, 500);
+        }, 600);
     }
 
     function appendMsg(t, type) {
@@ -53,21 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.appendChild(d);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        // 重新渲染数学公式
         if (window.MathJax && MathJax.typesetPromise) {
-            MathJax.typesetPromise([d]).catch(e => console.error(e));
+            MathJax.typesetPromise([d]);
         }
     }
-
-    // 3. 复制与事件绑定
-    window.copyToClipboard = (str) => {
-        navigator.clipboard.writeText(str).then(() => alert('微信号已复制')).catch(() => {
-            const el = document.createElement('textarea');
-            el.value = str; document.body.appendChild(el); el.select();
-            document.execCommand('copy'); document.body.removeChild(el);
-            alert('微信号已复制');
-        });
-    };
 
     sendBtn.onclick = handleSend;
     userInput.onkeyup = (e) => { if (e.key === 'Enter') handleSend(); };
