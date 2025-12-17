@@ -1,74 +1,31 @@
-body {
-    font-family: 'Noto Sans SC', -apple-system, sans-serif;
-    margin: 0; padding: 0; background-color: #f0f2f5;
-    display: flex; justify-content: center; align-items: center; min-height: 100vh;
-}
-
+/* 1. 基础容器：锁定布局，防止面目全非 */
 .main-layout {
-    display: flex; width: 95%; max-width: 1000px; height: 85vh;
-    background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden;
+    position: relative;
+    overflow: hidden; /* 严禁溢出挤压 */
+    max-width: 450px;
+    margin: auto;
 }
 
-/* 左侧名片 */
-.card-container {
-    width: 350px; background-color: #f9fbf9; padding: 25px;
-    position: relative; border-right: 1px solid #eee; flex-shrink: 0;
+/* 2. 详情卡片：采用绝对定位覆盖模式 (协同核心) */
+.content-card {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100; /* 置顶覆盖 */
+    background: white;
+    padding: 25px;
+    transform: translateY(100%); /* 默认在下方隐藏 */
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.card {
-    background: white; border-radius: 15px; padding: 30px;
-    height: 100%; box-sizing: border-box; text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-}
+.content-card.active { transform: translateY(0); } /* 激活时平滑滑入 */
 
-.profile-pic-container {
-    width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
-    margin: 0 auto 20px; border: 4px solid #43a047; background: #eee;
-}
-
-.profile-pic { width: 100%; height: 100%; object-fit: cover; }
-
-h1 { font-size: 1.5em; color: #1a237e; margin: 10px 0; }
-.slogan { font-size: 0.9em; color: #666; line-height: 1.6; margin-bottom: 25px; }
-
-.expand-button, .back-button {
-    background: #43a047; color: white; border: none; padding: 10px 25px;
-    border-radius: 20px; cursor: pointer; font-weight: 500; transition: 0.3s;
-}
-
-.menu-button {
-    width: 100%; text-align: left; padding: 15px; margin-bottom: 12px;
-    border: 1px solid #e0e0e0; border-radius: 10px; background: #fff;
-    color: #333; cursor: pointer; transition: 0.2s;
-}
-.menu-button:hover { background: #f1f8e9; border-color: #43a047; }
-
-/* 右侧聊天区 */
-.chat-container { flex-grow: 1; display: flex; flex-direction: column; background: #fff; }
-
-.chat-header { padding: 15px 25px; border-bottom: 1px solid #f0f0f0; }
-.header-info h3 { margin: 0; font-size: 1.1em; color: #333; }
-.status-indicator { font-size: 0.8em; color: #888; display: flex; align-items: center; margin-top: 4px; }
-.status-dot { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; margin-right: 6px; }
-
-.chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; background: #fafafa; }
-.message { max-width: 80%; margin-bottom: 15px; padding: 12px 16px; border-radius: 15px; font-size: 0.95em; line-height: 1.6; }
-.ai-message { background: #fff; border: 1px solid #eee; margin-right: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-.user-message { background: #1a237e; color: white; margin-left: auto; }
-
-/* SNS 点评框 */
+/* 3. SNS_COMMENT_GENERATOR 模式样式 */
 .sns-comment {
-    background: #fff8e1; border-left: 4px solid #ffb300; padding: 12px;
-    margin-bottom: 15px; border-radius: 6px; font-size: 0.9em; color: #5d4037;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 12px;
+    border-left: 4px solid #4CAF50;
+    margin: 10px 0;
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-
-.chat-input-area { padding: 20px; display: flex; gap: 10px; border-top: 1px solid #eee; }
-.chat-input-area input { flex-grow: 1; padding: 12px 18px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
-.chat-input-area button { background: #43a047; color: white; border: none; padding: 0 20px; border-radius: 25px; cursor: pointer; }
-
-.hidden { display: none !important; }
-
-/* 详情卡片内容样式 */
-.content-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; padding: 30px; box-sizing: border-box; }
-.content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.highlight { background: #fffde7; padding: 15px; border-radius: 8px; border: 1px dashed #ffd54f; color: #e65100; font-weight: bold; }
