@@ -12,72 +12,89 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         bindEvents() {
-            const btn = document.getElementById('send-btn');
+            // --- 右侧聊天功能 ---
+            const sendBtn = document.getElementById('send-btn');
             const input = document.getElementById('user-input');
-            if (btn) btn.onclick = () => this.handleAction();
+            if (sendBtn) sendBtn.onclick = () => this.handleAction();
             if (input) input.onkeydown = (e) => { if (e.key === 'Enter') this.handleAction(); };
+
+            // --- 左侧名片功能：全覆盖核心 ---
+            const expandBtn = document.getElementById('expandButton');
+            const backBtn = document.getElementById('backButton');
+            const initialCard = document.querySelector('.initial-card');
+            const menuCard = document.querySelector('.menu-card');
+
+            // 展开
+            if (expandBtn) {
+                expandBtn.onclick = () => {
+                    initialCard.classList.add('hidden');
+                    menuCard.classList.remove('hidden');
+                };
+            }
+            // 返回
+            if (backBtn) {
+                backBtn.onclick = () => {
+                    menuCard.classList.add('hidden');
+                    initialCard.classList.remove('hidden');
+                };
+            }
+            // 详情按钮跳转
+            document.querySelectorAll('.menu-button').forEach(btn => {
+                btn.onclick = () => {
+                    const targetId = btn.getAttribute('data-target');
+                    menuCard.classList.add('hidden');
+                    document.getElementById(targetId).classList.remove('hidden');
+                };
+            });
+            // 关闭详情
+            document.querySelectorAll('.close-content').forEach(btn => {
+                btn.onclick = () => {
+                    btn.closest('.content-card').classList.add('hidden');
+                    menuCard.classList.remove('hidden');
+                };
+            });
         },
 
         handleAction() {
             const input = document.getElementById('user-input');
             const text = input.value.trim();
             if (!text) return;
-
             this.renderMessage(text, 'user-message');
-            this.updateContext(text); // 背景提取
-            
+            this.updateContext(text);
             const response = this.generateResponse(text);
             setTimeout(() => {
                 this.renderMessage(response, 'ai-message');
-                const body = document.getElementById('chat-body');
-                body.scrollTop = body.scrollHeight;
             }, 500);
             input.value = '';
         },
 
-        // 背景提取优化：只存关键词，不存整句话
         updateContext(text) {
-            const subjects = ["生物", "物理", "数学", "理工", "农学", "法学", "经济", "工科"];
+            const subjects = ["生物", "物理", "数学", "理工", "工科", "法学"];
             for (let sub of subjects) {
-                if (text.includes(sub)) {
-                    this.currentSubject = sub;
-                    break;
-                }
+                if (text.includes(sub)) { this.currentSubject = sub; break; }
             }
         },
 
         generateResponse(text) {
-            // 1. 意图分发
+            // 这里执行 PDF 数据的检索匹配
             let match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
+            if (!match) return "这个问题触及了考学的底层逻辑。请告知你的本科专业，或咨询关于‘费用’与‘面试’。";
             
-            // 2. 默认兜底（秋武流引导）
-            if (!match) {
-                return "这个问题触及了考学的底层逻辑。为了给出‘东大基准’的判断，建议先告知你的**本科专业**或**研究方向**，或者直接咨询关于**‘费用模式’**与**‘研究计划重构’**。";
+            let html = match.response;
+            if (this.currentSubject && match.category.includes('academic')) {
+                html = `<div style="border-left:4px solid red; padding:10px; margin-bottom:10px; background:#fff5f5;">📢 秋武点评：基于你的${this.currentSubject}背景...</div>` + html;
             }
-
-            let responseHtml = match.response;
-
-            // 3. 背景缝合逻辑（仅针对学术类问题触发）
-            if (this.currentSubject && (match.category.startsWith('academic') || text.includes('什么'))) {
-                const prefix = `
-                    <div style="border-left: 4px solid #ff4d4f; background: rgba(255,77,79,0.05); padding: 12px; margin-bottom: 15px; border-radius: 4px;">
-                        📢 <strong>秋武导师点评：</strong><br>
-                        既然你具备【${this.currentSubject}】背景，在处理“${text.substring(0,10)}...”这类问题时，绝对不能停留在表面，要展现研究者的本能。
-                    </div>`;
-                responseHtml = prefix + responseHtml;
-            }
-
-            return responseHtml.replace(/\n/g, '<br>');
+            return html.replace(/\n/g, '<br>');
         },
 
         renderMessage(text, className) {
-            const container = document.getElementById('chat-body');
+            const body = document.getElementById('chat-body');
             const div = document.createElement('div');
             div.className = `message ${className}`;
             div.innerHTML = text;
-            container.appendChild(div);
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
         }
     };
-
     ChatSystem.init();
 });
