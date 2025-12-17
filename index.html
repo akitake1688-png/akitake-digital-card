@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>東大日本秋武老师 - 数字名片</title>
     <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-            svg: { fontCache: 'global' }
-        };
+        window.MathJax = { tex: { inlineMath: [['$', '$']] } };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -18,7 +15,7 @@
 <div class="main-layout">
     <div class="card-side">
         <div class="avatar-wrap">
-            <video autoplay loop muted playsinline>
+            <video autoplay loop muted playsinline style="background: #2e7d32;">
                 <source src="video_final.mp4" type="video/mp4">
             </video>
         </div>
@@ -29,23 +26,21 @@
     </div>
 
     <div class="content-card" id="detailCard">
-        <div class="detail-header">
-            <button class="back-btn" onclick="closeDetail()">← 返回</button>
-            <h3>秋武流：学术内涵</h3>
-        </div>
+        <button class="back-btn" onclick="closeDetail()">← 返回对话</button>
         <div class="detail-body">
-            <p><strong>1. 读空气 (KY) 逻辑</strong>：面试中的椅子回位、眼神交流是软实力核心。</p>
-            <p><strong>2. 考学底层逻辑</strong>：从“被动考试”转向“教授博弈”。</p>
-            <p><strong>3. 理科定义严谨性</strong>：公式不仅是答案，更是思维的精度。</p>
+            <h3>秋武流：学术内涵</h3>
+            <p>● 读空气 (KY) 逻辑重构</p>
+            <p>● 东洋大学口试高频考点</p>
+            <p>● SOTA 级研究计划书指导</p>
         </div>
     </div>
 
     <div class="chat-side">
         <div id="chat-box" class="chat-messages">
-            <div class="msg ai">你好！我是秋武 AI。已加载 PDF 核心逻辑库。请输入“费用”、“面试”或“微分定义”开始。</div>
+            <div class="msg ai">你好！秋武 AI 已准备就绪。请输入关键词（如：面试、费用、酯化反应）。</div>
         </div>
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="输入关键词...">
+            <input type="text" id="userInput" placeholder="在此输入...">
             <button id="sendBtn">发送</button>
         </div>
     </div>
