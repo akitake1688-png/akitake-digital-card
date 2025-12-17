@@ -1,34 +1,26 @@
-/* 详情卡片抽屉逻辑 */
+/* 基础容器 */
+.main-layout { position: relative; display: flex; height: 85vh; overflow: hidden; background: #fff; border-radius: 12px; }
+
+/* 详情抽屉层 - 核心修复点 */
 .content-card {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 100;
-    background: white;
-    padding: 25px;
-    transform: translateY(100%); /* 默认在下方 */
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: white; z-index: 500; /* 确保在最上层 */
+    transform: translateY(100%);
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    display: block; /* 取代 hidden，由 transform 控制显隐 */
+    padding: 30px; box-sizing: border-box;
 }
-
-.content-card.active {
-    transform: translateY(0);
-}
-
-/* SNS 评论样式：增加知乎/小红书的高级感 */
-.sns-comment {
-    background-color: #f0f7ff;
-    border-left: 4px solid #007bff;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    font-size: 0.9em;
-    color: #444;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* 消息中的公式缩放适配 */
-.mjx-chtml {
-    font-size: 110% !important;
-}
+.content-card.active { transform: translateY(0); }
 
 .hidden { display: none !important; }
+
+/* 聊天样式 */
+.chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+.message { margin-bottom: 15px; padding: 12px; border-radius: 10px; max-width: 85%; font-size: 14px; line-height: 1.5; }
+.ai-message { background: #f0f7f4; align-self: flex-start; border: 1px solid #e0eee0; }
+.user-message { background: #e3f2fd; align-self: flex-end; }
+
+/* 响应式：移动端变为上下排列 */
+@media (max-width: 768px) {
+    .main-layout { flex-direction: column; height: 100vh; }
+    .card-container { height: 40%; width: 100%; }
+}
