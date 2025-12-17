@@ -2,79 +2,80 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chat-box');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
+    const detailCard = document.getElementById('detailCard');
     
     let knowledgeBase = [];
 
-    // 1. 强化加载逻辑：优先加载本地核心，再同步外部 JSON
-    async function initKnowledge() {
+    // 1. 初始化数据加载
+    async function loadKnowledge() {
         try {
-            const response = await fetch('knowledge.json');
-            if (response.ok) {
-                knowledgeBase = await response.json();
-                console.log("秋武 2.0 知识库同步成功，共载入 " + knowledgeBase.length + " 条逻辑。");
+            const res = await fetch('knowledge.json');
+            if (res.ok) {
+                knowledgeBase = await res.json();
+                console.log("秋武数据同步成功，条数：" + knowledgeBase.length);
             }
-        } catch (err) {
-            console.error("JSON 加载失败，启用本地备用逻辑");
-            // 这里可以放入之前提到的几个核心 Keys 作为兜底
+        } catch (e) {
+            console.error("无法加载 knowledge.json，请检查文件路径");
         }
     }
-    initKnowledge();
+    loadKnowledge();
 
-    // 2. 调度引擎：支持模糊匹配与意图识别
-    function findResponse(input) {
+    // 2. 匹配逻辑
+    function getReply(input) {
         const text = input.toLowerCase();
-        // 逻辑：计算关键词命中频次，而不只是 some
         let bestMatch = null;
-        let maxScore = 0;
+        let highestScore = 0;
 
         knowledgeBase.forEach(item => {
             let score = 0;
             item.keywords.forEach(key => {
                 if (text.includes(key.toLowerCase())) score++;
             });
-            if (score > maxScore) {
-                maxScore = score;
+            if (score > highestScore) {
+                highestScore = score;
                 bestMatch = item;
             }
         });
-
         return bestMatch ? bestMatch.response : null;
     }
 
-    // 3. 发送与渲染 (增强容错)
-    function handleChat() {
-        const text = userInput.value.trim();
-        if (!text) return;
-
-        appendMsg(text, 'user');
-        userInput.value = '';
-
-        setTimeout(() => {
-            const reply = findResponse(text) || "【秋武 AI 逻辑重构】\n这个问题超出了当前的自动索引。建议您**加微信 qiuwu999**，我会针对您的出身校和专业进行一对一逻辑对齐。";
-            appendMsg(reply, 'ai');
-        }, 400);
-    }
-
-    function appendMsg(content, type) {
+    // 3. 渲染函数 (包含 MathJax 调度)
+    function appendMessage(content, type) {
         const div = document.createElement('div');
         div.className = `msg ${type}`;
-        // 处理换行与加粗
+        // 处理换行和加粗
         div.innerHTML = content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         chatBox.appendChild(div);
-        
-        chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+        chatBox.scrollTop = chatBox.scrollHeight;
 
-        // MathJax 重绘
+        // 核心容错：动态公式渲染
         if (window.MathJax && window.MathJax.typesetPromise) {
-            MathJax.typesetPromise([div]);
+            MathJax.typesetPromise([div]).catch(err => console.warn(err));
         }
     }
 
-    // 4. UI 事件绑定
-    sendBtn.onclick = handleChat;
-    userInput.onkeyup = (e) => { if (e.key === 'Enter') handleChat(); };
+    // 4. 发送动作
+    function onSend() {
+        const val = userInput.value.trim();
+        if (!val) return;
 
-    // 5. 复制功能
+        appendMessage(val, 'user');
+        userInput.value = '';
+
+        setTimeout(() => {
+            const reply = getReply(val) || "【秋武 AI 提示】\n该问题需要深度重构逻辑，请点击左侧按钮查看“核心内涵”或直接加微信 **qiuwu999**。";
+            appendMessage(reply, 'ai');
+        }, 400);
+    }
+
+    // 5. 绑定事件
+    sendBtn.onclick = onSend;
+    userInput.onkeyup = (e) => { if (e.key === 'Enter') onSend(); };
+
+    // 6. 全局调度函数 (暴露给 HTML)
+    window.openDetail = () => detailCard.classList.add('active');
+    window.closeDetail = () => detailCard.classList.remove('active');
+
     window.copyToClipboard = (str) => {
         const el = document.createElement('textarea');
         el.value = str;
@@ -82,6 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
-        alert('秋武老师微信号已复制：' + str);
+        alert('微信号已复制：' + str);
     };
 });
