@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>東大日本秋武老师 - 数字名片</title>
-    <script>
-        window.MathJax = { tex: { inlineMath: [['$', '$']] } };
-    </script>
+    <title>東大日本秋武老师 - 数字互动名片</title>
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -20,28 +18,35 @@
             </video>
         </div>
         <h3>東大日本秋武老师</h3>
-        <p>微信：qiuwu999</p>
+        <p class="id-tag">微信：qiuwu999</p>
         <button class="action-btn" onclick="copyToClipboard('qiuwu999')">复制微信号</button>
         <button class="action-btn secondary" onclick="openDetail()">秋武流核心内涵</button>
     </div>
 
-    <div class="content-card" id="detailCard">
-        <button class="back-btn" onclick="closeDetail()">← 返回对话</button>
-        <div class="detail-body">
-            <h3>秋武流：学术内涵</h3>
-            <p>● 读空气 (KY) 逻辑重构</p>
-            <p>● 东洋大学口试高频考点</p>
-            <p>● SOTA 级研究计划书指导</p>
+    <div class="chat-side">
+        <div id="chat-box" class="chat-messages">
+            <div class="msg ai">你好！秋武 AI 逻辑库已对齐。请输入关键词（如：面试、微分、费用）。</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="在此输入逻辑关键词...">
+            <button id="sendBtn">发送</button>
         </div>
     </div>
 
-    <div class="chat-side">
-        <div id="chat-box" class="chat-messages">
-            <div class="msg ai">你好！秋武 AI 已准备就绪。请输入关键词（如：面试、费用、酯化反应）。</div>
+    <div class="content-card" id="detailCard">
+        <div class="detail-header">
+            <button class="back-btn" onclick="closeDetail()">← 返回对话</button>
         </div>
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="在此输入...">
-            <button id="sendBtn">发送</button>
+        <div class="detail-body">
+            <h3>秋武流：核心学术内涵</h3>
+            <div class="detail-item">
+                <h4>● 读空气 (KY) 逻辑重构</h4>
+                <p>将日本社会潜规则转化为可量化的博弈策略。</p>
+            </div>
+            <div class="detail-item">
+                <h4>● SOTA 级研究计划书</h4>
+                <p>基于顶级学术基准的逻辑建模与文书指导。</p>
+            </div>
         </div>
     </div>
 </div>
