@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         bindEvents() {
-            // 右侧聊天
+            // 聊天逻辑
             document.getElementById('send-btn').onclick = () => this.handleAction();
             document.getElementById('user-input').onkeydown = (e) => { if(e.key === 'Enter') this.handleAction(); };
 
-            // 左侧切换
+            // 名片展开/收起
             const initial = document.querySelector('.initial-card');
             const menu = document.querySelector('.menu-card');
 
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 initial.classList.remove('hidden');
             };
 
-            // 详情展示与关闭
+            // 详情展示
             document.querySelectorAll('.menu-button').forEach(btn => {
                 btn.onclick = () => {
                     menu.classList.add('hidden');
@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             });
 
+            // 详情关闭
             document.querySelectorAll('.close-content').forEach(btn => {
                 btn.onclick = () => {
                     btn.closest('.content-card').classList.add('hidden');
@@ -58,9 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
                 let response = match ? match.response : "这个问题建议咨询秋武老师（微信：qiuwu999）。";
                 
-                // 如果提到学科，加入高亮提示
                 if (this.currentSubject && match && match.category.includes('academic')) {
-                    response = `<div class="sns-comment">📢针对【${this.currentSubject}】学生的建议：</div>` + response;
+                    response = `<div class="sns-comment">📢【${this.currentSubject}】背景特别提醒：</div>` + response;
                 }
                 
                 this.renderMessage(response, 'ai-message');
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         updateContext(text) {
-            const subs = ["生物", "数学", "理科", "法学", "工科"];
+            const subs = ["生物", "数学", "物理", "理工", "法学", "工科"];
             for (let s of subs) { if (text.includes(s)) this.currentSubject = s; }
         },
 
