@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ChatSystem = {
         knowledge: [],
-        currentSubject: null,
 
         async init() {
             try {
@@ -12,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         bindEvents() {
-            // 聊天逻辑
+            // 右侧聊天
             document.getElementById('send-btn').onclick = () => this.handleAction();
             document.getElementById('user-input').onkeydown = (e) => { if(e.key === 'Enter') this.handleAction(); };
 
-            // 名片展开/收起
+            // 左侧逻辑 (通过 Class 控制，完美匹配 CSS)
             const initial = document.querySelector('.initial-card');
             const menu = document.querySelector('.menu-card');
 
@@ -30,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 initial.classList.remove('hidden');
             };
 
-            // 详情展示
             document.querySelectorAll('.menu-button').forEach(btn => {
                 btn.onclick = () => {
                     menu.classList.add('hidden');
@@ -38,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             });
 
-            // 详情关闭
             document.querySelectorAll('.close-content').forEach(btn => {
                 btn.onclick = () => {
                     btn.closest('.content-card').classList.add('hidden');
@@ -53,24 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!text) return;
 
             this.renderMessage(text, 'user-message');
-            this.updateContext(text);
             
             setTimeout(() => {
                 const match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
-                let response = match ? match.response : "这个问题建议咨询秋武老师（微信：qiuwu999）。";
-                
-                if (this.currentSubject && match && match.category.includes('academic')) {
-                    response = `<div class="sns-comment">📢【${this.currentSubject}】背景特别提醒：</div>` + response;
-                }
-                
+                const response = match ? match.response : "这个问题建议咨询秋武老师（微信：qiuwu999）。";
                 this.renderMessage(response, 'ai-message');
             }, 500);
             input.value = '';
-        },
-
-        updateContext(text) {
-            const subs = ["生物", "数学", "物理", "理工", "法学", "工科"];
-            for (let s of subs) { if (text.includes(s)) this.currentSubject = s; }
         },
 
         renderMessage(text, className) {
