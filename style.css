@@ -1,31 +1,34 @@
-/* 1. 基础容器：锁定布局，防止面目全非 */
-.main-layout {
-    position: relative;
-    overflow: hidden; /* 严禁溢出挤压 */
-    max-width: 450px;
-    margin: auto;
-}
-
-/* 2. 详情卡片：采用绝对定位覆盖模式 (协同核心) */
+/* 详情卡片抽屉逻辑 */
 .content-card {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 100; /* 置顶覆盖 */
+    z-index: 100;
     background: white;
     padding: 25px;
-    transform: translateY(100%); /* 默认在下方隐藏 */
+    transform: translateY(100%); /* 默认在下方 */
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: block; /* 取代 hidden，由 transform 控制显隐 */
 }
 
-.content-card.active { transform: translateY(0); } /* 激活时平滑滑入 */
+.content-card.active {
+    transform: translateY(0);
+}
 
-/* 3. SNS_COMMENT_GENERATOR 模式样式 */
+/* SNS 评论样式：增加知乎/小红书的高级感 */
 .sns-comment {
-    background: #f8f9fa;
-    border-radius: 12px;
+    background-color: #f0f7ff;
+    border-left: 4px solid #007bff;
     padding: 12px;
-    border-left: 4px solid #4CAF50;
-    margin: 10px 0;
+    margin-bottom: 15px;
+    border-radius: 6px;
     font-size: 0.9em;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    color: #444;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+
+/* 消息中的公式缩放适配 */
+.mjx-chtml {
+    font-size: 110% !important;
+}
+
+.hidden { display: none !important; }
