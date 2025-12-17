@@ -2,82 +2,86 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chat-box');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
-    const detailCard = document.getElementById('detailCard');
-    const expandBtn = document.getElementById('expandButton');
-    const backBtn = document.getElementById('backButton');
+    
+    let knowledgeBase = [];
 
-    // 1. 核心知识库 (提炼自 PDF)
-    const knowledgeBase = [
-        {
-            keys: ["费用", "钱", "收费", "免费"],
-            res: "【秋武流：商业逻辑】\n\n💰 **核心模式**：通过我进入合作私塾，您无需支付咨询费。加微信：**qiuwu999** 获取透明报价。"
-        },
-        {
-            keys: ["面试", "口试", "细节"],
-            res: "【秋武流：面试致命细节】\n\n💡 离开时**推回椅子**是日本教授判断学生“读空气”能力的重要指标。$Success \\propto Manners$"
-        },
-        {
-            keys: ["化学", "酯化", "反应式"],
-            res: "【理科定义：酯化反应】\n\n🧪 $CH_3COOH + CH_3CH_2OH \\xrightleftharpoons[\\Delta]{H_2SO_4} CH_3COOCH_2CH_3 + H_2O$\n必须强调浓硫酸的吸水作用。"
-        },
-        {
-            keys: ["微分", "定义", "数学"],
-            res: "【理科定义：微分】\n\n📐 定义式：$\\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$"
+    // 1. 强化加载逻辑：优先加载本地核心，再同步外部 JSON
+    async function initKnowledge() {
+        try {
+            const response = await fetch('knowledge.json');
+            if (response.ok) {
+                knowledgeBase = await response.json();
+                console.log("秋武 2.0 知识库同步成功，共载入 " + knowledgeBase.length + " 条逻辑。");
+            }
+        } catch (err) {
+            console.error("JSON 加载失败，启用本地备用逻辑");
+            // 这里可以放入之前提到的几个核心 Keys 作为兜底
         }
-    ];
+    }
+    initKnowledge();
 
-    // 2. 发送逻辑
-    function handleSend() {
+    // 2. 调度引擎：支持模糊匹配与意图识别
+    function findResponse(input) {
+        const text = input.toLowerCase();
+        // 逻辑：计算关键词命中频次，而不只是 some
+        let bestMatch = null;
+        let maxScore = 0;
+
+        knowledgeBase.forEach(item => {
+            let score = 0;
+            item.keywords.forEach(key => {
+                if (text.includes(key.toLowerCase())) score++;
+            });
+            if (score > maxScore) {
+                maxScore = score;
+                bestMatch = item;
+            }
+        });
+
+        return bestMatch ? bestMatch.response : null;
+    }
+
+    // 3. 发送与渲染 (增强容错)
+    function handleChat() {
         const text = userInput.value.trim();
         if (!text) return;
 
         appendMsg(text, 'user');
         userInput.value = '';
 
-        // 模拟 AI 响应
         setTimeout(() => {
-            const match = knowledgeBase.find(item => item.keys.some(k => text.includes(k)));
-            const reply = match ? match.res : "这个问题触及了考学的底层逻辑。建议输入关键词如“费用”、“面试”或“定义”。";
+            const reply = findResponse(text) || "【秋武 AI 逻辑重构】\n这个问题超出了当前的自动索引。建议您**加微信 qiuwu999**，我会针对您的出身校和专业进行一对一逻辑对齐。";
             appendMsg(reply, 'ai');
-        }, 500);
+        }, 400);
     }
 
-    // 3. 增强渲染与 MathJax 调度
-    function appendMsg(text, type) {
+    function appendMsg(content, type) {
         const div = document.createElement('div');
         div.className = `msg ${type}`;
-        div.innerHTML = text.replace(/\n/g, '<br>');
+        // 处理换行与加粗
+        div.innerHTML = content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         chatBox.appendChild(div);
         
-        // 自动滚动
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
 
-        // 触发 MathJax 渲染
+        // MathJax 重绘
         if (window.MathJax && window.MathJax.typesetPromise) {
-            window.MathJax.typesetPromise([div]).catch(err => console.log(err));
+            MathJax.typesetPromise([div]);
         }
     }
 
-    // 4. UI 交互调度
-    expandBtn.onclick = () => detailCard.classList.add('active');
-    backBtn.onclick = () => detailCard.classList.remove('active');
+    // 4. UI 事件绑定
+    sendBtn.onclick = handleChat;
+    userInput.onkeyup = (e) => { if (e.key === 'Enter') handleChat(); };
 
-    // 5. 事件绑定
-    sendBtn.onclick = handleSend;
-    userInput.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
-
-    // 6. 复制功能 (增强兼容性)
+    // 5. 复制功能
     window.copyToClipboard = (str) => {
         const el = document.createElement('textarea');
         el.value = str;
         document.body.appendChild(el);
         el.select();
-        try {
-            document.execCommand('copy');
-            alert('微信号 qiuwu999 已复制');
-        } catch (e) {
-            alert('请手动添加微信：' + str);
-        }
+        document.execCommand('copy');
         document.body.removeChild(el);
+        alert('秋武老师微信号已复制：' + str);
     };
 });
