@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>東大日本秋武老师 - 数字名片</title>
+    <title>秋武 AI 终局思维咨询室</title>
     <link rel="stylesheet" href="style.css">
     <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -11,25 +11,40 @@
 <body>
 
 <div class="main-layout">
-    <div class="card-side" id="brandSide">
-        <div class="avatar-wrap">
-            <video id="mainVideo" autoplay loop muted playsinline poster="profile.jpg">
-                <source src="video_final.mp4" type="video/mp4">
-            </video>
-            <div class="status-dot"></div>
+    <div class="card-side">
+        <div class="brand-top">
+            <div class="avatar-wrap">
+                <video id="mainVideo" autoplay loop muted playsinline poster="profile.jpg">
+                    <source src="video_final.mp4" type="video/mp4">
+                </video>
+            </div>
+            <h3>東大日本秋武老师</h3>
+            <p class="slogan">跨越文理，点亮思路<br>用“破绽”引导成功</p>
+            <button class="expand-btn" onclick="openDetail()">点击展开</button>
         </div>
-        <h3>東大日本秋武老师</h3>
-        <p class="wechat-id">微信：qiuwu999</p>
-        <div class="button-group">
-            <button class="action-btn" onclick="copyToClipboard('qiuwu999')">复制微信号</button>
-            <button class="action-btn secondary" onclick="openDetail()">秋武流核心内涵</button>
+
+        <div class="services-list" id="servicesList">
+            <p class="service-title">探索更多 (秋武特色服务)</p>
+            <div class="service-item" onclick="openDetail()">🚀 核心优势 (文理融合)</div>
+            <div class="service-item" onclick="openDetail()">🎓 辅导模式 (免费与定制)</div>
+            <div class="service-item" onclick="openDetail()">🚀 成功案例/更多思考</div>
         </div>
     </div>
 
     <div class="chat-side">
-        <div id="chat-box" class="chat-messages">
-            <div class="msg ai">你好！秋武 AI 逻辑库已对齐。请输入关键词（如：面试、微分、费用）。</div>
+        <div class="chat-header">
+            <div class="header-avatar"></div>
+            <div class="header-info">
+                <span class="header-name">秋武 AI 终局思维咨询室</span>
+                <span class="header-status">● 在线 | 智能回复中</span>
+            </div>
         </div>
+
+        <div id="chat-box" class="chat-messages">
+            <div class="msg ai">你好！我是秋武老师的 AI 助理。🌸<br>关于日本考学、文书逻辑重构或面试技巧，随时问我！</div>
+            <div class="msg tip">📚 **秋武知识库加载完成。** 您可以开始提问！</div>
+        </div>
+
         <div class="input-area">
             <input type="text" id="userInput" placeholder="在此输入逻辑关键词..." autocomplete="off">
             <button id="sendBtn">发送</button>
@@ -38,18 +53,15 @@
 
     <div class="content-card" id="detailCard">
         <div class="detail-header">
-            <button class="back-btn" onclick="closeDetail()">← 返回对话</button>
+            <span class="detail-title">核心优势 (文理融合)</span>
+            <button class="close-btn" onclick="closeDetail()">×</button>
         </div>
         <div class="detail-body">
-            <h3>秋武流：学术核心内涵</h3>
-            <div class="concept-item">
-                <h4>● 读空气 (KY) 逻辑重构</h4>
-                <p>将日本社会潜规则转化为可量化的博弈策略，实现降维打击。</p>
-            </div>
-            <div class="concept-item">
-                <h4>● SOTA 级研究计划书</h4>
-                <p>基于顶级学术基准的逻辑建模，确保文书的“东大基准”内涵。</p>
-            </div>
+            <ul>
+                <li><strong>跨学科思维</strong>：本科理工 $\times$ 硕士东大农学，擅长多维视角分析。</li>
+                <li><strong>逻辑重构</strong>：提供“东大基准”逻辑框架。</li>
+                <li><strong>服务保障</strong>：一问一答式答辩草稿编辑，确保表达准确。</li>
+            </ul>
         </div>
     </div>
 </div>
