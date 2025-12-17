@@ -6,7 +6,7 @@
     <title>東大日本秋武老师 - 数字名片</title>
     <script>
         window.MathJax = {
-            tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] },
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
             svg: { fontCache: 'global' }
         };
     </script>
@@ -16,32 +16,36 @@
 <body>
 
 <div class="main-layout">
-    <div class="card-side" id="initialCard">
-        <div class="avatar-container">
-            <video autoplay loop muted playsinline class="avatar-video">
+    <div class="card-side">
+        <div class="avatar-wrap">
+            <video autoplay loop muted playsinline>
                 <source src="video_final.mp4" type="video/mp4">
             </video>
         </div>
         <h3>東大日本秋武老师</h3>
-        <p class="wechat-id">微信：qiuwu999</p>
-        <button class="action-btn" onclick="copyToClipboard('qiuwu999')">一键咨询</button>
-        <button class="action-btn secondary" id="expandButton">查看更多详情</button>
+        <p>微信：qiuwu999</p>
+        <button class="action-btn" onclick="copyToClipboard('qiuwu999')">复制微信号</button>
+        <button class="action-btn secondary" onclick="openDetail()">秋武流核心内涵</button>
     </div>
 
     <div class="content-card" id="detailCard">
-        <button class="close-content" id="backButton">← 返回对话</button>
-        <div class="detail-content">
-            <h3>秋武流核心体系</h3>
-            <p>正在从 PDF 数据中同步...</p>
-            </div>
+        <div class="detail-header">
+            <button class="back-btn" onclick="closeDetail()">← 返回</button>
+            <h3>秋武流：学术内涵</h3>
+        </div>
+        <div class="detail-body">
+            <p><strong>1. 读空气 (KY) 逻辑</strong>：面试中的椅子回位、眼神交流是软实力核心。</p>
+            <p><strong>2. 考学底层逻辑</strong>：从“被动考试”转向“教授博弈”。</p>
+            <p><strong>3. 理科定义严谨性</strong>：公式不仅是答案，更是思维的精度。</p>
+        </div>
     </div>
 
     <div class="chat-side">
         <div id="chat-box" class="chat-messages">
-            <div class="msg ai">数据已迁回。你好，我是秋武 AI。请输入“费用”、“面试”或“化学反应”进行测试。</div>
+            <div class="msg ai">你好！我是秋武 AI。已加载 PDF 核心逻辑库。请输入“费用”、“面试”或“微分定义”开始。</div>
         </div>
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="输入关键字（如：面试、定义）...">
+            <input type="text" id="userInput" placeholder="输入关键词...">
             <button id="sendBtn">发送</button>
         </div>
     </div>
