@@ -8,10 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* 确保系统底层支持隐藏功能 */
-        .hidden { display: none !important; }
-    </style>
 </head>
 <body>
     <div class="main-layout">
@@ -29,12 +25,15 @@
 
             <div class="card menu-card hidden">
                 <div class="menu-header">
-                    <h3>探索更多 (秋武特色服务)</h3>
+                    <div class="small-profile">
+                        <img src="avatar.jpg" alt="秋武老师" onerror="this.src='https://via.placeholder.com/40'">
+                    </div>
+                    <h3>探索更多 (秋武特色)</h3>
                 </div>
                 <div class="menu-buttons">
-                    <button class="menu-button" data-target="strengths">✨ 核心优势</button>
-                    <button class="menu-button" data-target="mode">🎓 辅导模式</button>
-                    <button class="menu-button" data-target="more">🚀 成功案例</button>
+                    <button class="menu-button" data-target="strengths"><span class="icon">✨</span>核心优势</button>
+                    <button class="menu-button" data-target="mode"><span class="icon">🎓</span>辅导模式</button>
+                    <button class="menu-button" data-target="more"><span class="icon">🚀</span>成功案例</button>
                 </div>
                 <button id="backButton" class="back-button">返回名片</button>
             </div>
@@ -42,12 +41,13 @@
             <div id="strengths" class="content-card hidden">
                 <div class="content-header">
                     <h2>核心优势</h2>
-                    <button class="close-content">×</button>
+                    <button class="close-icon close-content">×</button>
                 </div>
                 <div class="content-body">
                     <ul>
                         <li><strong>跨学科思维:</strong> 本科理工 × 硕士东大农学。</li>
-                        <li><strong>逻辑重构:</strong> 拒绝模板，从“终局思维”反推。</li>
+                        <li><strong>逻辑重构:</strong> 从教授视角反推你的“独特性”。</li>
+                        <li><strong>10年沉淀:</strong> 掌握第一手面试官心理博弈。</li>
                     </ul>
                 </div>
             </div>
@@ -55,35 +55,49 @@
             <div id="mode" class="content-card hidden">
                 <div class="content-header">
                     <h2>辅导模式</h2>
-                    <button class="close-content">×</button>
+                    <button class="close-icon close-content">×</button>
                 </div>
                 <div class="content-body">
-                    <p><strong>1:1 深度定制:</strong> 全程一对一打磨。</p>
-                    <p class="highlight">通过合作机构进入，辅导费由机构承担。</p>
+                    <p class="highlight">💡 强推：秋武特色“免费模式”</p>
+                    <p>通过我推荐进入合作私塾或语校，<strong>辅导费由机构承担</strong>。</p>
+                    <p class="sub-text">加微信：qiuwu999 了解详情</p>
                 </div>
             </div>
 
             <div id="more" class="content-card hidden">
                 <div class="content-header">
                     <h2>更多内容</h2>
-                    <button class="close-content">×</button>
+                    <button class="close-icon close-content">×</button>
                 </div>
                 <div class="content-body">
-                    <p>深度阅读知乎专栏或 B 站视频。</p>
+                    <div class="link-list">
+                        <a href="#" class="article-link"><span>成功案例：双非逆袭旧帝大</span><span class="link-arrow">→</span></a>
+                        <a href="#" class="article-link"><span>面试避坑：推椅子的学问</span><span class="link-arrow">→</span></a>
+                    </div>
+                    <button class="action-link-button">获取全套手册</button>
                 </div>
             </div>
         </div>
 
         <div class="chat-container">
             <div class="chat-header">
-                <h3>秋武 AI 终局思维咨询室</h3>
+                <div class="ai-avatar">
+                    <img src="avatar.jpg" alt="AI" onerror="this.src='https://via.placeholder.com/45'">
+                </div>
+                <div class="header-info">
+                    <h3>秋武 AI 咨询室</h3>
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>在线 (秋武大脑同步中)</span>
+                    </div>
+                </div>
             </div>
             <div class="chat-messages" id="chat-body">
-                <div class="message ai-message">你好！关于考学内幕或面试逻辑，随时问我。</div>
+                <div class="message ai-message">你好！关于国立报考逻辑或面试细节，随时问我。</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" id="user-input" placeholder="输入问题...">
-                <button id="send-btn">发送</button>
+                <button id="send-btn">发送按钮</button>
             </div>
         </div>
     </div>
