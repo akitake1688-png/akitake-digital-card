@@ -1,116 +1,83 @@
-/**
- * 秋武老师数字名片 SOTA 3.4 - 深度背景缝合版
- * 修复：专业背景报出后回复无变化的问题
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("✅ SOTA 3.4 终极联动系统启动...");
-
-    const UISystem = {
-        init() {
-            this.bindCardTransitions();
-            this.bindMenuButtons();
-            this.bindCloseButtons();
-        },
-        bindCardTransitions() {
-            const expandBtn = document.getElementById('expandButton');
-            const backBtn = document.getElementById('backButton');
-            const initialCard = document.querySelector('.initial-card');
-            const menuCard = document.querySelector('.menu-card');
-            if (expandBtn && initialCard && menuCard) {
-                expandBtn.onclick = () => { initialCard.classList.add('hidden'); menuCard.classList.remove('hidden'); };
-            }
-            if (backBtn && initialCard && menuCard) {
-                backBtn.onclick = () => { menuCard.classList.add('hidden'); initialCard.classList.remove('hidden'); };
-            }
-        },
-        bindMenuButtons() {
-            document.querySelectorAll('.menu-button').forEach(btn => {
-                btn.onclick = () => {
-                    const targetId = btn.getAttribute('data-target');
-                    const targetSection = document.getElementById(targetId);
-                    if (targetSection) {
-                        document.querySelectorAll('.content-card').forEach(c => c.classList.add('hidden'));
-                        targetSection.classList.remove('hidden');
-                    }
-                };
-            });
-        },
-        bindCloseButtons() {
-            document.querySelectorAll('.close-content').forEach(btn => {
-                btn.onclick = (e) => { e.target.closest('.content-card').classList.add('hidden'); };
-            });
-        }
-    };
-
     const ChatSystem = {
         knowledge: [],
-        sessionStack: [],
+        currentSubject: null,
 
-        init() {
-            this.loadData();
-            this.bindEvents();
+        async init() {
+            try {
+                const response = await fetch('knowledge.json');
+                this.knowledge = await response.json();
+                this.bindEvents();
+            } catch (e) { console.error("数据加载失败"); }
         },
-        loadData() {
-            fetch('knowledge.json').then(r => r.json()).then(d => this.knowledge = d).catch(e => console.warn("数据加载失败"));
-        },
+
         bindEvents() {
             const btn = document.getElementById('send-btn');
             const input = document.getElementById('user-input');
             if (btn) btn.onclick = () => this.handleAction();
             if (input) input.onkeydown = (e) => { if (e.key === 'Enter') this.handleAction(); };
         },
+
         handleAction() {
             const input = document.getElementById('user-input');
-            const chatBody = document.getElementById('chat-body');
             const text = input.value.trim();
             if (!text) return;
-            this.renderMessage(chatBody, text, 'user-message');
+
+            this.renderMessage(text, 'user-message');
+            this.updateContext(text); // 背景提取
+            
             const response = this.generateResponse(text);
             setTimeout(() => {
-                this.renderMessage(chatBody, response, 'ai-message');
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 400);
+                this.renderMessage(response, 'ai-message');
+                const body = document.getElementById('chat-body');
+                body.scrollTop = body.scrollHeight;
+            }, 500);
             input.value = '';
         },
-        generateResponse(text) {
-            // 1. 背景提取逻辑
-            const subjectKeywords = ["生物", "物理", "数学", "几何", "专业", "本科", "背景", "农学", "理工"];
-            subjectKeywords.forEach(kw => {
-                if (text.includes(kw)) {
-                    this.sessionStack.push(text);
-                }
-            });
-            if (this.sessionStack.length > 3) this.sessionStack.shift();
 
-            // 2. 匹配知识点
-            const match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
-            if (!match) return "这是一个有趣的切入点。为了给出东大基准的诊断，建议先告知您的具体研究方向。";
-
-            // 3. 深度缝合生成
-            let responseHtml = match.response;
-            
-            if (this.sessionStack.length >= 1) {
-                const lastContext = this.sessionStack[this.sessionStack.length - 1];
-                // 如果用户报过背景且正在询问知识点
-                const isAskingTech = text.includes("什么") || text.includes("解释") || text.includes("吗") || text.includes("怎么");
-                
-                if (isAskingTech) {
-                    const prefix = `<div style="border-left: 3px solid #ff4d4f; padding-left: 10px; margin-bottom: 10px; color: #555; font-style: italic;">📢 <strong>秋武导师点评：</strong><br>既然你具备【${lastContext}】的相关背景，那么你在回答“${text.replace(/？|\?/g, '')}”时，绝对不能只停留在背诵定义上。</div>`;
-                    const suffix = `<div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddd; color: #d4380d;">💡 <strong>深度提示：</strong>教授看重的是你作为${lastContext.includes('专业') ? '' : '该专业'}学生，是否具备对<strong>变量控制</strong>的本能直觉。</div>`;
-                    responseHtml = prefix + match.response + suffix;
+        // 背景提取优化：只存关键词，不存整句话
+        updateContext(text) {
+            const subjects = ["生物", "物理", "数学", "理工", "农学", "法学", "经济", "工科"];
+            for (let sub of subjects) {
+                if (text.includes(sub)) {
+                    this.currentSubject = sub;
+                    break;
                 }
             }
-            return responseHtml;
         },
-        renderMessage(container, text, className) {
+
+        generateResponse(text) {
+            // 1. 意图分发
+            let match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
+            
+            // 2. 默认兜底（秋武流引导）
+            if (!match) {
+                return "这个问题触及了考学的底层逻辑。为了给出‘东大基准’的判断，建议先告知你的**本科专业**或**研究方向**，或者直接咨询关于**‘费用模式’**与**‘研究计划重构’**。";
+            }
+
+            let responseHtml = match.response;
+
+            // 3. 背景缝合逻辑（仅针对学术类问题触发）
+            if (this.currentSubject && (match.category.startsWith('academic') || text.includes('什么'))) {
+                const prefix = `
+                    <div style="border-left: 4px solid #ff4d4f; background: rgba(255,77,79,0.05); padding: 12px; margin-bottom: 15px; border-radius: 4px;">
+                        📢 <strong>秋武导师点评：</strong><br>
+                        既然你具备【${this.currentSubject}】背景，在处理“${text.substring(0,10)}...”这类问题时，绝对不能停留在表面，要展现研究者的本能。
+                    </div>`;
+                responseHtml = prefix + responseHtml;
+            }
+
+            return responseHtml.replace(/\n/g, '<br>');
+        },
+
+        renderMessage(text, className) {
+            const container = document.getElementById('chat-body');
             const div = document.createElement('div');
             div.className = `message ${className}`;
-            div.innerHTML = text.replace(/\n/g, '<br>');
+            div.innerHTML = text;
             container.appendChild(div);
         }
     };
 
-    UISystem.init();
     ChatSystem.init();
 });
