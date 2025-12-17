@@ -1,70 +1,31 @@
-:root { 
-    --primary: #2e7d32; 
-    --bg: #f5f7f9;
-    --msg-user: #e3f2fd;
-    --msg-ai: #ffffff;
-}
-
+:root { --primary: #2e7d32; --bg: #f0f2f5; }
 * { box-sizing: border-box; }
-body { 
-    font-family: -apple-system, sans-serif; margin: 0; background: var(--bg); 
-    display: flex; justify-content: center; align-items: center; 
-    height: 100vh; overflow: hidden; 
-}
+body { font-family: sans-serif; margin: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
 
-.main-layout { 
-    display: flex; width: 95vw; max-width: 1000px; height: 85vh; 
-    background: white; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); 
-    overflow: hidden; position: relative; 
-}
+.main-layout { display: flex; width: 95vw; max-width: 1000px; height: 85vh; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
 
-/* 左侧 */
-.card-side { 
-    width: 300px; border-right: 1px solid #eee; padding: 40px 20px; 
-    display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
-}
-.avatar-wrap { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary); margin-bottom: 15px; }
+.card-side { width: 300px; border-right: 1px solid #eee; padding: 30px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.avatar-wrap { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary); margin-bottom: 15px; }
 .avatar-wrap video { width: 100%; height: 100%; object-fit: cover; }
-.action-btn { 
-    width: 80%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; 
-    background: var(--primary); color: white; cursor: pointer; font-weight: bold;
-}
-.action-btn.secondary { background: #666; }
 
-/* 详情抽屉层 (分层调度核心) */
-.content-card {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: white; z-index: 100; transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    padding: 30px; display: flex; flex-direction: column;
-}
+.action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; background: var(--primary); color: white; cursor: pointer; }
+.action-btn.secondary { background: #555; }
+
+/* 分层调度动画 */
+.content-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; transform: translateY(100%); transition: transform 0.4s ease; padding: 30px; }
 .content-card.active { transform: translateY(0); }
-.detail-header { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
-.back-btn { background: none; border: none; color: var(--primary); font-size: 16px; cursor: pointer; }
 
-/* 聊天区 */
-.chat-side { flex: 1; display: flex; flex-direction: column; background: #f9fbfb; }
-.chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-.msg { 
-    max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; 
-    word-wrap: break-word; animation: fadeIn 0.3s forwards;
-}
-.msg.ai { align-self: flex-start; background: var(--msg-ai); border: 1px solid #eee; }
-.msg.user { align-self: flex-end; background: var(--msg-user); color: #1565c0; }
+.chat-side { flex: 1; display: flex; flex-direction: column; background: #f9f9f9; }
+.chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
+.msg.ai { align-self: flex-start; background: white; border: 1px solid #eee; }
+.msg.user { align-self: flex-end; background: #e3f2fd; }
 
-/* 公式滚动容错 */
-.mjx-container { max-width: 100%; overflow-x: auto; vertical-align: middle; }
-
-/* 输入区 */
-.input-area { padding: 15px; border-top: 1px solid #eee; background: white; display: flex; gap: 10px; }
-input { flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px; outline: none; }
+.input-area { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
 button#sendBtn { background: var(--primary); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; }
 
-/* 移动端适配 */
 @media (max-width: 768px) {
-    .main-layout { flex-direction: column; height: 100vh; width: 100vw; border-radius: 0; }
-    .card-side { width: 100%; padding: 20px; border-bottom: 1px solid #eee; }
-    .avatar-wrap { width: 70px; height: 70px; }
+    .main-layout { flex-direction: column; height: 100vh; }
+    .card-side { width: 100%; padding: 15px; }
 }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
