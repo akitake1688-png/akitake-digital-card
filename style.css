@@ -1,31 +1,56 @@
-:root { --primary: #2e7d32; --bg: #f0f2f5; }
-* { box-sizing: border-box; }
-body { font-family: sans-serif; margin: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+:root { --primary: #2e7d32; --bg: #f8faf9; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; height: 100vh; }
 
-.main-layout { display: flex; width: 95vw; max-width: 1000px; height: 85vh; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
+.main-layout { 
+    display: flex; width: 95vw; max-width: 1000px; height: 85vh; 
+    background: white; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); 
+    overflow: hidden; position: relative; 
+}
 
-.card-side { width: 300px; border-right: 1px solid #eee; padding: 30px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
-.avatar-wrap { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary); margin-bottom: 15px; }
-.avatar-wrap video { width: 100%; height: 100%; object-fit: cover; }
-
-.action-btn { width: 100%; padding: 10px; margin: 5px 0; border: none; border-radius: 8px; background: var(--primary); color: white; cursor: pointer; }
-.action-btn.secondary { background: #555; }
-
-/* 分层调度动画 */
-.content-card { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; transform: translateY(100%); transition: transform 0.4s ease; padding: 30px; }
+/* 调度层设计 */
+.content-card { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px);
+    z-index: 100; transform: translateY(100%); 
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+    padding: 40px; 
+}
 .content-card.active { transform: translateY(0); }
 
-.chat-side { flex: 1; display: flex; flex-direction: column; background: #f9f9f9; }
-.chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-.msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 14px; line-height: 1.5; }
-.msg.ai { align-self: flex-start; background: white; border: 1px solid #eee; }
-.msg.user { align-self: flex-end; background: #e3f2fd; }
+.card-side { width: 300px; border-right: 1px solid #f0f0f0; padding: 30px; display: flex; flex-direction: column; align-items: center; background: #fff; }
+.avatar-wrap { 
+    width: 110px; height: 110px; border-radius: 50%; overflow: hidden; 
+    border: 3px solid var(--primary); margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(46,125,50,0.2); 
+}
+.avatar-wrap video { width: 100%; height: 100%; object-fit: cover; }
 
-.input-area { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
-button#sendBtn { background: var(--primary); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; }
+.action-btn { 
+    width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 12px; 
+    background: var(--primary); color: white; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; 
+}
+.action-btn.secondary { background: #444; }
+.action-btn:active { transform: scale(0.96); }
+
+.chat-side { flex: 1; display: flex; flex-direction: column; background: #fafafa; }
+.chat-messages { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+
+/* 消息气泡微动效 */
+.msg { 
+    max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 15px; 
+    line-height: 1.6; animation: slideUp 0.3s ease-out; 
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.msg.ai { align-self: flex-start; background: white; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+.msg.user { align-self: flex-end; background: var(--primary); color: white; }
+
+.input-area { padding: 20px; background: white; border-top: 1px solid #eee; display: flex; gap: 12px; }
+input { flex: 1; border: 1px solid #ddd; padding: 12px; border-radius: 12px; outline: none; }
+#sendBtn { background: var(--primary); color: white; border: none; padding: 0 24px; border-radius: 12px; cursor: pointer; }
 
 @media (max-width: 768px) {
-    .main-layout { flex-direction: column; height: 100vh; }
-    .card-side { width: 100%; padding: 15px; }
+    .main-layout { flex-direction: column; height: 100vh; width: 100vw; border-radius: 0; }
+    .card-side { width: 100%; padding: 20px; }
 }
