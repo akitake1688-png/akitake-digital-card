@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>東大日本秋武老师 - 数字互动名片</title>
+    <title>東大日本秋武老师 - 数字名片</title>
     <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -11,16 +11,20 @@
 <body>
 
 <div class="main-layout">
-    <div class="card-side">
+    <div class="card-side" id="brandSide">
         <div class="avatar-wrap">
-            <video autoplay loop muted playsinline style="background: #2e7d32;">
+            <div class="video-placeholder">AI ONLINE</div>
+            <video id="mainVideo" autoplay loop muted playsinline>
                 <source src="video_final.mp4" type="video/mp4">
             </video>
+            <div class="status-dot"></div>
         </div>
         <h3>東大日本秋武老师</h3>
-        <p class="id-tag">微信：qiuwu999</p>
-        <button class="action-btn" onclick="copyToClipboard('qiuwu999')">复制微信号</button>
-        <button class="action-btn secondary" onclick="openDetail()">秋武流核心内涵</button>
+        <p class="wechat-id">微信：qiuwu999</p>
+        <div class="button-group">
+            <button class="action-btn" onclick="copyToClipboard('qiuwu999')">复制微信号</button>
+            <button class="action-btn secondary" onclick="openDetail()">秋武流核心内涵</button>
+        </div>
     </div>
 
     <div class="chat-side">
@@ -38,14 +42,14 @@
             <button class="back-btn" onclick="closeDetail()">← 返回对话</button>
         </div>
         <div class="detail-body">
-            <h3>秋武流：核心学术内涵</h3>
-            <div class="detail-item">
+            <h3>秋武流：学术核心内涵</h3>
+            <div class="concept-item">
                 <h4>● 读空气 (KY) 逻辑重构</h4>
-                <p>将日本社会潜规则转化为可量化的博弈策略。</p>
+                <p>将日本社会潜规则转化为可量化的博弈策略，实现降维打击。</p>
             </div>
-            <div class="detail-item">
+            <div class="concept-item">
                 <h4>● SOTA 级研究计划书</h4>
-                <p>基于顶级学术基准的逻辑建模与文书指导。</p>
+                <p>基于顶级学术基准的逻辑建模，确保文书的“东大基准”内涵。</p>
             </div>
         </div>
     </div>
