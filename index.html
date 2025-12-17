@@ -8,16 +8,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 确保系统底层支持隐藏功能 */
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
     <div class="main-layout">
         <div class="card-container">
-            
             <div class="card initial-card">
                 <div class="profile-pic-container">
-                    <video class="profile-pic" autoplay loop muted playsinline poster="profile.jpg">
+                    <video class="profile-pic" autoplay loop muted playsinline>
                         <source src="video_final.mp4" type="video/mp4">
-                        您的浏览器不支持视频标签。
                     </video>
                 </div>
                 <h1>東大日本秋武老师</h1>
@@ -27,106 +29,64 @@
 
             <div class="card menu-card hidden">
                 <div class="menu-header">
-                    <div class="small-profile">
-                        <img src="profile.jpg" alt="Profile">
-                    </div>
                     <h3>探索更多 (秋武特色服务)</h3>
                 </div>
                 <div class="menu-buttons">
-                    <button class="menu-button" data-target="strengths">
-                        <span class="icon"> ✨ </span> 核心优势 (文理融合)
-                    </button>
-                    <button class="menu-button" data-target="mode">
-                        <span class="icon"> 🎓 </span> 辅导模式 (免费与定制)
-                    </button>
-                    <button class="menu-button" data-target="more">
-                        <span class="icon"> 🚀 </span> 成功案例/更多思考
-                    </button>
+                    <button class="menu-button" data-target="strengths">✨ 核心优势</button>
+                    <button class="menu-button" data-target="mode">🎓 辅导模式</button>
+                    <button class="menu-button" data-target="more">🚀 成功案例</button>
                 </div>
                 <button id="backButton" class="back-button">返回名片</button>
             </div>
 
             <div id="strengths" class="content-card hidden">
                 <div class="content-header">
-                    <h2>核心优势 (文理融合)</h2>
-                    <button class="close-icon close-content">×</button>
+                    <h2>核心优势</h2>
+                    <button class="close-content">×</button>
                 </div>
                 <div class="content-body">
                     <ul>
-                        <li><strong>跨学科思维:</strong> 本科理工 × 硕士东大农学生命科学（文理交叉），擅长多维视角分析。</li>
-                        <li><strong>逻辑重构:</strong> 提供“东大基准”的逻辑框架，从“终局思维”反推规划，拒绝模板化。</li>
-                        <li><strong>非语言沟通:</strong> 独创“坐姿/眼神/递交材料”全真模拟，矫正每一个细节，提升软实力。</li>
-                        <li><strong>故事线打造:</strong> 将零散经历串联成扣人心弦的“学术成长史”，埋设面试伏笔。</li>
+                        <li><strong>跨学科思维:</strong> 本科理工 × 硕士东大农学。</li>
+                        <li><strong>逻辑重构:</strong> 拒绝模板，从“终局思维”反推。</li>
                     </ul>
                 </div>
             </div>
 
             <div id="mode" class="content-card hidden">
                 <div class="content-header">
-                    <h2>辅导模式 (免费与定制)</h2>
-                    <button class="close-icon close-content">×</button>
+                    <h2>辅导模式</h2>
+                    <button class="close-content">×</button>
                 </div>
                 <div class="content-body">
-                    <ul>
-                        <li><strong>1:1 深度定制:</strong> 拒绝流水线。从研究计划书到面试答辩，全程一对一打磨。</li>
-                        <li><strong>免费辅导机制:</strong> 
-                            <p class="highlight">通过指定渠道进入合作机构，辅导费由机构承担，您**0负担**享受秋武老师的高端指导。</p>
-                        </li>
-                    </ul>
-                    <a href="https://zhuanlan.zhihu.com/p/1968723287774327128" target="_blank" rel="noopener noreferrer" style="text-decoration: none; width: 100%;">
-                        <button class="action-link-button">前往知乎阅读免费机制详情 →</button>
-                    </a>
+                    <p><strong>1:1 深度定制:</strong> 全程一对一打磨。</p>
+                    <p class="highlight">通过合作机构进入，辅导费由机构承担。</p>
                 </div>
             </div>
 
             <div id="more" class="content-card hidden">
                 <div class="content-header">
-                    <h2>成功案例/更多思考</h2>
-                    <button class="close-icon close-content">×</button>
+                    <h2>更多内容</h2>
+                    <button class="close-content">×</button>
                 </div>
                 <div class="content-body">
-                    <p>深度阅读我的知乎专栏，了解更多日本考学内幕与技巧：</p>
-                    <div class="link-list">
-                        <a href="https://zhuanlan.zhihu.com/p/691198840" target="_blank" rel="noopener noreferrer" class="article-link">
-                            <span class="link-title">核心优势与背景解析</span>
-                            <span class="link-arrow">→</span>
-                        </a>
-                    </div>
-                    <a href="https://space.bilibili.com/323700487/lists" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block; margin-top: 15px;">
-                        <button id="linkBilibili" class="action-link-button">前往 B 站观看视频及更多内容 →</button>
-                    </a>
+                    <p>深度阅读知乎专栏或 B 站视频。</p>
                 </div>
             </div>
         </div>
 
         <div class="chat-container">
             <div class="chat-header">
-                <div class="ai-avatar">
-                    <img src="profile.jpg" alt="AI">
-                </div>
-                <div class="header-info">
-                    <h3>秋武 AI 终局思维咨询室</h3>
-                    <div class="status-indicator">
-                        <span class="status-dot"></span> <span class="status-text">在线 | 智能回复中</span>
-                    </div>
-                </div>
+                <h3>秋武 AI 终局思维咨询室</h3>
             </div>
-            
             <div class="chat-messages" id="chat-body">
-                <div class="message ai-message">
-                    你好！我是秋武老师的 AI 助理。🌸<br>
-                    关于日本考学内幕、文书逻辑重构或面试隐藏分，随时问我！<br>
-                    <span style="font-size: 0.85em; opacity: 0.8;">(尝试输入：**面试**、**研究计划书** 或 **费用**)</span>
-                </div>
+                <div class="message ai-message">你好！关于考学内幕或面试逻辑，随时问我。</div>
             </div>
-            
             <div class="chat-input-area">
-                <input type="text" id="user-input" placeholder="输入你的问题... (例如: 费用, 面试)">
+                <input type="text" id="user-input" placeholder="输入问题...">
                 <button id="send-btn">发送</button>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
