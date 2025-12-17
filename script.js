@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         bindEvents() {
-            // 1. 聊天逻辑
-            const btn = document.getElementById('send-btn');
+            // 聊天发送
+            const sendBtn = document.getElementById('send-btn');
             const input = document.getElementById('user-input');
-            if (btn) btn.onclick = () => this.handleAction();
+            if (sendBtn) sendBtn.onclick = () => this.handleAction();
             if (input) input.onkeydown = (e) => { if (e.key === 'Enter') this.handleAction(); };
 
-            // 2. 名片卡片切换
+            // 名片交互逻辑
             const expandBtn = document.getElementById('expandButton');
             const backBtn = document.getElementById('backButton');
             const initialCard = document.querySelector('.initial-card');
@@ -37,10 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            // 3. 详情卡片显示/隐藏
-            document.querySelectorAll('.menu-button').forEach(b => {
-                b.onclick = () => {
-                    const target = document.getElementById(b.dataset.target);
+            // 菜单按钮逻辑
+            document.querySelectorAll('.menu-button').forEach(btn => {
+                btn.onclick = () => {
+                    const target = document.getElementById(btn.dataset.target);
                     if (target) {
                         menuCard.classList.add('hidden');
                         target.classList.remove('hidden');
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             });
 
+            // 关闭详情页
             document.querySelectorAll('.close-content').forEach(cb => {
                 cb.onclick = () => {
                     cb.closest('.content-card').classList.add('hidden');
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         updateContext(text) {
-            const subjects = ["生物", "物理", "数学", "理工", "农学", "法学", "经济", "工科"];
+            const subjects = ["生物", "物理", "数学", "理工", "化学", "经济", "工科"];
             for (let sub of subjects) {
                 if (text.includes(sub)) { this.currentSubject = sub; break; }
             }
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!match) return "这个问题触及了考学的底层逻辑。建议先告知你的**专业方向**，或者咨询关于**‘费用模式’**与**‘面试细节’**。";
 
             let responseHtml = match.response;
-            // 缝合逻辑：如果识别到背景，且内容属于学术/面试类，则添加导师点评
+            // 缝合 PDF 中的“秋武点评”逻辑
             if (this.currentSubject && (match.category.startsWith('academic') || text.includes('什么'))) {
                 const prefix = `<div style="border-left:4px solid #ff4d4f; background:rgba(255,77,79,0.05); padding:12px; margin-bottom:15px; border-radius:4px;">
                     📢 <strong>秋武导师点评：</strong><br>既然你具备【${this.currentSubject}】背景，在处理“${text.substring(0,10)}...”这类问题时，绝对不能背答案，要展现研究者的本能。</div>`;
