@@ -1,79 +1,48 @@
 /**
- * 秋武老师数字名片 SOTA 3.3 - HTML深度适配版
- * 1. 完美适配 menu-button 和 content-card 结构
- * 2. 包含 SOTA 3.0 理科逻辑栈与记忆联动
+ * 秋武老师数字名片 SOTA 3.4 - 深度背景缝合版
+ * 修复：专业背景报出后回复无变化的问题
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("✅ SOTA 3.3 定制适配版启动...");
+    console.log("✅ SOTA 3.4 终极联动系统启动...");
 
-    // --- 模块一：UI 交互系统 (针对您的 HTML 定制) ---
     const UISystem = {
         init() {
             this.bindCardTransitions();
             this.bindMenuButtons();
             this.bindCloseButtons();
         },
-
-        // 1. 处理名片展开/收起 (Initial Card <-> Menu Card)
         bindCardTransitions() {
             const expandBtn = document.getElementById('expandButton');
             const backBtn = document.getElementById('backButton');
             const initialCard = document.querySelector('.initial-card');
             const menuCard = document.querySelector('.menu-card');
-
             if (expandBtn && initialCard && menuCard) {
-                expandBtn.addEventListener('click', () => {
-                    initialCard.classList.add('hidden');
-                    menuCard.classList.remove('hidden');
-                });
+                expandBtn.onclick = () => { initialCard.classList.add('hidden'); menuCard.classList.remove('hidden'); };
             }
-
             if (backBtn && initialCard && menuCard) {
-                backBtn.addEventListener('click', () => {
-                    menuCard.classList.add('hidden');
-                    initialCard.classList.remove('hidden');
-                });
+                backBtn.onclick = () => { menuCard.classList.add('hidden'); initialCard.classList.remove('hidden'); };
             }
         },
-
-        // 2. 处理菜单按钮点击 (Menu Buttons -> Content Cards)
         bindMenuButtons() {
-            const buttons = document.querySelectorAll('.menu-button');
-            
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
+            document.querySelectorAll('.menu-button').forEach(btn => {
+                btn.onclick = () => {
                     const targetId = btn.getAttribute('data-target');
                     const targetSection = document.getElementById(targetId);
-
                     if (targetSection) {
-                        // 先隐藏所有其他内容卡片
-                        document.querySelectorAll('.content-card').forEach(c => {
-                            if (c.id !== 'menu-card') c.classList.add('hidden');
-                        });
-                        // 显示目标卡片
+                        document.querySelectorAll('.content-card').forEach(c => c.classList.add('hidden'));
                         targetSection.classList.remove('hidden');
-                        console.log(`✅ 打开卡片: ${targetId}`);
-                    } else {
-                        console.error(`❌ 未找到 ID 为 ${targetId} 的卡片`);
                     }
-                });
+                };
             });
         },
-
-        // 3. 处理关闭按钮 (X 号)
         bindCloseButtons() {
             document.querySelectorAll('.close-content').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    // 找到最近的父级 content-card 并隐藏
-                    const card = e.target.closest('.content-card');
-                    if (card) card.classList.add('hidden');
-                });
+                btn.onclick = (e) => { e.target.closest('.content-card').classList.add('hidden'); };
             });
         }
     };
 
-    // --- 模块二：聊天系统 (保留 SOTA 3.2 核心逻辑) ---
     const ChatSystem = {
         knowledge: [],
         sessionStack: [],
@@ -82,61 +51,58 @@ document.addEventListener('DOMContentLoaded', () => {
             this.loadData();
             this.bindEvents();
         },
-
         loadData() {
-            fetch('knowledge.json')
-                .then(r => r.json())
-                .then(d => {
-                    this.knowledge = d;
-                    console.log("✅ 知识库加载成功");
-                })
-                .catch(e => console.warn("⚠️ 知识库加载异常:", e));
+            fetch('knowledge.json').then(r => r.json()).then(d => this.knowledge = d).catch(e => console.warn("数据加载失败"));
         },
-
         bindEvents() {
             const btn = document.getElementById('send-btn');
             const input = document.getElementById('user-input');
             if (btn) btn.onclick = () => this.handleAction();
             if (input) input.onkeydown = (e) => { if (e.key === 'Enter') this.handleAction(); };
         },
-
         handleAction() {
             const input = document.getElementById('user-input');
             const chatBody = document.getElementById('chat-body');
             const text = input.value.trim();
             if (!text) return;
-
             this.renderMessage(chatBody, text, 'user-message');
             const response = this.generateResponse(text);
-            
             setTimeout(() => {
                 this.renderMessage(chatBody, response, 'ai-message');
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 400);
-
             input.value = '';
         },
-
         generateResponse(text) {
-            // 记忆栈
-            const subjects = ["物理", "数学", "生物", "几何", "专业", "背景"];
-            subjects.forEach(s => { if (text.includes(s)) this.sessionStack.push(text); });
+            // 1. 背景提取逻辑
+            const subjectKeywords = ["生物", "物理", "数学", "几何", "专业", "本科", "背景", "农学", "理工"];
+            subjectKeywords.forEach(kw => {
+                if (text.includes(kw)) {
+                    this.sessionStack.push(text);
+                }
+            });
             if (this.sessionStack.length > 3) this.sessionStack.shift();
 
-            // 匹配
+            // 2. 匹配知识点
             const match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
-            if (!match) return "这是一个有趣的切入点。为了给出东大基准的诊断，建议您先告知您的专业背景或研究方向。";
+            if (!match) return "这是一个有趣的切入点。为了给出东大基准的诊断，建议先告知您的具体研究方向。";
 
-            // 联动
-            let linkage = "";
-            if (this.sessionStack.length > 1) {
-                const context = this.sessionStack[0];
-                linkage = `\n\n💡 **秋武联动诊断：** 考虑到你之前提到的【${context}】背景，这类基础定义在面试中往往不是考知识，而是考你对**变量定义（変数定義）**的严谨性。`;
+            // 3. 深度缝合生成
+            let responseHtml = match.response;
+            
+            if (this.sessionStack.length >= 1) {
+                const lastContext = this.sessionStack[this.sessionStack.length - 1];
+                // 如果用户报过背景且正在询问知识点
+                const isAskingTech = text.includes("什么") || text.includes("解释") || text.includes("吗") || text.includes("怎么");
+                
+                if (isAskingTech) {
+                    const prefix = `<div style="border-left: 3px solid #ff4d4f; padding-left: 10px; margin-bottom: 10px; color: #555; font-style: italic;">📢 <strong>秋武导师点评：</strong><br>既然你具备【${lastContext}】的相关背景，那么你在回答“${text.replace(/？|\?/g, '')}”时，绝对不能只停留在背诵定义上。</div>`;
+                    const suffix = `<div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddd; color: #d4380d;">💡 <strong>深度提示：</strong>教授看重的是你作为${lastContext.includes('专业') ? '' : '该专业'}学生，是否具备对<strong>变量控制</strong>的本能直觉。</div>`;
+                    responseHtml = prefix + match.response + suffix;
+                }
             }
-
-            return match.response + linkage;
+            return responseHtml;
         },
-
         renderMessage(container, text, className) {
             const div = document.createElement('div');
             div.className = `message ${className}`;
@@ -145,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 启动双系统
     UISystem.init();
     ChatSystem.init();
 });
