@@ -1,72 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const ChatSystem = {
-        knowledge: [],
+    // 元素获取与报错拦截
+    const getEl = (id) => document.getElementById(id);
+    const expandBtn = getEl('expandButton');
+    const backBtn = getEl('backButton');
+    const initialCard = getEl('initialCard');
+    const menuCard = getEl('menuCard');
+    const chatBody = getEl('chat-body');
+    const sendBtn = getEl('send-btn');
+    const userInput = getEl('user-input');
 
-        async init() {
-            try {
-                const response = await fetch('knowledge.json');
-                this.knowledge = await response.json();
-                this.bindEvents();
-            } catch (e) { console.error("数据加载失败"); }
-        },
+    // 逻辑 1: 名片展开与返回
+    if (expandBtn && initialCard && menuCard) {
+        expandBtn.onclick = () => { initialCard.classList.add('hidden'); menuCard.classList.remove('hidden'); };
+        backBtn.onclick = () => { menuCard.classList.add('hidden'); initialCard.classList.remove('hidden'); };
+    }
 
-        bindEvents() {
-            // 右侧聊天
-            document.getElementById('send-btn').onclick = () => this.handleAction();
-            document.getElementById('user-input').onkeydown = (e) => { if(e.key === 'Enter') this.handleAction(); };
+    // 逻辑 2: 详情展示
+    document.querySelectorAll('.menu-button').forEach(btn => {
+        btn.onclick = () => {
+            const target = getEl(btn.dataset.target);
+            if (target) {
+                menuCard.classList.add('hidden');
+                target.classList.remove('hidden');
+            }
+        };
+    });
 
-            // 左侧逻辑 (通过 Class 控制，完美匹配 CSS)
-            const initial = document.querySelector('.initial-card');
-            const menu = document.querySelector('.menu-card');
+    // 逻辑 3: 关闭详情
+    document.querySelectorAll('.close-x').forEach(btn => {
+        btn.onclick = () => {
+            btn.closest('.content-card').classList.add('hidden');
+            menuCard.classList.remove('hidden');
+        };
+    });
 
-            document.getElementById('expandButton').onclick = () => {
-                initial.classList.add('hidden');
-                menu.classList.remove('hidden');
-            };
+    // 逻辑 4: 聊天 (含 JSON 报错处理)
+    const sendMessage = async () => {
+        const text = userInput.value.trim();
+        if (!text) return;
 
-            document.getElementById('backButton').onclick = () => {
-                menu.classList.add('hidden');
-                initial.classList.remove('hidden');
-            };
+        appendMsg(text, 'user-message');
+        userInput.value = '';
 
-            document.querySelectorAll('.menu-button').forEach(btn => {
-                btn.onclick = () => {
-                    menu.classList.add('hidden');
-                    document.getElementById(btn.dataset.target).classList.remove('hidden');
-                };
-            });
-
-            document.querySelectorAll('.close-content').forEach(btn => {
-                btn.onclick = () => {
-                    btn.closest('.content-card').classList.add('hidden');
-                    menu.classList.remove('hidden');
-                };
-            });
-        },
-
-        handleAction() {
-            const input = document.getElementById('user-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            this.renderMessage(text, 'user-message');
+        try {
+            const res = await fetch('knowledge.json');
+            const data = await res.json();
+            const match = data.find(i => i.keywords.some(k => text.includes(k)));
             
             setTimeout(() => {
-                const match = this.knowledge.find(i => i.keywords.some(k => text.includes(k)));
-                const response = match ? match.response : "这个问题建议咨询秋武老师（微信：qiuwu999）。";
-                this.renderMessage(response, 'ai-message');
-            }, 500);
-            input.value = '';
-        },
-
-        renderMessage(text, className) {
-            const body = document.getElementById('chat-body');
-            const div = document.createElement('div');
-            div.className = `message ${className}`;
-            div.innerHTML = text;
-            body.appendChild(div);
-            body.scrollTop = body.scrollHeight;
+                appendMsg(match ? match.response : "涉及细节请咨询微信：qiuwu999。", 'ai-message');
+            }, 400);
+        } catch (err) {
+            console.error("JSON加载失败，请检查knowledge.json文件格式", err);
         }
     };
-    ChatSystem.init();
+
+    if (sendBtn) sendBtn.onclick = sendMessage;
+    if (userInput) userInput.onkeydown = (e) => { if(e.key === 'Enter') sendMessage(); };
+
+    function appendMsg(t, c) {
+        const d = document.createElement('div');
+        d.className = `message ${c}`;
+        d.innerHTML = t;
+        chatBody.appendChild(d);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
 });
