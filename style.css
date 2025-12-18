@@ -1,76 +1,130 @@
 :root {
-    --aki-accent: #007AFF;
-    --aki-bg: #f5f7fa;
-    --aki-glass: rgba(255, 255, 255, 0.8);
-    --aki-border: rgba(255, 255, 255, 0.5);
-    --text-main: #2c3e50;
+    --aki-blue: #007AFF;
+    --aki-bg: #eef2f7;
+    --glass: rgba(255, 255, 255, 0.75);
+    --border: rgba(255, 255, 255, 0.4);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
     background: var(--aki-bg);
-    font-family: -apple-system, "PingFang SC", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     height: 100vh;
+    height: -webkit-fill-available;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .glass-wrapper {
-    width: 95%;
-    max-width: 1200px;
-    height: 85vh;
-    background: var(--aki-glass);
+    width: 95vw;
+    max-width: 1100px;
+    height: 88vh;
+    background: var(--glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--aki-border);
-    border-radius: 24px;
+    border: 1px solid var(--border);
+    border-radius: 28px;
     display: flex;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
 }
 
-/* 侧边栏适配截图中的 AI 助理效果 */
+/* 侧边栏稳定性优化 */
 .side-panel {
-    width: 320px;
+    width: 300px;
     flex-shrink: 0;
-    background: rgba(255,255,255,0.3);
-    border-right: 1px solid var(--aki-border);
-    padding: 24px;
+    border-right: 1px solid var(--border);
+    padding: 32px 24px;
     display: flex;
     flex-direction: column;
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.brand-header { text-align: center; margin-bottom: 30px; }
+.brand-header { margin-bottom: 40px; text-align: center; }
 .brand-logo { 
-    width: 80px; height: 80px; background: #eee; border-radius: 50%; 
-    margin: 0 auto 15px; border: 3px solid white; overflow: hidden;
+    font-size: 28px; font-weight: 900; color: var(--aki-blue); 
+    margin-bottom: 8px; letter-spacing: 2px;
 }
-/* 这里预留头像占位 */
-.brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+.brand-header h2 { font-size: 20px; color: #1a1a1a; }
+.brand-header p { font-size: 12px; color: #666; margin-top: 6px; }
+
+.sticky-nav { flex: 1; display: flex; flex-direction: column; gap: 16px; }
 
 .nav-card {
-    background: white; border: 1px solid var(--aki-border);
-    padding: 16px; border-radius: 12px; margin-bottom: 12px;
-    cursor: pointer; transition: 0.3s;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.nav-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.nav-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+.nav-card:active { transform: scale(0.97); }
+.nav-card .label { display: block; font-weight: 600; font-size: 15px; color: #333; }
+.nav-card .desc { font-size: 11px; color: #999; margin-top: 4px; }
 
 /* 聊天区域 */
-.chat-core { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.1); }
-#chat-window { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+.chat-core { flex: 1; display: flex; flex-direction: column; position: relative; }
 
-.msg { max-width: 85%; padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.7; }
-.msg.bot { align-self: flex-start; background: #fff; color: var(--text-main); border-bottom-left-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-.msg.user { align-self: flex-end; background: var(--aki-accent); color: white; border-bottom-right-radius: 4px; }
+#chat-window {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
 
-/* 响应式：修复截图中的移动端坍塌 */
+.msg {
+    max-width: 85%;
+    padding: 14px 18px;
+    border-radius: 20px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    animation: msgIn 0.3s ease-out forwards;
+}
+.msg.bot { align-self: flex-start; background: #fff; border-bottom-left-radius: 4px; color: #2c3e50; }
+.msg.user { align-self: flex-end; background: var(--aki-blue); color: #fff; border-bottom-right-radius: 4px; }
+
+.input-panel {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+}
+input#user-input {
+    flex: 1;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 24px;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+}
+button#send-btn {
+    background: var(--aki-blue);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: 0.2s;
+}
+
+@keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* 移动端适配 - 解决截图中的坍塌 */
 @media (max-width: 768px) {
-    .glass-wrapper { flex-direction: column; height: 100vh; width: 100%; border-radius: 0; }
-    .side-panel { width: 100%; height: auto; padding: 12px; border-right: none; border-bottom: 1px solid var(--aki-border); }
+    .glass-wrapper { flex-direction: column; height: 100vh; width: 100vw; border-radius: 0; border: none; }
+    .side-panel { width: 100%; height: auto; padding: 12px; border-right: none; border-bottom: 1px solid var(--border); }
     .brand-header { display: none; }
-    .sticky-nav { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; }
-    .nav-card { min-width: 140px; margin-bottom: 0; padding: 10px; }
+    .sticky-nav { flex-direction: row; overflow-x: auto; padding: 4px 0; }
+    .nav-card { min-width: 130px; margin: 0; padding: 10px; flex-shrink: 0; }
     .nav-card .desc { display: none; }
 }
