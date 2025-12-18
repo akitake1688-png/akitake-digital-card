@@ -1,138 +1,63 @@
 :root {
-    --primary-green: #4CAF50;
-    --bg-light: #f4f7f6;
-    --chat-bot-bg: #e8f5e9;
-    --text-dark: #333;
+    --primary-green: #2e7d32;
+    --light-green: #e8f5e9;
+    --text-main: #2c3e50;
+    --bg-gray: #f8f9fa;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
-body, html { height: 100%; overflow: hidden; background: var(--bg-light); }
+body, html { height: 100%; width: 100%; overflow: hidden; background: var(--bg-gray); }
 
-.main-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-}
+.main-container { display: flex; height: 100vh; width: 100vw; }
 
 /* 左侧品牌区 */
-.brand-side {
-    flex: 4;
-    position: relative;
-    background: #000;
-    display: flex;
-    flex-direction: column;
+.brand-side { flex: 4; display: flex; flex-direction: column; background: #000; min-width: 350px; border-right: 1px solid #ddd; }
+.video-avatar-wrapper { flex: 1; position: relative; background: #111; overflow: hidden; }
+#avatar-video { width: 100%; height: 100%; object-fit: cover; }
+.overlay-info { position: absolute; bottom: 30px; left: 25px; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.8); }
+.overlay-info h1 { font-size: 2.2rem; margin-bottom: 8px; letter-spacing: 2px; }
+
+.quick-links { padding: 25px; background: white; display: flex; flex-direction: column; gap: 12px; }
+.quick-links button { 
+    padding: 14px; border: 1px solid #eee; background: #fff; border-radius: 12px; 
+    cursor: pointer; text-align: left; transition: 0.2s; font-size: 0.95rem; font-weight: 500;
 }
+.quick-links button:hover { background: var(--light-green); transform: translateX(5px); }
 
-.video-avatar-wrapper {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
+/* 右侧对话区 */
+.chat-side { flex: 6; display: flex; flex-direction: column; background: #fff; position: relative; z-index: 100; }
+.chat-header { padding: 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; background: #fff; }
+.mini-avatar-box { width: 45px; height: 45px; background: var(--primary-green); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.status-info h3 { font-size: 1.1rem; color: var(--text-main); }
+.status-info span { font-size: 0.8rem; color: #4caf50; }
+
+.chat-messages { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 18px; background: #fdfdfd; }
+.msg { max-width: 85%; padding: 14px 18px; border-radius: 18px; line-height: 1.6; font-size: 0.95rem; position: relative; }
+.bot-msg { background: var(--light-green); align-self: flex-start; border-bottom-left-radius: 4px; color: #1b5e20; }
+.user-msg { background: var(--primary-green); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.system-tip { font-size: 0.8rem; background: none; color: #888; align-self: center; text-align: center; }
+
+/* 核心修复：输入区域 */
+.input-area { 
+    padding: 20px 25px; border-top: 1px solid #eee; display: flex; gap: 12px; background: white; 
+    position: sticky; bottom: 0; z-index: 110; pointer-events: auto !important;
 }
-
-#avatar-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.input-area input { 
+    flex: 1; padding: 14px 20px; border: 1px solid #e0e0e0; border-radius: 30px; 
+    outline: none; font-size: 1rem; transition: 0.3s;
 }
-
-.overlay-info {
-    position: absolute;
-    bottom: 40px;
-    left: 20px;
-    color: white;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+.input-area input:focus { border-color: var(--primary-green); box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1); }
+.input-area button { 
+    padding: 0 28px; background: var(--primary-green); color: white; border: none; 
+    border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s;
 }
+.input-area button:hover { background: #1b5e20; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-.quick-links {
-    padding: 20px;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.quick-links button {
-    padding: 12px;
-    border: none;
-    background: #f0f0f0;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: left;
-    transition: 0.3s;
-}
-
-.quick-links button:hover { background: var(--chat-bot-bg); }
-
-/* 右侧对话区 - 核心 Bug 修复点 */
-.chat-side {
-    flex: 6;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    position: relative; 
-    z-index: 10; /* 确保在表层 */
-}
-
-.chat-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.msg {
-    max-width: 85%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    line-height: 1.6;
-    font-size: 14px;
-}
-
-.bot-msg { background: var(--chat-bot-bg); align-self: flex-start; }
-.user-msg { background: #eee; align-self: flex-end; }
-
-/* 输入框区域 - 强制置顶与交互使能 */
-.input-area {
-    padding: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    gap: 10px;
-    background: white;
-    position: relative;
-    z-index: 20; /* 必须高于 chat-messages */
-    pointer-events: auto !important; /* 确保可点击 */
-}
-
-.input-area input {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    outline: none;
-}
-
-.input-area button {
-    padding: 0 25px;
-    background: var(--primary-green);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
+/* 移动端适配 */
+@media (max-width: 850px) {
     .main-container { flex-direction: column; overflow-y: auto; }
-    .brand-side { height: 300px; flex: none; }
-    .chat-side { height: 500px; flex: none; }
+    .brand-side { min-width: 100%; height: 400px; flex: none; }
+    .chat-side { height: 600px; flex: none; }
+    .overlay-info h1 { font-size: 1.6rem; }
 }
