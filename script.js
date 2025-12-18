@@ -1,20 +1,19 @@
 /**
- * 秋武流数字名片 - 逻辑中枢 (V2.6 Final)
- * 适配 HTML 结构：.nav-card & .chat-window
+ * 秋武流咨询室 - 核心逻辑引擎 (V2.7 修复版)
+ * 适配 HTML 结构：.nav-card / data-trigger / #chat-window
  */
-
 const AKI_SYSTEM = {
-    state: { isProcessing: false },
+    state: { isProcessing: false, lastToast: null },
 
-    // 精确匹配 HTML 的触发词
+    // 语料库：键名必须与 HTML 中的 data-trigger 严格对应
     knowledgeBase: {
         '核心优势': {
             title: "核心优势：信息差与博弈",
-            content: "低分高录的本质是‘认知偏差’。当他人因不自信放弃 6 月 EJU 时，秋武流主张：只需‘受验票’即可开启校内考博弈。逻辑重构后的面试表现，才是决定录取的软实力核心。"
+            content: "低分高录的本质是‘认知偏差’。当他人因不自信放弃 6 月 EJU 时，秋武流主张：只需‘受验票’即可开启校内考博弈。逻辑重构后的面试表现，才是决定录取的软实力核心。记住：‘再现性’不是结果一致，而是偏差的可说明性。"
         },
         '辅导模式': {
             title: "辅导模式：三方共赢逻辑",
-            content: "商业逻辑极其透明：通过我推荐进入合作私塾，机构支付佣金即覆盖辅导费。您省钱，机构获客，我获益。这套‘三方良し’的闭环确保了 100% 的负责态度。"
+            content: "商业逻辑极其透明：机构支付介绍费等同于替您支付了我的咨询费。您省钱，机构获客，我获益。这套‘三方良し’的闭环确保了 100% 的负责态度。专注于‘研究计划构建’和‘教授心理博弈’。"
         },
         '联系': {
             title: "预约咨询：微信号 qiuwu999",
@@ -23,20 +22,21 @@ const AKI_SYSTEM = {
     },
 
     init() {
-        console.log("秋武流系统：逻辑链路已对齐 HTML 结构。");
-        this.fixIcons();
+        console.log("秋武流逻辑引擎加载成功...");
+        this.fixResourceErrors();
         this.bindEvents();
         this.initMathJax();
     },
 
-    fixIcons() {
+    fixResourceErrors() {
         const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
-        link.rel = 'icon'; link.href = 'data:,';
+        link.type = 'image/x-icon'; link.rel = 'shortcut icon';
+        link.href = 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
         document.head.appendChild(link);
     },
 
     bindEvents() {
-        // 1. 左侧导航卡片点击
+        // 绑定左侧卡片点击
         document.querySelectorAll('.nav-card').forEach(card => {
             card.onclick = () => {
                 const trigger = card.getAttribute('data-trigger');
@@ -44,12 +44,16 @@ const AKI_SYSTEM = {
             };
         });
 
-        // 2. 右侧输入框发送
+        // 绑定发送按钮
         const sendBtn = document.getElementById('send-btn');
-        const input = document.getElementById('user-input');
         if (sendBtn) {
             sendBtn.onclick = () => this.handleUserInput();
-            input.onkeypress = (e) => { if (e.key === 'Enter') this.handleUserInput(); };
+        }
+        
+        // 绑定输入框回车
+        const userInput = document.getElementById('user-input');
+        if (userInput) {
+            userInput.onkeypress = (e) => { if (e.key === 'Enter') this.handleUserInput(); };
         }
     },
 
@@ -57,83 +61,81 @@ const AKI_SYSTEM = {
         const input = document.getElementById('user-input');
         const text = input.value.trim();
         if (!text || this.state.isProcessing) return;
-
-        // 模拟用户消息
+        
         this.appendMessage('user', text);
         input.value = '';
 
-        // 逻辑匹配：如果输入包含关键字，触发特定回复
-        let matched = false;
-        for (let key in this.knowledgeBase) {
-            if (text.includes(key) || (key === '联系' && text.toLowerCase().includes('微信'))) {
-                await this.triggerResponse(key);
-                matched = true;
-                break;
-            }
-        }
-
-        if (!matched) {
-            await this.triggerResponse('联系'); // 默认引导至联系方式
-        }
-    },
-
-    async triggerResponse(trigger, element = null) {
-        if (this.state.isProcessing) return;
-        const data = this.knowledgeBase[trigger];
-        if (!data) return;
-
-        this.state.isProcessing = true;
-        const chatWindow = document.getElementById('chat-window');
-
-        // UI 激活态切换
-        document.querySelectorAll('.nav-card').forEach(c => c.classList.remove('active'));
-        if (element) element.classList.add('active');
-
-        // 创建 Bot 消息容器
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'msg bot';
-        msgDiv.innerHTML = `<b style="color:var(--aki-accent)">${data.title}</b><br><span id="typing-box"></span>`;
-        chatWindow.appendChild(msgDiv);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-
-        // 流式打字效果
-        await this.typeWriter(msgDiv.querySelector('#typing-box'), data.content);
-
-        // MathJax 渲染
-        if (window.MathJax) MathJax.Hub.Queue(["Typeset", MathJax.Hub, msgDiv]);
-
-        this.state.isProcessing = false;
+        // 简易逻辑匹配
+        if (text.includes('费') || text.includes('模')) await this.triggerResponse('辅导模式');
+        else if (text.includes('优') || text.includes('高')) await this.triggerResponse('核心优势');
+        else await this.triggerResponse('联系');
     },
 
     appendMessage(role, text) {
+        const window = document.getElementById('chat-window');
+        const msg = document.createElement('div');
+        msg.className = `msg ${role}`;
+        msg.innerText = text;
+        window.appendChild(msg);
+        window.scrollTop = window.scrollHeight;
+    },
+
+    async triggerResponse(trigger, element) {
+        if (this.state.isProcessing || !this.knowledgeBase[trigger]) return;
+        this.state.isProcessing = true;
+
         const chatWindow = document.getElementById('chat-window');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `msg ${role}`;
-        msgDiv.innerText = text;
-        chatWindow.appendChild(msgDiv);
+        const data = this.knowledgeBase[trigger];
+
+        // UI 激活态切换
+        document.querySelectorAll('.nav-card').forEach(b => b.classList.remove('active'));
+        if (element) element.classList.add('active');
+
+        // 创建 Bot 消息
+        const botMsg = document.createElement('div');
+        botMsg.className = 'msg bot';
+        botMsg.innerHTML = `<b style="color:var(--aki-accent)">${data.title}</b><br><span id="typing-text"></span>`;
+        chatWindow.appendChild(botMsg);
         chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        await this.typeWriter(botMsg.querySelector('#typing-text'), data.content);
+
+        if (window.MathJax) {
+            window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, botMsg]);
+        }
+        this.state.isProcessing = false;
     },
 
     async typeWriter(element, text) {
         for (let char of text) {
             element.innerHTML += char;
-            const delay = (['。', '！', '？', '：'].includes(char)) ? 400 : 30;
+            const delay = (['。', '！', '？', '；'].includes(char)) ? 400 : 30;
             await new Promise(r => setTimeout(r, delay));
         }
     },
 
+    showToast(message) {
+        if (this.state.lastToast) this.state.lastToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'aki-toast';
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        this.state.lastToast = toast;
+        setTimeout(() => toast.remove(), 4000);
+    },
+
     initMathJax() {
         if (window.MathJax) {
-            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$', '$']] } });
+            window.MathJax.Hub.Config({ tex2jax: { inlineMath: [['$', '$']] } });
         }
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => AKI_SYSTEM.init());
 
-// 兼容你 HTML 中可能存在的 copyTextToClipboard 调用
+// 兼容全局复制函数
 function copyTextToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
-        alert("微信号 qiuwu999 已复制。逻辑重构从添加好友开始。");
+        alert("微信号 qiuwu999 已复制。动作很稳，我在微信端等你的逻辑对撞。");
     });
 }
