@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>秋武流咨询室 | 数字化名片</title>
-    <link rel="icon" href="data:image/ico;base64,aWNv"> <link rel="stylesheet" href="style.css">
+    <title>秋武流咨询室</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <link rel="stylesheet" href="style.css">
     
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
-            tex2jax: { inlineMath: [['$','$']], displayMath: [['$$','$$']], processEscapes: true },
+            tex2jax: { inlineMath: [['$','$']], processEscapes: true },
             messageStyle: "none",
             showMathMenu: false
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
     <div class="glass-container">
         <nav class="side-panel">
-            <button onclick="triggerContent('advantage')">核心优势</button>
-            <button onclick="triggerContent('mode')">辅导模式</button>
-            <button onclick="triggerContent('contact')">联系秋武</button>
+            <button class="nav-item" onclick="showSection('advantage')">核心优势</button>
+            <button class="nav-item" onclick="showSection('mode')">辅导模式</button>
+            <button class="nav-item" onclick="showSection('contact')">联系秋武</button>
         </nav>
-
         <main class="chat-viewport">
-            <div id="output-box" class="content-text">
-                <span class="placeholder">点击左侧或上方按钮开始探索...</span>
-            </div>
+            <div id="output" class="content-text">请点击按钮开始逻辑对齐...</div>
         </main>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
