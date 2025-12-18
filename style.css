@@ -1,41 +1,143 @@
+/**
+ * 秋武流系统视觉规范 (V2.6 Final)
+ */
+
 :root {
-    --brand-main: #2d3436;
-    --accent-green: #00b894;
-    --bg-light: #f9f9fb;
-    --text-dark: #2d3436;
+    --aki-accent: #007AFF;
+    --aki-bg: #f5f7fa;
+    --aki-glass: rgba(255, 255, 255, 0.8);
+    --aki-border: rgba(255, 255, 255, 0.3);
 }
 
-body { margin: 0; background: #000; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--aki-bg);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .glass-wrapper {
-    width: 95vw; height: 90vh; max-width: 1100px; background: white;
-    display: flex; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    width: 95%;
+    max-width: 1100px;
+    height: 85vh;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    background: var(--aki-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--aki-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
-/* 左侧：专业感背书 */
-.side-panel { width: 320px; background: var(--brand-main); color: white; padding: 40px 25px; display: flex; flex-direction: column; gap: 40px; }
-.brand-logo { font-size: 28px; font-weight: 900; color: var(--accent-green); border-left: 4px solid var(--accent-green); padding-left: 15px; }
+/* 左侧面板 */
+.side-panel {
+    background: rgba(255, 255, 255, 0.4);
+    border-right: 1px solid var(--aki-border);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-header h2 { margin: 10px 0 5px; font-size: 1.4rem; color: #1d1d1f; }
+.brand-header p { font-size: 0.85rem; color: #86868b; margin-bottom: 30px; }
+
 .nav-card {
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    padding: 15px; border-radius: 12px; text-align: left; cursor: pointer; transition: 0.3s; color: white;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
 }
-.nav-card:hover { background: var(--accent-green); transform: translateX(5px); }
-.nav-card .label { display: block; font-weight: bold; margin-bottom: 5px; }
-.nav-card .desc { font-size: 11px; opacity: 0.7; }
 
-/* 右侧：交互张力 */
-.chat-core { flex: 1; background: var(--bg-light); display: flex; flex-direction: column; }
-.chat-window { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-.msg { max-width: 85%; padding: 15px 20px; border-radius: 18px; font-size: 14.5px; line-height: 1.7; animation: fadeIn 0.4s ease; }
-.msg.bot { background: white; align-self: flex-start; box-shadow: 0 10px 20px rgba(0,0,0,0.03); border-bottom-left-radius: 2px; }
-.msg.user { background: var(--brand-main); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+.nav-card .label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+.nav-card .desc { display: block; font-size: 0.75rem; color: #666; }
 
-.input-panel { padding: 25px; background: white; border-top: 1px solid #eee; display: flex; gap: 15px; }
-input { flex: 1; border: 1px solid #e0e0e0; padding: 12px 18px; border-radius: 10px; outline: none; transition: 0.3s; }
-input:focus { border-color: var(--accent-green); }
-button { background: var(--brand-main); border: none; padding: 0 20px; border-radius: 10px; cursor: pointer; fill: white; }
-button:hover { background: var(--accent-green); }
+.nav-card:hover { transform: translateY(-2px); background: #fff; border-color: var(--aki-accent); }
+.nav-card.active { background: #fff; border-left: 4px solid var(--aki-accent); box-shadow: 0 4px 12px rgba(0,122,255,0.1); }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* 右侧交互区 */
+.chat-core {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255,255,255,0.2);
+}
 
-@media (max-width: 768px) { .side-panel { display: none; } }
+.chat-window {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.msg {
+    max-width: 85%;
+    padding: 14px 18px;
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.msg.bot {
+    align-self: flex-start;
+    background: #fff;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.msg.user {
+    align-self: flex-end;
+    background: var(--aki-accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+/* 输入面板 */
+.input-panel {
+    padding: 20px 30px;
+    background: rgba(255,255,255,0.5);
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--aki-border);
+}
+
+input#user-input {
+    flex: 1;
+    border: none;
+    background: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+#send-btn {
+    background: var(--aki-accent);
+    border: none;
+    width: 45px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#send-btn svg { width: 20px; fill: white; }
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .glass-wrapper { grid-template-columns: 1fr; height: 95vh; }
+    .side-panel { display: none; } /* 移动端可根据需要优化显示 */
+}
