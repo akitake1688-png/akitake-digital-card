@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>秋武流咨询室 | 数字化中枢</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 <body>
     <div class="glass-wrapper">
-        <aside class="side-panel">
+        <aside class="nav-panel">
             <header class="brand-header">
                 <div class="brand-logo">AKI</div>
                 <h2>秋武流咨询室</h2>
@@ -31,17 +31,20 @@
             </nav>
         </aside>
 
-        <main class="chat-core">
+        <main class="chat-section">
             <div id="chat-window" class="chat-window">
-                <div class="msg bot greeting">
+                <div class="message bot">
                     <b>您好，欢迎进入秋武流。</b><br>
-                    这里不仅提供答案，更提供跨越文理的升学策略。请输入您的关键词。
+                    这里不仅提供答案，更提供跨越文理的升学策略。请输入您的关键词或点击左侧导航。
                 </div>
             </div>
+            
             <div class="input-panel">
                 <input type="text" id="user-input" placeholder="输入问题（如：费用、编入、面试）..." autocomplete="off">
                 <button id="send-btn">
-                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
                 </button>
             </div>
         </main>
