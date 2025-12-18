@@ -1,16 +1,8 @@
 const AKI_KNOWLEDGE = {
-    "微分": "【微分极限】核心不在于计算，而在于“无限逼近”的动态思想。记住：导数是局部线性近似的最佳工具。",
-    "动量": "【动量守恒】系统不受外力或合外力为零时，$p = mv$ 保持不变。",
-    "酯化": "【酯化反应】酸脱羟基醇脱氢。这是一个可逆反应。",
-    "面试": "【面试推椅子逻辑】展现了“闭环意识”与对环境的微观博弈优势。",
-    "eju": "【EJU 6月考理论】核心策略是避开热门峰值，选择信息差较大的学部进行突围。",
-    "ai": "【AI进化策略】真正的AI应用应保留展现真实的思考痕迹，这才是生命力。",
-    
-    // ！！！这是你截图里缺失的关键部分 ！！！
-    "费用": "【咨询费用】秋武流咨询采取阶梯式收费。初次深度沟通（30min）免费，详情请咨询微信号：qiuwu999。",
-    "联系": "【联系方式】请添加主理人微信：qiuwu999，备注“数字名片”。",
-
-    "默认": "未识别指令。请输入关键词：<b>费用、联系、微分、面试、EJU、AI</b>。"
+    "费用": "【秋武辅导模式：透明、靠谱的商业逻辑】🍀<br><br>1. **强推免费模式**：通过秋武老师进入合作机构，费用由机构支付，您享0额外支出。<br>2. **定制收费**：如果您需要独立的文书修改、面试特训，我们提供专项付费服务。<br>详情添加微信：<b>qiuwu999</b>。",
+    "面试": "【面试对策：卡壳不可怕，可怕的是逻辑崩盘】🗣️<br><br>面试压力大，卡壳很正常。教授看重的是您思考的品质。我们提供一对一全模拟面试，助您在卡壳时也能用“真实思考”打动教授。请微信私信 <b>qiuwu999</b> 锁定训练时间。",
+    "编入": "【编入学：看似捷径，实则“窄门”】🎓<br><br>编入学对专业基础连续性要求极高。秋武建议：面对高风险选择，务必进行“终局思维”反推。是选择风险极高的编入，还是更稳健的重读学部？",
+    "默认": "💡 **秋武建议**：您的问题较复杂，涉及个人详细情况。建议添加秋武老师微信进行一对一深度沟通。<br>微信号：<b>qiuwu999</b>"
 };
 
 const chatWindow = document.getElementById('chat-window');
@@ -23,23 +15,20 @@ function addMessage(text, role) {
     div.innerHTML = text;
     chatWindow.appendChild(div);
     chatWindow.scrollTop = chatWindow.scrollHeight;
-    
-    if (window.MathJax) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
-    }
 }
 
 function handleSearch() {
-    const query = userInput.value.trim().toLowerCase();
+    const query = userInput.value.trim();
     if (!query) return;
 
-    addMessage(userInput.value, 'user');
+    addMessage(query, 'user');
     userInput.value = '';
 
-    // 逻辑改进：只要用户输入的内容包含关键词（比如“多少费用”包含“费用”），就能匹配成功
     let response = AKI_KNOWLEDGE["默认"];
+    const lowerQuery = query.toLowerCase();
+    
     for (let key in AKI_KNOWLEDGE) {
-        if (key !== "默认" && query.indexOf(key) !== -1) {
+        if (key !== "默认" && lowerQuery.includes(key)) {
             response = AKI_KNOWLEDGE[key];
             break;
         }
@@ -47,10 +36,8 @@ function handleSearch() {
 
     setTimeout(() => {
         addMessage(response, 'bot');
-    }, 500);
+    }, 600);
 }
 
 sendBtn.addEventListener('click', handleSearch);
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSearch();
-});
+userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
