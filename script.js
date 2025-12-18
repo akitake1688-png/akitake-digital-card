@@ -1,22 +1,17 @@
 /**
- * 秋武全量知识库 (AKI_KNOWLEDGE)
- * 后续追加 PDF 数据请在此对象内扩展子类别
+ * AKI_KNOWLEDGE 知识库模块
+ * 基于秋武 PDF 数据核心逻辑
  */
 const AKI_KNOWLEDGE = {
-    science: {
-        calculus: "【理科逻辑：微分极限】微分本质是瞬时变化率。定义为：$$ \lim_{\Delta x \to 0} \frac{f(x+\Delta x) - f(x)}{\Delta x} $$ 掌握极限思维是理解动态系统的基石。",
-        momentum: "【理科逻辑：动量守恒】在无外力干扰下，系统总动量保持不变。公式：$$ \sum \vec{F} = 0 \implies \Delta \vec{p} = 0 $$ 这不仅是物理公式，更是分析利益分配平衡的思维工具。",
-        chemistry: "【理科逻辑：酯化反应】酸脱羟基醇脱氢。条件：浓硫酸催化、加热。这是一个可逆反应，通过移除生成的水使平衡向右移动。"
-    },
-    strategy: {
-        interview: "【面试评分标准】礼仪占 22%。关键细节：离场时回头微笑着将椅子推回原位，此举可直接获得 10 分加分。",
-        eju: "【EJU博弈】准考证即入场券。即使复习不充分也要参加 6 月考。目标是积累“临场软实力”，而非单纯的分数。",
-        cognitive: "【认知偏差修复】反对‘没学过就瞎编’。主张‘由未来梦想倒推学习计划’的逆向逻辑。先确定终局，再填充过程。"
-    },
-    philosophy: {
-        ai_trap: "【AI 陷阱】拒绝提交无瑕疵的作文。优秀的文书应展示带有‘疙瘩’的真实成长弧线，而非冷冰冰的完美。",
-        win_win: "【商业透明度】三方共赢逻辑：我们的介绍费完全覆盖辅导费，确保学生在获得优质资源时无需额外负担。"
-    }
+    "面试": "【面试评分标准】礼仪占 22%。<br>关键加分项：离场时，请务必回头微笑着将椅子轻轻推回原位，这个细节能直接增加约 10 分的印象分。",
+    "1": "【面试评分标准】礼仪占 22%。<br>关键加分项：离场时，请务必回头微笑着将椅子轻轻推回原位，这个细节能直接增加约 10 分的印象分。",
+    "化学": "【理科逻辑：酯化反应】<br>原则：酸脱羟基醇脱氢。<br>反应条件：浓硫酸催化、加热。这是一个平衡移动过程，移除生成物可提高产率。",
+    "物理": "【理科逻辑：动量守恒】<br>公式：$$ \sum \vec{F} = 0 \implies \Delta \vec{p} = 0 $$ 当系统不受外力或外力矢量和为零时，总动量保持不变。",
+    "EJU": "【EJU博弈策略】准考证即入场券。即使复习不充分也要参加 6 月考，目标是积累临场软实力，为 11 月终局战做演练。",
+    "倒推": "【认知升级】拒绝“没学过就瞎编”。主张“由未来梦想倒推学习计划”的逻辑。先看终点站，再铺设轨道。",
+    "核心优势": "【秋武特色】文理融合思维。不只是教你解题，而是教你用理科的严谨逻辑去解文科的面试题目。",
+    "辅导模式": "【三方共赢】介绍费完全覆盖辅导费。我们通过透明的资源对接，确保学生获得最顶级的指导而不增加额外负担。",
+    "成功案例": "【拒绝完美】在文书中展示带有“疙瘩”的真实成长弧线，而非AI生成的无瑕疵作文。真实的破绽才是最动人的力量。"
 };
 
 const AKI_ENGINE = {
@@ -24,10 +19,10 @@ const AKI_ENGINE = {
         this.display = document.getElementById('chat-display');
         this.input = document.getElementById('user-input');
         this.sendBtn = document.getElementById('send-btn');
-        this.bindEvents();
+        this.setupListeners();
     },
 
-    bindEvents() {
+    setupListeners() {
         this.sendBtn.addEventListener('click', () => this.handleSend());
         this.input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.handleSend();
@@ -38,68 +33,47 @@ const AKI_ENGINE = {
         const text = this.input.value.trim();
         if (!text) return;
 
-        this.appendMsg(text, 'user-msg');
+        this.addMessage(text, 'user-msg');
         this.input.value = '';
         
-        // 模拟 AI 思考延迟
-        setTimeout(() => this.processQuery(text), 600);
+        // 模拟思考延迟
+        setTimeout(() => this.processQuery(text), 500);
     },
 
     processQuery(query) {
-        let response = "抱歉，由于知识库正在升级，您可以尝试输入：'面试'、'动量'、'EJU' 或 '1'。";
+        let reply = "这是一个深刻的问题。尝试输入“面试”、“物理”或“EJU”来解锁秋武流的终局思维。";
         
-        const q = query.toLowerCase();
-        
-        // 匹配逻辑
-        if (q.includes('面试') || q === '1') {
-            response = AKI_KNOWLEDGE.strategy.interview;
-        } else if (q.includes('动量')) {
-            response = AKI_KNOWLEDGE.science.momentum;
-        } else if (q.includes('酯化')) {
-            response = AKI_KNOWLEDGE.science.chemistry;
-        } else if (q.includes('eju')) {
-            response = AKI_KNOWLEDGE.strategy.eju;
-        } else if (q.includes('优势') || q.includes('核心')) {
-            response = AKI_KNOWLEDGE.strategy.cognitive;
-        } else if (q.includes('微分') || q.includes('极限')) {
-            response = AKI_KNOWLEDGE.science.calculus;
+        // 简单的关键词匹配逻辑
+        for (let key in AKI_KNOWLEDGE) {
+            if (query.toLowerCase().includes(key.toLowerCase())) {
+                reply = AKI_KNOWLEDGE[key];
+                break;
+            }
         }
 
-        this.appendMsg(response, 'bot-msg');
+        this.addMessage(reply, 'bot-msg');
         
-        // 触发 MathJax 重新渲染公式
+        // 动态触发公式渲染
         if (window.MathJax) {
-            MathJax.typeset();
+            MathJax.typesetPromise();
         }
     },
 
-    appendMsg(content, type) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        div.innerHTML = content;
+    addMessage(content, className) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg ${className}`;
+        msgDiv.innerHTML = content;
+        this.display.appendChild(msgDiv);
         
-        // 双击复制功能
-        div.title = "双击复制内容";
-        div.addEventListener('dblclick', () => this.copyToClipboard(content));
-        
-        this.display.appendChild(div);
+        // 自动滚动到底部
         this.display.scrollTop = this.display.scrollHeight;
     },
 
     quickAction(type) {
         this.input.value = type;
         this.handleSend();
-    },
-
-    async copyToClipboard(text) {
-        try {
-            await navigator.clipboard.writeText(text.replace(/<[^>]+>/g, ''));
-            alert('内容已成功复制到剪贴板！');
-        } catch (err) {
-            console.error('复制失败', err);
-        }
     }
 };
 
-// 启动引擎
+// 页面加载完成后启动
 document.addEventListener('DOMContentLoaded', () => AKI_ENGINE.init());
