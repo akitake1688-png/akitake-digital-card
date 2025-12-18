@@ -3,33 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武流咨询室 | 数字名片</title>
+    <title>秋武 AI 终局思维咨询室</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 <body>
-    <div class="main-container">
-        <section class="brand-section">
-            <video id="bg-video" autoplay muted loop playsinline poster="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-                <source src="video_final.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
-            <div class="brand-overlay">
-                <h1>秋武流咨询室</h1>
-                <p class="slogan">理科思维 · 博弈逻辑 · AI进化</p>
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <div class="profile-card">
+                <img src="profile.jpg" alt="秋武老师" class="avatar">
+                <h2>东大日本秋武流</h2>
+                <p class="tagline">跨越文理 · 点亮思路<br>用“破绽”引导成功</p>
+                <button class="btn-expand">点击展开</button>
             </div>
-        </section>
+            <nav class="service-nav">
+                <div class="nav-item">🚀 核心优势 (文理融合)</div>
+                <div class="nav-item">🎓 辅导模式 (免费与定制)</div>
+                <div class="nav-item">💡 成功案例/更多思考</div>
+            </nav>
+        </aside>
 
-        <section class="chat-section">
-            <div id="chat-window" class="chat-window">
-                <div class="msg bot">您好，这里是秋武流。请输入关键词（如：费用、微分、面试、AI）开启深度咨询。</div>
-            </div>
+        <main class="chat-container">
+            <header class="chat-header">
+                <div class="header-info">
+                    <span class="status-icon"></span>
+                    <strong>秋武 AI 终局思维咨询室</strong>
+                    <small>在线 | 智能回复中</small>
+                </div>
+            </header>
             
+            <div id="chat-window" class="chat-window">
+                <div class="msg bot">你好！我是秋武老师的 AI 助理。🌸<br>关于<b>日本考学、文书逻辑重构或面试技巧</b>，随时问我！</div>
+                <div class="msg system">📚 **秋武知识库加载完成。** 您可以开始提问！</div>
+            </div>
+
             <div class="input-area">
-                <input type="text" id="user-input" placeholder="输入指令或咨询问题..." autocomplete="off">
+                <input type="text" id="user-input" placeholder="输入您想咨询的问题..." autocomplete="off">
                 <button id="send-btn">发送</button>
             </div>
-        </section>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
