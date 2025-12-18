@@ -2,18 +2,17 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>秋武 AI 终局思维咨询室</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js" async></script>
     <link rel="stylesheet" href="style.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="main-container">
         <section class="brand-side">
             <div class="video-avatar-wrapper">
-                <video id="avatar-video" poster="https://via.placeholder.com/400x600?text=AKI_TAKE" autoplay muted loop playsinline>
-                    <source src="your-video-path.mp4" type="video/mp4">
+                <video id="avatar-video" poster="https://via.placeholder.com/800x1200/222/fff?text=AKI_TAKE" autoplay muted loop playsinline>
+                    <source src="aki_video.mp4" type="video/mp4">
                 </video>
                 <div class="overlay-info">
                     <h1>东大日本秋武老师</h1>
@@ -30,7 +29,7 @@
 
         <section class="chat-side">
             <div class="chat-header">
-                <img src="https://via.placeholder.com/40/000" alt="Avatar" class="mini-avatar">
+                <div class="mini-avatar-box">秋</div>
                 <div class="status-info">
                     <h3>秋武 AI 终局思维助手</h3>
                     <span>● 在线 | 智能回复中</span>
@@ -42,15 +41,17 @@
                     你好！我是秋武老师的 AI 助理。🌸<br>
                     关于日本考学、文书逻辑重构或面试技巧，随时问我！
                 </div>
+                <div class="msg bot-msg system-tip">
+                    <small>💡 提示：输入“1”获取面试加分秘籍，或输入“化学”查看理科逻辑。</small>
+                </div>
             </div>
 
             <div class="input-area">
-                <input type="text" id="user-input" placeholder="输入 1 或关键词（如：面试、酯化）..." autocomplete="off">
+                <input type="text" id="user-input" placeholder="请在这里输入您的问题..." autocomplete="off">
                 <button id="send-btn">发送</button>
             </div>
         </section>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
