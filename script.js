@@ -1,54 +1,68 @@
+/**
+ * 秋武流知识库核心对象
+ * 集成理科、博弈、AI策略三大模块
+ */
 const AKI_KNOWLEDGE = {
-    "面试": "【面试评分标准】礼仪占 22%。<br>关键加分项：离场时，请务必回头微笑着将椅子轻轻推回原位，这个细节能直接增加约 10 分的印象分。",
-    "1": "【面试评分标准】礼仪占 22%。<br>关键加分项：离场时，请务必回头微笑着将椅子轻轻推回原位，这个细节能直接增加约 10 分的印象分。",
-    "化学": "【理科逻辑：酯化反应】<br>原则：酸脱羟基醇脱氢。<br>反应条件：浓硫酸催化、加热。这是一个平衡移动过程，移除生成物可提高产率。",
-    "物理": "【理科逻辑：动量守恒】<br>公式：$$ \sum \vec{F} = 0 \implies \Delta \vec{p} = 0 $$ 当系统不受外力或外力矢量和为零时，总动量保持不变。",
-    "EJU": "【EJU博弈策略】准考证即入场券。即使复习不充分也要参加 6 月考，积累临场软实力，为 11 月终局战做演练。",
-    "倒推": "【认知升级】拒绝“没学过就瞎编”。主张“由未来梦想倒推学习计划”的逻辑。先看终点站，再铺设轨道。",
-    "核心优势": "【秋武特色】文理融合思维。教你用理科的严谨逻辑去解文科的面试题目。",
-    "辅导模式": "【三方共赢】介绍费覆盖辅导费。我们通过透明的资源对接，确保学生获得最顶级的指导。",
-    "成功案例": "【拒绝完美】在文书中展示带有“破绽”的真实成长弧线，而非AI生成的无瑕疵作文。真实的破绽才是最动人的力量。"
+    // 理科模块
+    "微分": "【微分极限】核心不在于计算，而在于“无限逼近”的动态思想。$\lim_{\Delta x \to 0} \frac{f(x+\Delta x)-f(x)}{\Delta x}$。记住：导数是局部线性近似的最佳工具。",
+    "动量": "【动量守恒】系统不受外力或合外力为零时，$p = mv$ 保持不变。注意：碰撞瞬间的内力远大于外力，是处理此类问题的黄金切入点。",
+    "酯化": "【酯化反应】酸脱羟基醇脱氢。这是一个可逆反应，常用浓硫酸作催化剂和吸水剂，通过移去生成的水来打破平衡，提高产率。",
+    
+    // 博弈模块
+    "面试": "【面试推椅子逻辑】面试结束起身时，将椅子轻声推回原位。这一举措在秋武流评价体系中价值10分：它展现了“闭环意识”与对环境的微观博弈优势。",
+    "eju": "【EJU 6月考理论】6月考试不是终点，而是“入场券”。利用6月成绩进行后期校内考博弈，核心策略是避开热门峰值，选择信息差较大的学部进行突围。",
+    
+    // AI 策略模块
+    "ai": "【AI进化策略】拒绝生成“无瑕疵作文”。真正高阶的AI应用应保留“带疙瘩”的表达，即展现真实的思考痕迹与不完美的成长逻辑，这才是无法被算法模拟的生命力。",
+    "默认": "未识别指令。请输入关键词：微分、动量、酯化、面试、EJU、AI。"
 };
 
-const AKI_ENGINE = {
-    init() {
-        this.display = document.getElementById('chat-display');
-        this.input = document.getElementById('user-input');
-        this.sendBtn = document.getElementById('send-btn');
-        this.setupListeners();
-    },
-    setupListeners() {
-        this.sendBtn.addEventListener('click', () => this.handleSend());
-        this.input.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.handleSend(); });
-    },
-    handleSend() {
-        const text = this.input.value.trim();
-        if (!text) return;
-        this.addMessage(text, 'user-msg');
-        this.input.value = '';
-        setTimeout(() => this.processQuery(text), 500);
-    },
-    processQuery(query) {
-        let reply = "尝试输入“面试”、“物理”或“EJU”来解锁秋武流的终局思维。";
-        for (let key in AKI_KNOWLEDGE) {
-            if (query.toLowerCase().includes(key.toLowerCase())) {
-                reply = AKI_KNOWLEDGE[key];
-                break;
-            }
-        }
-        this.addMessage(reply, 'bot-msg');
-        if (window.MathJax) { MathJax.typesetPromise(); }
-    },
-    addMessage(content, className) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `msg ${className}`;
-        msgDiv.innerHTML = content;
-        this.display.appendChild(msgDiv);
-        this.display.scrollTop = this.display.scrollHeight;
-    },
-    quickAction(type) {
-        this.input.value = type;
-        this.handleSend();
+const chatWindow = document.getElementById('chat-window');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+
+function addMessage(text, role) {
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    div.innerHTML = text;
+    chatWindow.appendChild(div);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+    
+    // 如果存在公式，触发 MathJax 重绘
+    if (window.MathJax) {
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
     }
-};
-document.addEventListener('DOMContentLoaded', () => AKI_ENGINE.init());
+}
+
+function handleSearch() {
+    const query = userInput.value.trim().toLowerCase();
+    if (!query) return;
+
+    addMessage(query, 'user');
+    userInput.value = '';
+
+    // 逻辑检索
+    let response = AKI_KNOWLEDGE["默认"];
+    for (let key in AKI_KNOWLEDGE) {
+        if (query.includes(key)) {
+            response = AKI_KNOWLEDGE[key];
+            break;
+        }
+    }
+
+    setTimeout(() => {
+        addMessage(response, 'bot');
+    }, 500);
+}
+
+// 事件绑定
+sendBtn.addEventListener('click', handleSearch);
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSearch();
+});
+
+// 视频自动播放补丁（针对部分浏览器限制）
+document.addEventListener('touchstart', function() {
+    const video = document.getElementById('bg-video');
+    if (video.paused) video.play();
+}, { once: true });
