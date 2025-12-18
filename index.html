@@ -2,44 +2,47 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武 AI 终局思维咨询室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>秋武流咨询室 | 数字化中枢</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 <body>
-    <div class="app-wrapper">
-        <aside class="sidebar">
-            <div class="profile-card">
-                <img src="profile.jpg" alt="秋武老师" class="avatar">
-                <h2>东大日本秋武流</h2>
-                <p class="tagline">跨越文理 · 点亮思路<br>用“破绽”引导成功</p>
-                <button class="btn-expand">点击展开</button>
-            </div>
-            <nav class="service-nav">
-                <div class="nav-item">🚀 核心优势 (文理融合)</div>
-                <div class="nav-item">🎓 辅导模式 (免费与定制)</div>
-                <div class="nav-item">💡 成功案例/更多思考</div>
+    <div class="glass-wrapper">
+        <aside class="side-panel">
+            <header class="brand-header">
+                <div class="brand-logo">AKI</div>
+                <h2>秋武流咨询室</h2>
+                <p>用博弈逻辑重构名校之门</p>
+            </header>
+            <nav class="sticky-nav">
+                <button class="nav-card" data-trigger="核心优势">
+                    <span class="label">🚀 核心优势</span>
+                    <span class="desc">如何利用信息差实现低分高录</span>
+                </button>
+                <button class="nav-card" data-trigger="辅导模式">
+                    <span class="label">🎓 辅导模式</span>
+                    <span class="desc">0元合作方案与VIP定制逻辑</span>
+                </button>
+                <button class="nav-card" data-trigger="联系">
+                    <span class="label">📱 预约咨询</span>
+                    <span class="desc">直接对话主理人: qiuwu999</span>
+                </button>
             </nav>
         </aside>
 
-        <main class="chat-container">
-            <header class="chat-header">
-                <div class="header-info">
-                    <span class="status-icon"></span>
-                    <strong>秋武 AI 终局思维咨询室</strong>
-                    <small>在线 | 智能回复中</small>
-                </div>
-            </header>
-            
+        <main class="chat-core">
             <div id="chat-window" class="chat-window">
-                <div class="msg bot">你好！我是秋武老师的 AI 助理。🌸<br>关于<b>日本考学、文书逻辑重构或面试技巧</b>，随时问我！</div>
-                <div class="msg system">📚 **秋武知识库加载完成。** 您可以开始提问！</div>
+                <div class="msg bot greeting">
+                    <b>您好，欢迎进入秋武流。</b><br>
+                    这里不仅提供答案，更提供跨越文理的升学策略。请输入您的关键词。
+                </div>
             </div>
-
-            <div class="input-area">
-                <input type="text" id="user-input" placeholder="输入您想咨询的问题..." autocomplete="off">
-                <button id="send-btn">发送</button>
+            <div class="input-panel">
+                <input type="text" id="user-input" placeholder="输入问题（如：费用、编入、面试）..." autocomplete="off">
+                <button id="send-btn">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
             </div>
         </main>
     </div>
