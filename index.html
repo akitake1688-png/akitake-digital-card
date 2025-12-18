@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>秋武流咨询室</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <title>秋武流咨询室 | 数字化名片</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
     <link rel="stylesheet" href="style.css">
     
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
-            tex2jax: { inlineMath: [['$','$']], processEscapes: true },
+            showProcessingMessages: false,
             messageStyle: "none",
-            showMathMenu: false
+            tex2jax: { inlineMath: [['$','$']], processEscapes: true },
+            "HTML-CSS": { linebreaks: { automatic: true } }
         });
     </script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -19,12 +20,16 @@
 <body>
     <div class="glass-container">
         <nav class="side-panel">
-            <button class="nav-item" onclick="showSection('advantage')">核心优势</button>
-            <button class="nav-item" onclick="showSection('mode')">辅导模式</button>
-            <button class="nav-item" onclick="showSection('contact')">联系秋武</button>
+            <div class="panel-tag">DIMENSIONS</div>
+            <button class="nav-btn" onclick="handleLogic('advantage')">核心优势</button>
+            <button class="nav-btn" onclick="handleLogic('mode')">辅导模式</button>
+            <button class="nav-btn" onclick="handleLogic('contact')">联系秋武</button>
         </nav>
-        <main class="chat-viewport">
-            <div id="output" class="content-text">请点击按钮开始逻辑对齐...</div>
+
+        <main class="chat-viewport" id="chat-container">
+            <div id="output-box" class="content-bubble">
+                <p class="placeholder">系统就绪，请选择逻辑维度...</p>
+            </div>
         </main>
     </div>
     <script src="script.js"></script>
