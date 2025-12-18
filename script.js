@@ -1,88 +1,67 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 语料库：核心映射逻辑
-    const responses = {
-        "核心优势": "秋武流的核心在于**理科思维建模**。我们利用数据模型拆解招生官心理，$P(录取|特质)$ 的逻辑重构，让信息差转化为你的升学胜率。",
-        "辅导模式": "推行**三方共赢逻辑**：机构端与结果挂钩，学员端专注科研构建。通过『研究计划书』的高频磨合，实现思维层面的彻底进化。",
-        "联系": "请添加主理人微信：**qiuwu999**。提示：最好的肥料是失败后的觉醒。点击右侧按钮复制或直接搜索，开启你的东大基准逻辑进化。",
-        "默认": "该关键词的逻辑模型正在构建中。建议尝试：『核心优势』、『费用』或『面试』。"
+    // 基于截图效果重构的结构化语料库
+    const corpus = {
+        "核心优势": `【核心优势：跨学科思维建模】<br><br>
+                    1. **理科定义**：我们将文书重构为“逻辑模型”，通过 $P(录取) = 逻辑 \times 信息差$ 的公式进行推演。<br>
+                    2. **东大基准**：拒绝模板化，采用直连教授思维的学术语言。<br>
+                    3. **底层逻辑**：挖掘你背景中的“破绽”并转化为“独特潜力”。`,
+        "辅导模式": `【辅导模式：透明且负责的闭环】<br><br>
+                    - **三方共赢**：机构付费介绍，确保我对学员 100% 负责。<br>
+                    - **0元合作**：通过特定渠道实现零学费辅导的博弈方案。<br>
+                    - **VIP定制**：从研究计划书到面试模拟的『一问一答』草稿编辑。`,
+        "联系": `【预约咨询：直接对话主理人】<br><br>
+                微信号：**qiuwu999**<br>
+                提示：最好的肥料是失败后的觉醒。复杂的背景需要『终局思维』重构，请添加微信开启进化。`
     };
 
     const chatWindow = document.getElementById('chat-window');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
     const navButtons = document.querySelectorAll('.nav-card');
-    
-    let isTyping = false;
 
-    // 解决 Favicon 404
-    const fixFavicon = () => {
-        const link = document.createElement('link');
-        link.rel = 'icon';
-        link.href = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">秋</text></svg>';
-        document.head.appendChild(link);
-    };
-    fixFavicon();
-
-    // 打字机渲染引擎
-    async function typeOutput(text, container) {
-        isTyping = true;
-        let i = 0;
-        container.innerHTML = "";
+    async function showMessage(text, role) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg ${role}`;
+        chatWindow.appendChild(msgDiv);
         
-        return new Promise(resolve => {
+        if (role === 'bot') {
+            let i = 0;
             const timer = setInterval(() => {
                 if (i < text.length) {
-                    container.innerHTML += text.charAt(i);
+                    msgDiv.innerHTML = text.substring(0, i + 1);
                     i++;
                     chatWindow.scrollTop = chatWindow.scrollHeight;
                 } else {
                     clearInterval(timer);
-                    isTyping = false;
-                    // 触发 MathJax 渲染
-                    if (window.MathJax && window.MathJax.typeset) {
-                        window.MathJax.typeset([container]);
-                    }
-                    resolve();
+                    if (window.MathJax) MathJax.Hub.Queue(["Typeset", MathJax.Hub, msgDiv]);
                 }
-            }, 25);
-        });
-    }
-
-    // 处理消息发送
-    async function handleSend(key) {
-        if (!key || isTyping) return;
-
-        // 用户消息气泡
-        const userDiv = document.createElement('div');
-        userDiv.className = 'message user';
-        userDiv.textContent = key;
-        chatWindow.appendChild(userDiv);
-        
-        userInput.value = "";
+            }, 15);
+        } else {
+            msgDiv.textContent = text;
+        }
         chatWindow.scrollTop = chatWindow.scrollHeight;
-
-        // 机器人响应逻辑
-        const botDiv = document.createElement('div');
-        botDiv.className = 'message bot';
-        chatWindow.appendChild(botDiv);
-
-        const reply = responses[key] || responses["默认"];
-        await typeOutput(reply, botDiv);
     }
 
-    // 按钮点击监听
+    // 绑定导航按钮
     navButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const trigger = btn.getAttribute('data-trigger');
-            handleSend(trigger);
-        });
+        btn.onclick = () => {
+            const type = btn.getAttribute('data-trigger');
+            if (corpus[type]) {
+                showMessage(type, 'user');
+                setTimeout(() => showMessage(corpus[type], 'bot'), 500);
+            }
+        };
     });
 
-    // 输入框监听
-    sendBtn.addEventListener('click', () => handleSend(userInput.value.trim()));
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSend(userInput.value.trim());
-    });
+    // 绑定输入框
+    const handleManualInput = () => {
+        const val = userInput.value.trim();
+        if (!val) return;
+        showMessage(val, 'user');
+        userInput.value = '';
+        setTimeout(() => showMessage("该关键词的逻辑正在计算中，请尝试点击左侧核心按钮或添加微信 qiuwu999。", 'bot'), 800);
+    };
 
-    console.log("秋武流系统调试完成，逻辑引擎就绪。");
+    sendBtn.onclick = handleManualInput;
+    userInput.onkeypress = (e) => { if (e.key === 'Enter') handleManualInput(); };
 });
