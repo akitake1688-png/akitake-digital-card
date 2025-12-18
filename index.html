@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>秋武流咨询室 | 数字化中枢</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2024">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </head>
 <body>
     <div class="glass-wrapper">
         <aside class="side-panel">
             <header class="brand-header">
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/150" alt="AKI">
-                </div>
+                <div class="brand-logo">AKI</div>
                 <h2>秋武流咨询室</h2>
                 <p>用博弈逻辑重构名校之门</p>
             </header>
@@ -34,18 +32,22 @@
         </aside>
 
         <main class="chat-core">
-            <div id="chat-window">
-                <div class="msg bot">
+            <div id="chat-window" class="chat-window">
+                <div class="msg bot greeting">
                     <b>您好，欢迎进入秋武流。</b><br>
-                    这里不仅提供答案，更提供跨越文理的升学策略。请点击下方按钮或输入关键词。
+                    这里不仅提供答案，更提供跨越文理的升学策略。请点击左侧卡片或输入关键词。
                 </div>
             </div>
             <div class="input-panel">
-                <input type="text" id="user-input" placeholder="输入问题（如：编入、面试）...">
-                <button id="send-btn">发送</button>
+                <input type="text" id="user-input" placeholder="输入问题（如：费用、编入、面试）..." autocomplete="off">
+                <button id="send-btn" aria-label="发送">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
             </div>
         </main>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js?v=2024"></script>
 </body>
 </html>
