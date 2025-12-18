@@ -1,79 +1,87 @@
 :root {
-    --aki-blue: #007AFF;
-    --aki-bg: #eef2f7;
-    --glass: rgba(255, 255, 255, 0.75);
-    --border: rgba(255, 255, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --text-color: #ffffff;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background: linear-gradient(135deg, #eef2f7 0%, #d1d9e6 100%);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    overflow: hidden; /* 核心修复：防止多余滚动条 */
+    align-items: center;
+    font-family: -apple-system, "SF Pro Display", "PingFang SC", sans-serif;
+    overflow: hidden; /* 防止生产环境全局溢出 */
 }
 
-.glass-wrapper {
-    width: 95vw;
-    max-width: 1100px;
-    height: 88vh;
-    background: var(--glass);
+.glass-container {
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    background: var(--glass-bg);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--border);
-    border-radius: 28px;
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
     display: flex;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     overflow: hidden;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
+/* 侧边栏及移动端横向滚动逻辑 */
 .side-panel {
-    width: 280px;
-    flex-shrink: 0;
-    border-right: 1px solid var(--border);
-    padding: 30px 20px;
+    width: 200px;
+    padding: 20px;
+    border-right: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
-    background: rgba(255, 255, 255, 0.2);
+    gap: 15px;
+    flex-shrink: 0;
 }
 
-.brand-header { margin-bottom: 30px; text-align: center; }
-.brand-logo { font-size: 32px; font-weight: 900; color: var(--aki-blue); letter-spacing: 2px; }
-
-.sticky-nav { flex: 1; display: flex; flex-direction: column; gap: 12px; }
-.nav-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 14px;
+.side-panel button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    padding: 12px;
+    color: white;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
+    white-space: nowrap;
 }
-.nav-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
 
-.chat-core { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.1); }
-.chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+.side-panel button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
 
-.msg { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 14.5px; line-height: 1.6; animation: msgIn 0.3s ease; }
-.msg.bot { align-self: flex-start; background: #fff; border-bottom-left-radius: 4px; box-shadow: 2px 2px 10px rgba(0,0,0,0.02); }
-.msg.user { align-self: flex-end; background: var(--aki-blue); color: #fff; border-bottom-right-radius: 4px; }
+.chat-viewport {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+    color: var(--text-color);
+    line-height: 1.6;
+}
 
-.input-panel { padding: 15px 20px; background: rgba(255,255,255,0.3); display: flex; gap: 10px; border-top: 1px solid var(--border); }
-input#user-input { flex: 1; border: none; padding: 10px 18px; border-radius: 20px; outline: none; background: #fff; }
-button#send-btn { background: var(--aki-blue); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-@keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* 移动端强制单列 */
+/* 移动端强制布局重构 */
 @media (max-width: 768px) {
-    .glass-wrapper { flex-direction: column; height: 100vh; width: 100vw; border-radius: 0; }
-    .side-panel { width: 100%; height: auto; padding: 10px; border-right: none; border-bottom: 1px solid var(--border); }
-    .brand-header { display: none; }
-    .sticky-nav { flex-direction: row; overflow-x: auto; white-space: nowrap; }
-    .nav-card { min-width: 120px; padding: 8px; }
-    .nav-card .desc { display: none; }
+    .glass-container {
+        flex-direction: column;
+        height: 90vh;
+    }
+    .side-panel {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+        -webkit-overflow-scrolling: touch;
+    }
+    .side-panel button {
+        padding: 5px 15px;
+        font-size: 14px;
+    }
 }
