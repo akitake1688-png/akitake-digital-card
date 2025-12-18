@@ -1,38 +1,87 @@
-const LOGIC_HUB = {
-    advantage: "<b>核心优势（文理融合）：</b><br>基于东大基准的逻辑重构。利用公式精准定位认知偏差：$P(A|B) = \\frac{P(B|A)P(A)}{P(B)}$，将感性叙事全量转化为理性竞争力。",
-    mode: "<b>辅导模式：</b><br>1. <b>终局思维反推</b>：从目标需求逆向重构材料。<br>2. <b>逻辑破绽修正</b>：巧妙利用背景“弱点”创造独特视角。",
-    contact: "<b>联系秋武：</b><br>微信号：qiuwu999<br>提示：添加请注明“数字化名片”，系统将自动优先对齐您的逻辑需求。"
-};
+/**
+ * 秋武流数字化名片核心引擎
+ * 具备自动数据加载、关键词检索及渲染容错机制
+ */
 
-let typing = false;
+let KNOWLEDGE_BASE = [];
+let isTyping = false;
 
-function handleLogic(key) {
-    if (typing) return;
+// 1. 初始化：从 knowledge.json 获取数据
+async function initApp() {
+    try {
+        const response = await fetch('knowledge.json');
+        if (!response.ok) throw new Error('无法加载数据库文件');
+        KNOWLEDGE_BASE = await response.json();
+        renderButtons(KNOWLEDGE_BASE);
+    } catch (error) {
+        console.error('Initialization Error:', error);
+        document.getElementById('nav-buttons-container').innerHTML = `<p style="color:#ef4444; font-size:12px;">数据库连接失败</p>`;
+    }
+}
+
+// 2. 渲染左侧按钮
+function renderButtons(data) {
+    const container = document.getElementById('nav-buttons-container');
+    container.innerHTML = "";
+    
+    data.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn';
+        // 自动将 intent 转化为更易读的标题
+        btn.innerHTML = item.intent.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        btn.onclick = () => startDisplay(item.response);
+        container.appendChild(btn);
+    });
+}
+
+// 3. 搜索逻辑
+document.getElementById('search-input').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const filtered = KNOWLEDGE_BASE.filter(item => 
+        item.keywords.some(k => k.toLowerCase().includes(term)) || 
+        item.intent.toLowerCase().includes(term)
+    );
+    renderButtons(filtered);
+});
+
+// 4. 打字机效果核心逻辑
+function startDisplay(text) {
+    if (isTyping) return;
+    
     const output = document.getElementById('output-box');
     const container = document.getElementById('chat-container');
     output.innerHTML = "";
-    
-    // 标签感知正则：整体捕获 HTML 标签和 MathJax 公式
-    const tokens = LOGIC_HUB[key].match(/(<[^>]+>|\$[^\$]+\$|[^<$])/g);
-    let i = 0;
-    typing = true;
+    isTyping = true;
+
+    // 正则捕获：HTML标签、MathJax公式 ($...$)、或者单个字符
+    const tokens = text.match(/(<[^>]+>|\$[^\$]+\$|[^<$])/g) || [];
+    let index = 0;
 
     const timer = setInterval(() => {
-        if (i < tokens.length) {
-            output.innerHTML += tokens[i];
-            i++;
-            // 自动触底滚动
+        if (index < tokens.length) {
+            output.innerHTML += tokens[index];
+            index++;
+            // 自动滚动到底部
             container.scrollTop = container.scrollHeight;
         } else {
             clearInterval(timer);
-            typing = false;
-            // 打字结束，异步对齐公式
+            isTyping = false;
+            // 渲染结束，调用 MathJax 处理公式
             if (window.MathJax) {
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, output]);
             }
         }
-    }, 35);
+    }, 30); // 速度设为 30ms，平衡视觉效果与阅读感
 }
 
-// 屏蔽非关键报错，确保 GitHub Pages 执行流不中断
+// 5. 特殊按钮：联系方式
+function handleContact() {
+    const contactText = "<b>联系秋武：</b><br><br>📍 微信号：<b>qiuwu999</b><br>💡 提示：添加请注明“数字化名片”，系统将自动优先对齐您的逻辑需求。";
+    startDisplay(contactText);
+}
+
+// 屏蔽非关键报错
 window.onerror = () => true;
+
+// 启动程序
+initApp();
