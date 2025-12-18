@@ -12,7 +12,7 @@
             showProcessingMessages: false,
             messageStyle: "none",
             tex2jax: { inlineMath: [['$','$']], processEscapes: true },
-            "HTML-CSS": { linebreaks: { automatic: true }, WebFont: "TeX" }
+            "HTML-CSS": { linebreaks: { automatic: true } }
         });
     </script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -20,22 +20,21 @@
 <body>
     <div class="glass-container">
         <nav class="side-panel">
-            <div class="panel-tag">DIMENSIONS</div>
+            <div class="panel-tag">LOGIC ENGINE</div>
             <input type="text" id="search-input" placeholder="🔍 搜索关键词..." class="search-bar">
             
             <div id="nav-buttons-container" class="nav-btn-list">
-                <p style="color:rgba(255,255,255,0.4); font-size:12px; padding:10px;">加载中...</p>
+                <p style="color:rgba(255,255,255,0.3); font-size:12px; padding:10px;">数据加载中...</p>
             </div>
 
-            <div class="fixed-bottom">
-                <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin:10px 0;">
-                <button class="nav-btn contact-btn" onclick="handleContact()">微信联系秋武</button>
+            <div class="side-footer">
+                <button class="nav-btn contact-btn" onclick="showContact()">微信联系秋武</button>
             </div>
         </nav>
 
         <main class="chat-viewport" id="chat-container">
             <div id="output-box" class="content-bubble">
-                <p class="placeholder">系统就绪。请从左侧选择逻辑维度，或输入关键词搜索（如“酯化”、“面试”）。</p>
+                <p class="placeholder">系统就绪。请选择维度或搜索关键词（如：酯化、面试、费用）。</p>
             </div>
         </main>
     </div>
