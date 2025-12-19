@@ -1,115 +1,51 @@
 :root {
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --accent-green: #4ade80; 
-    --text-white: #f8fafc;
+    --accent-green: #4ade80;
+    --bg-chat: #f4f7f9;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; }
+body { background: #eef1f5; font-family: -apple-system, sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; overflow: hidden; }
 
-body {
-    background: radial-gradient(circle at top right, #1e293b, #0f172a);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: -apple-system, sans-serif;
-    overflow: hidden;
-}
-
-.glass-container {
-    width: 95%;
-    max-width: 950px;
-    height: 85vh;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    display: flex;
-    overflow: hidden;
-}
+.glass-container { width: 95vw; max-width: 1100px; height: 90vh; background: #fff; border-radius: 20px; display: flex; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; }
 
 /* 侧边栏 */
-.side-panel {
-    width: 220px;
-    padding: 20px 15px;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-}
+.side-panel { width: 280px; border-right: 1px solid #eee; display: flex; flex-direction: column; background: #fff; }
+.profile-card { padding: 30px 20px; text-align: center; border-bottom: 1px solid #f9f9f9; }
+.avatar-main { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--accent-green); margin-bottom: 10px; }
+.bio { font-size: 13px; color: #666; line-height: 1.5; }
+.expand-btn { background: var(--accent-green); color: white; border: none; padding: 8px 20px; border-radius: 20px; margin-top: 15px; cursor: pointer; }
 
-.panel-tag {
-    font-size: 10px;
-    color: var(--accent-green);
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-}
+.nav-section { flex: 1; padding: 15px; overflow-y: auto; }
+.panel-tag { font-size: 12px; font-weight: bold; margin-bottom: 15px; color: #333; }
+.nav-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #f0f0f0; border-radius: 10px; background: #fff; cursor: pointer; font-size: 13px; transition: 0.2s; }
+.nav-btn:hover { background: #f0fff4; border-color: var(--accent-green); }
 
-.search-bar {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    color: white;
-    margin-bottom: 15px;
-    outline: none;
-}
+/* 聊天区 */
+.chat-viewport { flex: 1; display: flex; flex-direction: column; background: var(--bg-chat); }
+.chat-header { padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; display: flex; align-items: center; }
+.avatar-mini { width: 35px; height: 35px; border-radius: 50%; margin-right: 12px; }
+.title { font-weight: bold; font-size: 15px; }
+.status { font-size: 11px; color: #888; display: flex; align-items: center; }
+.dot { width: 7px; height: 7px; background: var(--accent-green); border-radius: 50%; margin-right: 5px; }
 
-.nav-btn-list {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+.messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+.msg-row { display: flex; max-width: 90%; }
+.msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+.msg-row.bot { align-self: flex-start; }
 
-.nav-btn-list::-webkit-scrollbar { width: 0; }
+.avatar-chat { width: 35px; height: 35px; border-radius: 50%; margin: 0 10px; }
+.bubble { padding: 12px 16px; border-radius: 15px; font-size: 14.5px; line-height: 1.6; position: relative; }
+.bot .bubble { background: #fff; border-top-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.user .bubble { background: #0052d9; color: #fff; border-top-right-radius: 2px; }
 
-.nav-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: #cbd5e1;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: left;
-    font-size: 14px;
-    transition: 0.2s;
-}
-
-.nav-btn:hover {
-    background: var(--accent-green);
-    color: #000;
-}
-
-.contact-btn {
-    margin-top: 10px;
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid var(--accent-green);
-    color: var(--accent-green);
-    width: 100%;
-    text-align: center;
-}
-
-/* 内容视口 */
-.chat-viewport {
-    flex: 1;
-    padding: 30px;
-    overflow-y: auto;
-}
-
-.content-bubble {
-    line-height: 1.8;
-    color: var(--text-white);
-    font-size: 16px;
-}
-
-b { color: var(--accent-green); }
+.msg-row.system { align-self: center; }
+.sys-tip { background: #dcdcdc; color: #666; font-size: 11px; padding: 3px 12px; border-radius: 10px; }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .glass-container { flex-direction: column; }
-    .side-panel { width: 100%; height: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .nav-btn-list { flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
-    .nav-btn { white-space: nowrap; }
+    .glass-container { flex-direction: column; width: 100vw; height: 100vh; border-radius: 0; }
+    .side-panel { width: 100%; border-right: none; height: auto; }
+    .profile-card { display: none; }
+    .nav-btn-list { display: flex; overflow-x: auto; gap: 10px; padding: 10px; }
+    .nav-btn { white-space: nowrap; width: auto; margin-bottom: 0; }
 }
