@@ -1,56 +1,32 @@
-:root { --primary: #22c55e; --user-msg: #2563eb; --bg-main: #f1f5f9; }
+:root { --primary: #22c55e; --user-msg: #2563eb; --bg: #f8fafc; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { background: #e2e8f0; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-
-.glass-container { width: 95vw; max-width: 1050px; height: 85vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); }
-
-/* 左侧面板：内涵布局 */
-.side-panel { width: 300px; border-right: 1px solid #f1f5f9; display: flex; flex-direction: column; background: #fff; }
-.profile-card { padding: 35px 20px; text-align: center; border-bottom: 1px solid #f8fafc; }
+body { background: #cfd8dc; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: -apple-system, sans-serif; overflow: hidden; }
+.glass-container { width: 95vw; max-width: 1050px; height: 85vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+.side-panel { width: 300px; border-right: 1px solid #f1f5f9; display: flex; flex-direction: column; }
+.profile-card { padding: 35px 20px; text-align: center; }
 .avatar-ring { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); margin: 0 auto 15px; padding: 4px; }
 .avatar-main { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-.profile-card h2 { font-size: 18px; color: #1e293b; margin-bottom: 8px; }
 .bio { font-size: 13px; color: #64748b; line-height: 1.5; }
-
 .nav-section { flex: 1; padding: 20px; overflow-y: auto; }
-.panel-tag { font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 15px; letter-spacing: 1px; }
-
-.nav-btn { width: 100%; text-align: left; padding: 14px; margin-bottom: 10px; border: 1px solid #f1f5f9; border-radius: 12px; background: #fff; cursor: pointer; transition: 0.2s; display: flex; align-items: center; }
+.panel-tag { font-size: 11px; font-weight: bold; color: #cbd5e1; margin-bottom: 12px; }
+.nav-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #f1f5f9; border-radius: 10px; background: #fff; cursor: pointer; font-size: 14px; }
 .nav-btn:hover { background: #f0fdf4; border-color: var(--primary); }
-.btn-icon { color: var(--primary); margin-right: 10px; font-style: normal; }
-.btn-text { font-size: 14px; color: #334155; font-weight: 500; }
-
-.side-footer { padding: 20px; }
-.wechat-box { background: #f8fafc; padding: 12px; border-radius: 10px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-.mini-copy-btn { background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; }
-
-/* 右侧咨询区 */
-.chat-viewport { flex: 1; display: flex; flex-direction: column; background: #f8fafc; }
-.chat-header { padding: 15px 25px; background: #fff; border-bottom: 1px solid #f1f5f9; }
-.header-content { display: flex; align-items: center; gap: 12px; }
+.chat-viewport { flex: 1; display: flex; flex-direction: column; background: var(--bg); }
+.chat-header { padding: 15px 25px; background: #fff; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; }
 .avatar-mini { width: 40px; height: 40px; border-radius: 50%; }
-.header-name { font-weight: 700; font-size: 15px; color: #1e293b; }
-.status-wrap { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; }
+.status-wrap { font-size: 12px; display: flex; align-items: center; gap: 5px; color: #94a3b8; }
 .dot { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; }
-
-/* 打字状态动画 */
 .typing-active { color: var(--primary); font-weight: bold; }
-
-.messages-area { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+.messages-area { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 .msg-row { display: flex; max-width: 85%; align-items: flex-start; }
 .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
 .avatar-chat { width: 35px; height: 35px; border-radius: 50%; margin: 0 10px; flex-shrink: 0; }
-
-.bubble { padding: 14px 16px; border-radius: 18px; font-size: 15px; line-height: 1.6; }
-.bot .bubble { background: #fff; color: #334155; border-top-left-radius: 2px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.avatar-placeholder { width: 35px; margin: 0 10px; flex-shrink: 0; }
+.bubble { padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.6; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
 .user .bubble { background: var(--user-msg); color: #fff; border-top-right-radius: 2px; }
-
-/* 响应式：内涵重于形式 */
-@media (max-width: 768px) {
-    .glass-container { flex-direction: column; height: 100vh; border-radius: 0; }
-    .side-panel { width: 100%; height: auto; border-bottom: 1px solid #f1f5f9; }
-    .profile-card, .side-footer { display: none; }
-    .nav-btn-list { display: flex; overflow-x: auto; gap: 10px; padding: 10px; }
-    .nav-btn { white-space: nowrap; width: auto; margin-bottom: 0; }
-}
+.no-avatar { margin-top: -10px; }
+.no-avatar .bubble { border-top-left-radius: 18px; }
+.options-area { display: flex; flex-wrap: wrap; gap: 10px; padding-left: 55px; margin: 10px 0 20px; animation: fadeIn 0.4s; }
+.opt-click-btn { background: #fff; border: 1.5px solid var(--primary); color: var(--primary); padding: 7px 15px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; }
+.opt-click-btn:hover { background: var(--primary); color: #fff; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; } }
