@@ -7,9 +7,13 @@ async function init() {
         KNOWLEDGE_DATA = await resp.json();
         renderButtons(KNOWLEDGE_DATA);
         
+        // 分段式欢迎语，增强“内涵感”
         setTimeout(() => {
-            sendBotMessage("你好！我是秋武老师的 AI 助理。🌸<br>我已连接<b>秋武流：终局思维知识库</b>。<br>请点击左侧维度开始咨询，或直接私信下方微信号。");
-        }, 300);
+            sendBotMessage("你好，欢迎来到<b>秋武 AI 终局思维咨询室</b>。🌸");
+        }, 500);
+        setTimeout(() => {
+            sendBotMessage("在这里，我们不聊空洞的技巧，只通过“终局逻辑”拆解你的考学破绽。请点击左侧感兴趣的维度开始。");
+        }, 1200);
     } catch (e) {
         console.error("Data Load Error", e);
     }
@@ -21,16 +25,29 @@ function renderButtons(data) {
     data.forEach(item => {
         const btn = document.createElement('button');
         btn.className = 'nav-btn';
-        // 修正：将下划线替换为空格，并保留 Emoji 呈现
-        const displayName = item.intent.replace(/_/g, ' ');
-        btn.innerHTML = `<span>💡</span> ${displayName}`;
+        // 提取 Emoji 和 标题，增强可视化
+        const label = item.intent.replace(/_/g, ' ');
+        btn.innerHTML = `<i class="btn-icon">⚡</i> <span class="btn-text">${label}</span>`;
         btn.onclick = () => {
             if (isTyping) return;
-            sendUserMessage(displayName);
-            setTimeout(() => typeEffect(item.response), 400);
+            handleInquiry(label, item.response);
         };
         container.appendChild(btn);
     });
+}
+
+function handleInquiry(title, response) {
+    sendUserMessage(title);
+    
+    // 模拟思考状态
+    document.getElementById('typing-status').innerText = "秋武流逻辑生成中...";
+    document.getElementById('typing-status').classList.add('typing-active');
+    
+    setTimeout(() => {
+        typeEffect(response);
+        document.getElementById('typing-status').innerText = "在线回复中";
+        document.getElementById('typing-status').classList.remove('typing-active');
+    }, 800);
 }
 
 function sendUserMessage(text) {
@@ -79,15 +96,11 @@ function typeEffect(text) {
 
 function scrollToBottom() {
     const chat = document.getElementById('chat-container');
-    chat.scrollTop = chat.scrollHeight;
+    chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
 }
 
 function showContact() {
-    if (isTyping) return;
-    sendUserMessage("如何获取秋武老师联系方式？");
-    setTimeout(() => {
-        sendBotMessage("<b>📍 秋武老师微信号：qiuwu999</b><br>提示：添加时请务必注明“数字化名片”，以便快速通过。");
-    }, 400);
+    handleInquiry("获取秋武老师联系方式", "<b>📍 微信号：qiuwu999</b><br>请注明“数字化名片”咨询。");
 }
 
 document.addEventListener('DOMContentLoaded', init);
