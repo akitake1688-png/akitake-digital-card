@@ -1,32 +1,48 @@
 :root { --primary: #22c55e; --user-msg: #2563eb; --bg: #f8fafc; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: #cfd8dc; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: -apple-system, sans-serif; overflow: hidden; }
-.glass-container { width: 95vw; max-width: 1050px; height: 85vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
-.side-panel { width: 300px; border-right: 1px solid #f1f5f9; display: flex; flex-direction: column; }
-.profile-card { padding: 35px 20px; text-align: center; }
-.avatar-ring { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); margin: 0 auto 15px; padding: 4px; }
+body { background: #cfd8dc; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif; overflow: hidden; }
+
+.glass-container { width: 95vw; max-width: 1050px; height: 90vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+
+.side-panel { width: 280px; border-right: 1px solid #eee; display: flex; flex-direction: column; background: #fff; }
+.profile-card { padding: 30px 20px; text-align: center; }
+.avatar-ring { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary); margin: 0 auto 10px; padding: 3px; }
 .avatar-main { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-.bio { font-size: 13px; color: #64748b; line-height: 1.5; }
-.nav-section { flex: 1; padding: 20px; overflow-y: auto; }
-.panel-tag { font-size: 11px; font-weight: bold; color: #cbd5e1; margin-bottom: 12px; }
-.nav-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #f1f5f9; border-radius: 10px; background: #fff; cursor: pointer; font-size: 14px; }
-.nav-btn:hover { background: #f0fdf4; border-color: var(--primary); }
+.bio { font-size: 12px; color: #666; line-height: 1.5; }
+
+.nav-section { flex: 1; padding: 15px; overflow-y: auto; }
+.panel-tag { font-size: 10px; font-weight: bold; color: #ccc; margin-bottom: 10px; }
+.nav-btn { width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #f0f0f0; border-radius: 10px; background: #fff; cursor: pointer; font-size: 13px; }
+.nav-btn:hover { background: #f0fdf4; border-color: var(--primary); transform: translateX(5px); transition: 0.2s; }
+.side-footer { padding: 15px; }
+.contact-btn { width: 100%; padding: 12px; background: #f0fdf4; border: 1px solid var(--primary); color: var(--primary); border-radius: 10px; cursor: pointer; font-weight: bold; }
+
 .chat-viewport { flex: 1; display: flex; flex-direction: column; background: var(--bg); }
-.chat-header { padding: 15px 25px; background: #fff; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; }
-.avatar-mini { width: 40px; height: 40px; border-radius: 50%; }
-.status-wrap { font-size: 12px; display: flex; align-items: center; gap: 5px; color: #94a3b8; }
-.dot { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; }
+.chat-header { padding: 15px 25px; background: #fff; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+.avatar-mini { width: 35px; height: 35px; border-radius: 50%; }
+.header-name { font-weight: bold; font-size: 14px; }
+.status-wrap { font-size: 11px; color: #999; display: flex; align-items: center; gap: 4px; }
+.dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; }
 .typing-active { color: var(--primary); font-weight: bold; }
-.messages-area { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+
+.messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
 .msg-row { display: flex; max-width: 85%; align-items: flex-start; }
 .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
-.avatar-chat { width: 35px; height: 35px; border-radius: 50%; margin: 0 10px; flex-shrink: 0; }
-.avatar-placeholder { width: 35px; margin: 0 10px; flex-shrink: 0; }
-.bubble { padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.6; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.avatar-chat, .avatar-placeholder { width: 32px; height: 32px; margin: 0 10px; flex-shrink: 0; border-radius: 50%; }
+
+.bubble { padding: 10px 14px; border-radius: 15px; font-size: 14px; line-height: 1.6; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
 .user .bubble { background: var(--user-msg); color: #fff; border-top-right-radius: 2px; }
-.no-avatar { margin-top: -10px; }
-.no-avatar .bubble { border-top-left-radius: 18px; }
-.options-area { display: flex; flex-wrap: wrap; gap: 10px; padding-left: 55px; margin: 10px 0 20px; animation: fadeIn 0.4s; }
-.opt-click-btn { background: #fff; border: 1.5px solid var(--primary); color: var(--primary); padding: 7px 15px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; }
-.opt-click-btn:hover { background: var(--primary); color: #fff; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; } }
+.bot .bubble { border-top-left-radius: 2px; }
+.no-avatar { margin-top: -8px; }
+
+.input-action-bar { padding: 15px 20px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 10px; }
+#user-input { flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 14px; }
+#send-btn { padding: 0 20px; background: var(--primary); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+@media (max-width: 768px) {
+    .glass-container { flex-direction: column; height: 100vh; width: 100vw; border-radius: 0; }
+    .side-panel { width: 100%; height: auto; border-bottom: 1px solid #eee; }
+    .profile-card, .side-footer { display: none; }
+    .nav-btn-list { display: flex; overflow-x: auto; padding: 10px; gap: 8px; }
+    .nav-btn { white-space: nowrap; width: auto; margin: 0; padding: 8px 15px; }
+}
