@@ -1,84 +1,94 @@
-/**
- * 秋武流数字化名片引擎
- * 核心逻辑：异步加载 JSON 数据 + 动态按钮生成 + MathJax 公式渲染
- */
-
 let KNOWLEDGE_DATA = [];
 let isTyping = false;
 
-// 1. 初始化加载
 async function init() {
     try {
         const resp = await fetch('knowledge.json');
+        if (!resp.ok) throw new Error('Network response was not ok');
         KNOWLEDGE_DATA = await resp.json();
         renderButtons(KNOWLEDGE_DATA);
+        
+        // 初始欢迎语
+        sendBotMessage("你好！我是秋武老师的 AI 助理。🌸<br>关于日本考学、文书逻辑重构或面试技巧，随时问我！");
+        setTimeout(() => {
+            sendBotMessage("📚 **秋武知识库加载完成。** 您可以开始提问！", "system");
+        }, 800);
     } catch (e) {
-        console.error("数据加载失败", e);
-        document.getElementById('nav-buttons-container').innerHTML = "数据加载失败";
+        console.error("数据加载失败:", e);
+        sendBotMessage("⚠️ 知识库加载失败，请检查 knowledge.json 文件路径或格式。", "system");
     }
 }
 
-// 2. 渲染按钮
 function renderButtons(data) {
     const container = document.getElementById('nav-buttons-container');
     container.innerHTML = "";
     data.forEach(item => {
         const btn = document.createElement('button');
         btn.className = 'nav-btn';
-        // 按钮文字：取 intent 并美化（如 academic_math -> Academic Math）
-        btn.innerText = item.intent.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        btn.onclick = () => typeEffect(item.response);
+        // 为按钮添加图标
+        const icon = item.intent.includes('理科') ? '⚗️' : '🚀';
+        btn.innerHTML = `<span>${icon}</span> ${item.intent.replace(/_/g, ' ')}`;
+        
+        btn.onclick = () => {
+            if (isTyping) return;
+            sendUserMessage(item.intent.replace(/_/g, ' '));
+            setTimeout(() => typeEffect(item.response), 600);
+        };
         container.appendChild(btn);
     });
 }
 
-// 3. 搜索过滤
-document.getElementById('search-input').addEventListener('input', (e) => {
-    const val = e.target.value.toLowerCase();
-    const filtered = KNOWLEDGE_DATA.filter(item => 
-        item.keywords.some(k => k.includes(val)) || item.intent.includes(val)
-    );
-    renderButtons(filtered);
-});
-
-// 4. 打字机特效核心
-function typeEffect(text) {
-    if (isTyping) return;
-    const output = document.getElementById('output-box');
+function sendUserMessage(text) {
     const container = document.getElementById('chat-container');
-    output.innerHTML = "";
-    isTyping = true;
+    const div = document.createElement('div');
+    div.className = 'msg-row user';
+    div.innerHTML = `<div class="bubble">${text}</div>`;
+    container.appendChild(div);
+    scrollToBottom();
+}
 
-    // 正则捕获：HTML标签、MathJax公式、或单个字符
+function sendBotMessage(text, type = "bot") {
+    const container = document.getElementById('chat-container');
+    const div = document.createElement('div');
+    div.className = type === "system" ? "msg-row system" : "msg-row bot";
+    
+    if (type === "system") {
+        div.innerHTML = `<div class="sys-tip">${text}</div>`;
+    } else {
+        div.innerHTML = `<img src="profile.jpg" class="avatar-chat"><div class="bubble">${text}</div>`;
+    }
+    container.appendChild(div);
+    scrollToBottom();
+}
+
+function typeEffect(text) {
+    isTyping = true;
+    const container = document.getElementById('chat-container');
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+    row.innerHTML = `<img src="profile.jpg" class="avatar-chat"><div class="bubble"></div>`;
+    container.appendChild(row);
+    
+    const bubble = row.querySelector('.bubble');
     const tokens = text.match(/(<[^>]+>|\$[^\$]+\$|[^<$]|\n)/g) || [];
     let i = 0;
 
     const timer = setInterval(() => {
         if (i < tokens.length) {
-            if (tokens[i] === "\n") {
-                output.innerHTML += "<br>";
-            } else {
-                output.innerHTML += tokens[i];
-            }
+            bubble.innerHTML += (tokens[i] === "\n") ? "<br>" : tokens[i];
             i++;
-            container.scrollTop = container.scrollHeight;
+            scrollToBottom();
         } else {
             clearInterval(timer);
             isTyping = false;
-            // 渲染完毕后，让 MathJax 处理公式
-            if (window.MathJax) {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, output]);
-            }
+            if (window.MathJax) MathJax.Hub.Queue(["Typeset", MathJax.Hub, bubble]);
         }
     }, 25);
 }
 
-// 联系按钮特殊处理
-function showContact() {
-    typeEffect("<b>联系秋武：</b><br><br>📍 微信号：<b>qiuwu999</b><br>提示：添加请注明“数字化名片”。");
+function scrollToBottom() {
+    const chat = document.getElementById('chat-container');
+    chat.scrollTop = chat.scrollHeight;
 }
 
-// 屏蔽报错确保运行
-window.onerror = () => true;
-
-init();
+document.addEventListener('DOMContentLoaded', init);
