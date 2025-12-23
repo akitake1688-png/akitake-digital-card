@@ -2,49 +2,231 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>秋武 AI 终局思维咨询室</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            showProcessingMessages: false, messageStyle: "none",
-            tex2jax: { inlineMath: [['$','$']], processEscapes: true }
-        });
-    </script>
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>秋武逻辑 · 升学防御系统</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.92); 
+            --accent-color: #334155; /* 深石板灰 */
+            --brand-blue: #3b82f6;   /* 理科蓝 */
+            --text-main: #1e293b;                   
+            --bot-bubble: #ffffff;
+            --user-bubble: #eff6ff;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif; }
+
+        body {
+            background: var(--bg-gradient);
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .glass-container {
+            width: 95vw; height: 92vh; max-width: 1100px;
+            background: var(--glass-bg); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 24px;
+            display: flex; box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.12); overflow: hidden;
+        }
+
+        /* 侧边栏：品牌本阵 */
+        .side-panel { width: 300px; border-right: 1px solid rgba(0,0,0,0.06); background: rgba(255,255,255,0.4); padding: 40px 20px; display: flex; flex-direction: column; }
+        .avatar-ring {
+            width: 85px; height: 85px; border-radius: 50%; padding: 4px;
+            background: linear-gradient(135deg, var(--brand-blue), var(--accent-color)); margin: 0 auto 20px;
+        }
+        .avatar-main { width: 100%; height: 100%; border-radius: 50%; border: 3px solid white; background: var(--accent-color); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 26px; }
+        .profile-card h2 { font-size: 1.3rem; text-align: center; color: var(--accent-color); margin-bottom: 8px; letter-spacing: 0.1em; }
+        .bio { font-size: 0.82rem; color: #64748b; text-align: center; margin-bottom: 25px; line-height: 1.6; }
+
+        .nav-container { flex: 1; overflow-y: auto; padding-right: 5px; }
+        .nav-btn {
+            width: 100%; padding: 12px 15px; border-radius: 12px; border: none; background: transparent;
+            color: var(--text-main); text-align: left; cursor: pointer; transition: all 0.2s ease;
+            margin-bottom: 8px; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.05em;
+        }
+        .nav-btn:hover { background: rgba(59, 130, 246, 0.08); color: var(--brand-blue); transform: translateX(5px); }
+
+        /* 聊天区域 */
+        .chat-viewport { flex: 1; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.2); }
+        .messages-area { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        
+        .msg-row { display: flex; width: 100%; }
+        .msg-row.bot { justify-content: flex-start; }
+        .msg-row.user { justify-content: flex-end; }
+
+        .bubble { 
+            max-width: 85%; padding: 15px 22px; border-radius: 20px; line-height: 1.8; 
+            font-size: 0.98rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); word-break: break-word; 
+        }
+        .bot .bubble { background: var(--bot-bubble); color: var(--text-main); border: 1px solid #f1f5f9; border-bottom-left-radius: 4px; }
+        .user .bubble { background: var(--user-bubble); color: var(--text-main); border: 1px solid #dbeafe; border-bottom-right-radius: 4px; }
+
+        .input-bar { padding: 25px; background: white; border-top: 1px solid #f1f5f9; display: flex; gap: 15px; }
+        #user-input { flex: 1; padding: 14px 25px; border-radius: 30px; border: 1px solid #e2e8f0; outline: none; transition: 0.3s; font-size: 1rem; background: #f8fafc; }
+        #user-input:focus { border-color: var(--brand-blue); background: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        #send-btn { padding: 0 28px; border-radius: 30px; background: var(--accent-color); color: white; cursor: pointer; border: none; font-weight: 600; transition: 0.3s; }
+        #send-btn:hover { background: var(--brand-blue); transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .side-panel { display: none; }
+            .glass-container { height: 98vh; width: 98vw; }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
 </head>
 <body>
-    <div class="glass-container">
-        <aside class="side-panel">
-            <div class="profile-card">
-                <div class="avatar-ring"><img src="profile.jpg" class="avatar-main" onerror="this.src='https://via.placeholder.com/150?text=Q'"></div>
-                <h2>东大日本秋武老师</h2>
-                <p class="bio">文理融合 · 终局思维<br>重构你的考学逻辑</p>
-            </div>
-            <div class="nav-section">
-                <div class="panel-tag">Logic Engine | 维度</div>
-                <div id="nav-buttons-container"></div>
-            </div>
-            <div class="side-footer">
-                <button class="contact-btn" onclick="showContact()">WeChat: qiuwu999</button>
-            </div>
-        </aside>
 
-        <main class="chat-viewport">
-            <header class="chat-header">
-                <img src="profile.jpg" class="avatar-mini" onerror="this.src='https://via.placeholder.com/100?text=AI'">
-                <div class="header-info">
-                    <span class="header-name">秋武 AI 咨询助理</span>
-                    <div class="status-wrap"><span class="dot"></span><span id="typing-status">在线</span></div>
-                </div>
-            </header>
-            <div id="chat-container" class="messages-area"></div>
-            <div class="input-action-bar">
-                <input type="text" id="user-input" placeholder="输入关键词（酯化、面试、签证）..." autocomplete="off">
-                <button id="send-btn">咨询</button>
-            </div>
-        </main>
+<div class="glass-container">
+    <div class="side-panel">
+        <div class="avatar-ring"><div class="avatar-main">秋</div></div>
+        <div class="profile-card">
+            <h2>秋武逻辑</h2>
+            <p class="bio">东大文理交叉背景<br>生态/生物/环境本阵守护<br>升学防御体系架构师</p>
+        </div>
+        <div class="nav-container" id="nav-btns"></div>
     </div>
-    <script src="script.js"></script>
+
+    <div class="chat-viewport">
+        <div class="messages-area" id="chat-container">
+            <div class="msg-row bot">
+                <div class="bubble">欢迎访问<b>『秋武逻辑 · 升学防御系统』</b>。<br>申请的本质是“逻辑采样”，请告知您的需求领域。</div>
+            </div>
+        </div>
+        <div class="input-bar">
+            <input type="text" id="user-input" placeholder="输入关键词 (如：RP, 面试, 生态)..." onkeypress="if(event.keyCode==13) handleSearch()">
+            <button id="send-btn" onclick="handleSearch()">发送</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const KNOWLEDGE_DATA = [
+        {
+            "intent": "01_修士研究生",
+            "nav_btn": "修士/研究生/内诺",
+            "keywords": ["修士", "硕士", "研究生", "预科", "大学院", "考研", "内诺", "套磁", "直考", "研旧生", "预科生"],
+            "response": "<b>【大学院：文理交叉的定制化破局】</b><br><br>申请的本质不是投递，而是“逻辑对等”。<br>秋武老师亲自打磨每一句<b>“一问一答式面试草稿”</b>。与其盲目套磁，不如先缝补研究计划书的逻辑漏洞。确保你在教授面前不仅是合格，更是不可替代。"
+        },
+        {
+            "intent": "02_本阵专项",
+            "nav_btn": "生态/生物/本阵",
+            "keywords": ["生态专业", "生态学", "生物专业", "生物学", "理科", "化学", "本阵", "交叉专业", "环境", "Methodology"],
+            "response": "<b>【本阵专项：生态与理科的深度渗透】</b><br><br>这正是秋武老师的专业阵地（东大交叉学科/理科背景）。我们在<b>研究课题逻辑、实验设计及 Methodology 打磨</b>上，提供教授视角的精准修正。<br><br><b>公式逻辑：</b> $$R-COOH + R'-OH \\xrightarrow[H_2SO_4]{\\Delta} R-COOR' + H_2O$$<br>理科面试最忌讳“不确定性”，我们要把逻辑压榨到丝滑。"
+        },
+        {
+            "intent": "03_文书面试",
+            "nav_btn": "RP/面试/补缝",
+            "keywords": ["研究计划书", "RP", "志望理由书", "PS", "志气望", "动机书", "面试", "答辩", "逻辑补缝", "一问一答"],
+            "response": "<b>【文书与面试：防御体系的整体建构】</b><br><br>辅导重点在于建立 $H_0/H_1$ 的假设闭环。文书是面试的预演，面试是文书的辩护。我们会根据你的日语极限，定制不做“背不下来的空话”的面试草案。"
+        },
+        {
+            "intent": "04_EJU小论文",
+            "nav_btn": "EJU/小论文写作",
+            "keywords": ["EJU", "留考", "记述", "记述题", "小论文", "写作辅导", "记述逻辑"],
+            "response": "<b>【学部：逻辑采样而非文化课培训】</b><br><br>专注于<b>“日文小论文与记述题的写作逻辑”</b>。由于写作辅导极度依赖现有水平，建议与秋武老师本人细谈后决定方案。秋武老师不教授 EJU 数理化生等文化课基础。"
+        },
+        {
+            "intent": "05_编入学",
+            "nav_btn": "大学编入/插班",
+            "keywords": ["编入学", "编入", "大学编入", "插班", "便入学", "便入"],
+            "response": "<b>【编入学：跨学科转换的精密契合】</b><br><br>编入面试官最关注“即战力”。秋武老师针对编入考试中关键的志望理由书与面试答辩进行<b>逻辑补缝</b>。即使是“便入学”这类搜索，核心也在于定制化的一问一答草稿。"
+        },
+        {
+            "intent": "06_异文化",
+            "nav_btn": "读空气/生存策略",
+            "keywords": ["读空气", "异文化", "共生", "距离的艺术", "社会", "生存策略"],
+            "response": "<b>【异文化：日本社会的生存逻辑】</b><br><br>理解日本教育体制中“读空气”的隐形规则。留学不只是升学，更是生态位的重塑。这会让你的面试展现出超越同龄人的心理成熟度。"
+        },
+        {
+            "intent": "07_艺术美术",
+            "nav_btn": "美术/艺术/作品集",
+            "keywords": ["美术", "艺术", "作品集", "画室", "设计", "艺术类"],
+            "response": "<b>【艺术类：辅导逻辑，不辅导画笔】</b><br><br>我们不辅导任何作品集制作或美术实技。只负责<b>“艺术逻辑的可视化辩护”</b>。即：如何通过面试答辩，用学术逻辑向教授阐述你的创作动机。"
+        },
+        {
+            "intent": "08_品牌联系",
+            "nav_btn": "联系秋武/微信号",
+            "keywords": ["秋武", "费用", "微信", "咨询", "多少钱", "有趣", "价格"],
+            "response": "<b>【秋武逻辑：真实、高效、一针见血】</b><br><br>我们提供高价值的逻辑重构服务。<br><b>联系微信：qiuwu999</b><br><br>秋武老师虽然不好吃，但会陪你吃透最难的逻辑！😊"
+        }
+    ];
+
+    let isTyping = false;
+    const navBox = document.getElementById('nav-btns');
+    KNOWLEDGE_DATA.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn';
+        btn.innerText = item.nav_btn;
+        btn.onclick = () => { if(!isTyping) typeEffect(item.response); };
+        navBox.appendChild(btn);
+    });
+
+    async function handleSearch() {
+        const input = document.getElementById('user-input');
+        const query = input.value.trim().toLowerCase();
+        if (!query || isTyping) return;
+        addMessage(input.value, 'user');
+        input.value = "";
+        const match = KNOWLEDGE_DATA.find(item => 
+            item.keywords.some(k => query.includes(k.toLowerCase()) || k.toLowerCase().includes(query))
+        );
+        if (match) { await typeEffect(match.response); } 
+        else { await typeEffect("该维度的逻辑尚未录入库。建议输入核心领域（修士、生态、编入），或建立连接：<b>qiuwu999</b>"); }
+    }
+
+    function addMessage(text, role) {
+        const chat = document.getElementById('chat-container');
+        const row = document.createElement('div');
+        row.className = `msg-row ${role}`;
+        row.innerHTML = `<div class="bubble">${text}</div>`;
+        chat.appendChild(row);
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+    function typeEffect(text) {
+        return new Promise(resolve => {
+            isTyping = true;
+            const chat = document.getElementById('chat-container');
+            const row = document.createElement('div');
+            row.className = 'msg-row bot';
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            row.appendChild(bubble);
+            chat.appendChild(row);
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    if (text[i] === '<') {
+                        let end = text.indexOf('>', i);
+                        bubble.innerHTML += text.substring(i, end + 1);
+                        i = end + 1;
+                    } else {
+                        bubble.innerHTML += text[i];
+                        i++;
+                    }
+                    chat.scrollTop = chat.scrollHeight;
+                } else {
+                    clearInterval(interval);
+                    isTyping = false;
+                    // 健壮性渲染 MathJax
+                    if (window.MathJax && MathJax.typesetPromise) {
+                        MathJax.typesetPromise([bubble]).catch(e => console.log("MathJax error:", e));
+                    }
+                    resolve();
+                }
+            }, 12);
+        });
+    }
+</script>
 </body>
 </html>
