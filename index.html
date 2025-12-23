@@ -3,62 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武逻辑 · 升学防御系统 V15.0</title>
-    
+    <title>秋武逻辑 · 升学防御系统 V15.2</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
-        :root { --accent: #3b82f6; --glass: rgba(255, 255, 255, 0.9); }
-        body { background: #f0f4f8; height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; font-family: "PingFang SC", sans-serif; }
-        .glass-container { width: 95vw; height: 92vh; max-width: 1100px; background: var(--glass); backdrop-filter: blur(20px); border-radius: 24px; display: flex; box-shadow: 0 30px 60px rgba(0,0,0,0.12); overflow: hidden; border: 1px solid white; }
-        
-        .side-panel { width: 280px; border-right: 1px solid #e2e8f0; padding: 30px 20px; display: flex; flex-direction: column; background: rgba(255,255,255,0.4); }
-        .avatar-ring { width: 90px; height: 90px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--accent), #1d4ed8); margin: 0 auto 15px; }
-        .avatar-main { width: 100%; height: 100%; border-radius: 50%; border: 2px solid white; object-fit: cover; }
-        .profile-card h2 { text-align: center; font-size: 1.25rem; color: #1e293b; margin: 0; letter-spacing: 1px; }
-
+        :root { --accent: #3b82f6; --bg: #f1f5f9; }
+        body { background: var(--bg); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; font-family: "PingFang SC", sans-serif; overflow: hidden; }
+        .glass-container { width: 95vw; height: 92vh; max-width: 1100px; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); border-radius: 24px; display: flex; box-shadow: 0 30px 60px rgba(0,0,0,0.1); border: 1px solid white; overflow: hidden; }
+        .side-panel { width: 280px; border-right: 1px solid #e2e8f0; padding: 30px 20px; display: flex; flex-direction: column; background: rgba(255,255,255,0.5); }
+        .avatar-main { width: 85px; height: 85px; border-radius: 50%; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.08); margin: 0 auto 15px; display: block; object-fit: cover; }
         .chat-viewport { flex: 1; display: flex; flex-direction: column; }
-        .messages-area { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; background: rgba(255,255,255,0.2); }
-        
-        .msg-row { display: flex; width: 100%; }
+        .messages-area { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .msg-row { display: flex; width: 100%; animation: fadeIn 0.3s ease; }
         .msg-row.user { justify-content: flex-end; }
-        .avatar-chat { width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; flex-shrink: 0; }
-        .bubble { max-width: 80%; padding: 14px 18px; border-radius: 18px; font-size: 0.96rem; line-height: 1.7; word-break: break-word; }
-        .bot .bubble { background: white; border: 1px solid #f1f5f9; border-top-left-radius: 4px; }
+        .avatar-chat { width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; }
+        .bubble { max-width: 80%; padding: 14px 20px; border-radius: 20px; font-size: 0.98rem; line-height: 1.8; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .bot .bubble { background: white; border-top-left-radius: 4px; border: 1px solid #f1f5f9; }
         .user .bubble { background: var(--accent); color: white; border-top-right-radius: 4px; }
-
-        .input-bar { padding: 20px; background: white; border-top: 1px solid #f1f5f9; display: flex; gap: 12px; }
-        #user-input { flex: 1; padding: 12px 20px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; }
-        #send-btn { padding: 0 25px; border-radius: 12px; background: #1e293b; color: white; cursor: pointer; border: none; font-weight: 600; }
+        .input-bar { padding: 25px; background: white; border-top: 1px solid #f1f5f9; display: flex; gap: 15px; }
+        #user-input { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 20px; outline: none; }
+        #send-btn { padding: 0 30px; border-radius: 12px; background: #1e293b; color: white; cursor: pointer; border: none; font-weight: 600; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 768px) { .side-panel { display: none; } }
     </style>
 </head>
 <body>
-
-<div class="glass-container">
-    <div class="side-panel">
-        <div class="avatar-ring">
-            <img src="profile.jpg" class="avatar-main" onerror="this.src='https://via.placeholder.com/100'">
+    <div class="glass-container">
+        <div class="side-panel">
+            <img src="profile.jpg" class="avatar-main" onerror="this.src='https://via.placeholder.com/100?text=Q'">
+            <h2 style="text-align:center; font-size:1.2rem; margin:10px 0;">秋武逻辑</h2>
+            <p style="font-size:0.8rem; color:#64748b; text-align:center;">东大文理交叉背景<br>升学防御体系 V15.2</p>
+            <div id="nav-btns" style="margin-top:20px;">
+                <button onclick="document.getElementById('user-input').value='理科本阵';handleAction()" style="width:100%; padding:12px; margin-bottom:10px; border:none; background:rgba(59,130,246,0.1); color:var(--accent); border-radius:10px; cursor:pointer;">⚡ 理科本阵</button>
+                <button onclick="document.getElementById('user-input').value='研究计划书';handleAction()" style="width:100%; padding:12px; margin-bottom:10px; border:none; background:rgba(59,130,246,0.1); color:var(--accent); border-radius:10px; cursor:pointer;">⚡ 文书防御</button>
+            </div>
         </div>
-        <div class="profile-card">
-            <h2>秋武逻辑</h2>
-            <p style="text-align:center; font-size:0.8rem; color:#64748b; margin-top:10px;">本阵守护者<br>升学防御体系 V15.0</p>
-        </div>
-        <div id="nav-btns-container" style="margin-top:20px;">
-            <button class="nav-btn" onclick="document.getElementById('user-input').value='修士';handleUserInput()" style="width:100%; padding:10px; border:none; background:transparent; text-align:left; cursor:pointer; color:#1e293b;">⚡ 修士/研究生</button>
-            <button class="nav-btn" onclick="document.getElementById('user-input').value='研究计划书';handleUserInput()" style="width:100%; padding:10px; border:none; background:transparent; text-align:left; cursor:pointer; color:#1e293b;">⚡ RP/文书辅导</button>
-        </div>
-    </div>
-    <div class="chat-viewport">
-        <div class="messages-area" id="chat-container"></div>
-        <div class="input-bar">
-            <input type="text" id="user-input" placeholder="输入关键词 (RP, 读空气, 本阵)..." onkeypress="if(event.keyCode==13) handleUserInput()">
-            <button id="send-btn" onclick="handleUserInput()">发送</button>
+        <div class="chat-viewport">
+            <div class="messages-area" id="chat-container"></div>
+            <div class="input-bar">
+                <input type="text" id="user-input" placeholder="输入关键词，开启逻辑对齐..." onkeypress="if(event.keyCode==13) handleAction()">
+                <button id="send-btn" onclick="handleAction()">发送</button>
+            </div>
         </div>
     </div>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
