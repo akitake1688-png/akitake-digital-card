@@ -1,121 +1,119 @@
-let KNOWLEDGE_DATA = [];
-let isTyping = false; 
+/**
+ * 秋武逻辑数字分身驱动引擎 V15.0
+ * 协同逻辑：加权搜索 + 分段渲染 + 头像联动
+ */
 
-async function init() {
+let knowledgeData = [];
+let isTyping = false;
+
+// 1. 系统协同初始化
+async function initSystem() {
     try {
-        const resp = await fetch('./knowledge.json'); 
-        if (!resp.ok) throw new Error("JSON path error");
-        KNOWLEDGE_DATA = await resp.json();
-        renderButtons(KNOWLEDGE_DATA);
-        await wait(500);
-        await typeEffect("你好！我是秋武老师的 AI 助理。🌸", true);
-        await wait(600);
-        await typeEffect("考学逻辑库已全量加载。请点击左侧维度或输入关键词咨询。", false);
-    } catch (e) {
-        console.error("Init Error:", e);
-        const chat = document.getElementById('chat-container');
-        if (chat) chat.innerHTML = `<div style="padding:20px; color:#ef4444;">[系统错误] 无法连接到逻辑大脑。</div>`;
+        const response = await fetch('knowledge.json');
+        knowledgeData = await response.json();
+        console.log("协同库加载成功，权重初始化完毕。");
+        welcomeMessage();
+    } catch (error) {
+        console.error("协同错误：无法读取逻辑库", error);
     }
 }
 
-function renderButtons(data) {
-    const container = document.getElementById('nav-buttons-container');
-    if (!container) return;
-    container.innerHTML = "";
-    data.forEach(item => {
-        const btn = document.createElement('button');
-        btn.className = 'nav-btn';
-        const label = item.nav_btn || item.intent.split('_').pop();
-        btn.innerHTML = `<span>⚡</span> ${label}`;
-        btn.onclick = () => {
-            if (isTyping) return; 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            handleInquiry(item);
-        };
-        container.appendChild(btn);
+// 2. 加权搜索排位算法 (权重决策中心)
+function weightedSearch(query) {
+    const q = query.toLowerCase();
+    let bestMatch = null;
+    let maxScore = -1;
+
+    knowledgeData.forEach(item => {
+        let score = 0;
+        // 意图匹配 (权重最高)
+        if (item.intent.toLowerCase().includes(q)) score += 100;
+        // 关键词权重分级匹配
+        item.keywords.forEach(key => {
+            const k = key.toLowerCase();
+            if (q === k) score += (item.priority || 50);
+            else if (q.includes(k)) score += 20;
+        });
+
+        if (score > maxScore) {
+            maxScore = score;
+            bestMatch = item;
+        }
     });
+
+    return maxScore > 10 ? bestMatch : null;
 }
 
-async function handleSearch() {
+// 3. 协同消息发送 (包含用户与机器人逻辑)
+async function handleUserInput() {
     const input = document.getElementById('user-input');
-    const query = input.value.trim().toLowerCase();
+    const query = input.value.trim();
     if (!query || isTyping) return;
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    sendUserMessage(input.value.trim());
+
+    displayMessage(query, 'user');
     input.value = "";
-    const match = KNOWLEDGE_DATA.find(item => 
-        item.intent.toLowerCase().includes(query) || 
-        (item.keywords && item.keywords.some(k => query.includes(k.toLowerCase()))) ||
-        (item.response.includes(query) && query.length > 1)
-    );
-    if (match) { await handleInquiry(match, true); } 
-    else { await typeEffect("该维度尚未对齐。建议输入关键词，或咨询：<b>qiuwu999</b>", true); }
+
+    const match = weightedSearch(query);
+    if (match) {
+        await renderResponse(match.response);
+    } else {
+        await renderResponse("该维度尚未对齐。建议输入：<b>RP、修士、本阵</b> 或咨询：<b>qiuwu999</b>");
+    }
 }
 
-async function handleInquiry(item, isFromSearch = false) {
-    if (isTyping || !item) return;
-    if (!isFromSearch) { sendUserMessage(item.nav_btn || item.intent.split('_').pop()); }
-    const status = document.getElementById('typing-status');
-    status.innerText = "正在分析逻辑...";
-    const segments = item.response.split('[BREAK]').map(s => s.trim());
+// 4. 分段节奏渲染 (实现“有温度”的打字机)
+async function renderResponse(text) {
+    const segments = text.split('[BREAK]').map(s => s.trim());
     for (let i = 0; i < segments.length; i++) {
         await typeEffect(segments[i], i === 0);
-        await wait(600); 
+        await new Promise(r => setTimeout(r, 600)); // 呼吸停顿感
     }
-    status.innerText = "在线";
 }
 
-function typeEffect(text, showAvatar = true) {
+function typeEffect(text, showAvatar) {
     return new Promise(resolve => {
         isTyping = true;
         const chat = document.getElementById('chat-container');
         const row = document.createElement('div');
-        row.className = `msg-row bot ${showAvatar ? '' : 'no-avatar'}`;
-        row.innerHTML = `${showAvatar ? '<img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://via.placeholder.com/100?text=Q\'">' : '<div class="avatar-placeholder"></div>'}<div class="bubble"></div>`;
+        row.className = 'msg-row bot';
+        // 协同渲染：仅首段显示头像
+        row.innerHTML = `${showAvatar ? '<img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://via.placeholder.com/40\'">' : '<div style="width:52px"></div>'}<div class="bubble"></div>`;
         chat.appendChild(row);
+        
         const bubble = row.querySelector('.bubble');
-        let i = 0;
+        let charIndex = 0;
         const interval = setInterval(() => {
-            if (i < text.length) {
-                if (text[i] === '<') { 
-                    let end = text.indexOf('>', i);
-                    bubble.innerHTML += text.substring(i, end + 1);
-                    i = end + 1;
+            if (charIndex < text.length) {
+                if (text[charIndex] === '<') {
+                    let tagEnd = text.indexOf('>', charIndex);
+                    bubble.innerHTML += text.substring(charIndex, tagEnd + 1);
+                    charIndex = tagEnd + 1;
                 } else {
-                    bubble.innerHTML += text[i];
-                    i++;
+                    bubble.innerHTML += text[charIndex];
+                    charIndex++;
                 }
                 chat.scrollTop = chat.scrollHeight;
             } else {
                 clearInterval(interval);
                 isTyping = false;
-                if (window.MathJax) { MathJax.Hub.Queue(["Typeset", MathJax.Hub, bubble]); }
+                if (window.MathJax) MathJax.typesetPromise([bubble]);
                 resolve();
             }
-        }, 15);
+        }, 12);
     });
 }
 
-function sendUserMessage(text) {
+function displayMessage(text, role) {
     const chat = document.getElementById('chat-container');
-    const msg = document.createElement('div');
-    msg.className = 'msg-row user';
-    msg.innerHTML = `<div class="bubble">${text}</div>`;
-    chat.appendChild(msg);
+    const row = document.createElement('div');
+    row.className = `msg-row ${role}`;
+    row.innerHTML = `<div class="bubble">${text}</div>`;
+    chat.appendChild(row);
     chat.scrollTop = chat.scrollHeight;
 }
 
-const wait = (ms) => new Promise(res => setTimeout(res, ms));
-
-function showContact() {
-    if (isTyping) return;
-    handleInquiry({
-        nav_btn: "联系秋武",
-        response: "<b>【秋武老师联系方式】</b>[BREAK]💬 微信号：<b>qiuwu999</b> [BREAK]请注明您的咨询领域（文理/面试/生存策略）。"
-    });
+async function welcomeMessage() {
+    await renderResponse("你好，我是秋武老师的数字助理。🌸 [BREAK] 升学防御体系 V15.0 已就绪，我会为你提供一针见血的逻辑补缝。 [BREAK] 请点击左侧或直接提问。");
 }
 
-document.getElementById('send-btn').onclick = handleSearch;
-document.getElementById('user-input').onkeydown = (e) => { if(e.key === 'Enter') handleSearch(); };
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', initSystem);
