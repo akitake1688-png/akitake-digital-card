@@ -1,119 +1,122 @@
 /**
- * 秋武逻辑数字分身驱动引擎 V15.0
- * 协同逻辑：加权搜索 + 分段渲染 + 头像联动
+ * 秋武逻辑数字分身引擎 V15.2
+ * 协同机制：加权语义召回 + 分段节奏控制 + 容错渲染
  */
 
-let knowledgeData = [];
-let isTyping = false;
+let knowledgeBase = [];
+let isProcessing = false;
 
-// 1. 系统协同初始化
-async function initSystem() {
+// 初始化系统协同
+async function startSystem() {
     try {
-        const response = await fetch('knowledge.json');
-        knowledgeData = await response.json();
-        console.log("协同库加载成功，权重初始化完毕。");
-        welcomeMessage();
-    } catch (error) {
-        console.error("协同错误：无法读取逻辑库", error);
+        const res = await fetch('knowledge.json');
+        if (!res.ok) throw new Error("JSON数据未找到");
+        knowledgeBase = await res.json();
+        console.log("秋武逻辑：V15.2 数据层协同完毕。");
+        sendBotSignal("你好！我是秋武老师的数字助理。🌸 [BREAK] 升学防御体系已就绪。我会为你提供一针见血的逻辑补缝。 [BREAK] 请点击左侧或输入关键词，如：<b>RP、理科本阵、读空气</b>。");
+    } catch (e) {
+        console.error("系统故障：", e);
+        // 安全兜底逻辑
+        knowledgeBase = [{ "intent": "error", "keywords": [], "response": "系统逻辑库加载异常，请检查 JSON 路径。" }];
     }
 }
 
-// 2. 加权搜索排位算法 (权重决策中心)
-function weightedSearch(query) {
+// 核心加权搜索算法 (实现权重排位)
+function getSynergyMatch(query) {
     const q = query.toLowerCase();
-    let bestMatch = null;
-    let maxScore = -1;
+    let winner = null;
+    let topScore = -1;
 
-    knowledgeData.forEach(item => {
+    knowledgeBase.forEach(item => {
         let score = 0;
-        // 意图匹配 (权重最高)
-        if (item.intent.toLowerCase().includes(q)) score += 100;
-        // 关键词权重分级匹配
+        // 意图深度匹配
+        if (q.includes(item.intent.toLowerCase())) score += 80;
+        // 关键词权重加权
         item.keywords.forEach(key => {
             const k = key.toLowerCase();
             if (q === k) score += (item.priority || 50);
-            else if (q.includes(k)) score += 20;
+            else if (q.includes(k)) score += 25;
         });
 
-        if (score > maxScore) {
-            maxScore = score;
-            bestMatch = item;
+        if (score > topScore) {
+            topScore = score;
+            winner = item;
         }
     });
 
-    return maxScore > 10 ? bestMatch : null;
+    return (topScore > 15) ? winner : null;
 }
 
-// 3. 协同消息发送 (包含用户与机器人逻辑)
-async function handleUserInput() {
+async function handleAction() {
     const input = document.getElementById('user-input');
-    const query = input.value.trim();
-    if (!query || isTyping) return;
+    const text = input.value.trim();
+    if (!text || isProcessing) return;
 
-    displayMessage(query, 'user');
+    postMessage(text, 'user');
     input.value = "";
 
-    const match = weightedSearch(query);
+    const match = getSynergyMatch(text);
     if (match) {
-        await renderResponse(match.response);
+        await renderLogicalChain(match.response);
     } else {
-        await renderResponse("该维度尚未对齐。建议输入：<b>RP、修士、本阵</b> 或咨询：<b>qiuwu999</b>");
+        await renderLogicalChain("该维度尚未对齐。建议输入核心词 (RP, 修士, 微信) 或直接咨询：<b>qiuwu999</b>");
     }
 }
 
-// 4. 分段节奏渲染 (实现“有温度”的打字机)
-async function renderResponse(text) {
-    const segments = text.split('[BREAK]').map(s => s.trim());
+async function renderLogicalChain(fullText) {
+    const segments = fullText.split('[BREAK]').map(s => s.trim());
     for (let i = 0; i < segments.length; i++) {
-        await typeEffect(segments[i], i === 0);
-        await new Promise(r => setTimeout(r, 600)); // 呼吸停顿感
+        await typeWriter(segments[i], i === 0);
+        await new Promise(r => setTimeout(r, 650)); // 模拟思考停顿
     }
 }
 
-function typeEffect(text, showAvatar) {
+function typeWriter(content, isFirst) {
     return new Promise(resolve => {
-        isTyping = true;
-        const chat = document.getElementById('chat-container');
+        isProcessing = true;
+        const container = document.getElementById('chat-container');
         const row = document.createElement('div');
         row.className = 'msg-row bot';
-        // 协同渲染：仅首段显示头像
-        row.innerHTML = `${showAvatar ? '<img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://via.placeholder.com/40\'">' : '<div style="width:52px"></div>'}<div class="bubble"></div>`;
-        chat.appendChild(row);
+        
+        row.innerHTML = `
+            ${isFirst ? '<img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://via.placeholder.com/40?text=Q\'">' : '<div style="width:52px"></div>'}
+            <div class="bubble"></div>
+        `;
+        container.appendChild(row);
         
         const bubble = row.querySelector('.bubble');
-        let charIndex = 0;
-        const interval = setInterval(() => {
-            if (charIndex < text.length) {
-                if (text[charIndex] === '<') {
-                    let tagEnd = text.indexOf('>', charIndex);
-                    bubble.innerHTML += text.substring(charIndex, tagEnd + 1);
-                    charIndex = tagEnd + 1;
+        let index = 0;
+        
+        const timer = setInterval(() => {
+            if (index < content.length) {
+                if (content[index] === '<') {
+                    let end = content.indexOf('>', index);
+                    bubble.innerHTML += content.substring(index, end + 1);
+                    index = end + 1;
                 } else {
-                    bubble.innerHTML += text[charIndex];
-                    charIndex++;
+                    bubble.innerHTML += content[index];
+                    index++;
                 }
-                chat.scrollTop = chat.scrollHeight;
+                container.scrollTop = container.scrollHeight;
             } else {
-                clearInterval(interval);
-                isTyping = false;
+                clearInterval(timer);
+                isProcessing = false;
                 if (window.MathJax) MathJax.typesetPromise([bubble]);
                 resolve();
             }
-        }, 12);
+        }, 15);
     });
 }
 
-function displayMessage(text, role) {
+function postMessage(text, role) {
     const chat = document.getElementById('chat-container');
-    const row = document.createElement('div');
-    row.className = `msg-row ${role}`;
-    row.innerHTML = `<div class="bubble">${text}</div>`;
-    chat.appendChild(row);
+    const div = document.createElement('div');
+    div.className = `msg-row ${role}`;
+    div.innerHTML = `<div class="bubble">${text}</div>`;
+    chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
 
-async function welcomeMessage() {
-    await renderResponse("你好，我是秋武老师的数字助理。🌸 [BREAK] 升学防御体系 V15.0 已就绪，我会为你提供一针见血的逻辑补缝。 [BREAK] 请点击左侧或直接提问。");
-}
+function sendBotSignal(msg) { renderLogicalChain(msg); }
 
-document.addEventListener('DOMContentLoaded', initSystem);
+document.addEventListener('DOMContentLoaded', startSystem);
