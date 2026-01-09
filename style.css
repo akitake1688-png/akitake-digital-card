@@ -1,8 +1,8 @@
 :root {
-    --accent-blue: #154391;       
-    --accent-light: #E3F2FD;      
-    --bg-mint: #F1F8E9;           
-    --sidebar-bg: #F9FFF0;        
+    --accent-blue: #154391;    /* 核心：东大理科深蓝 */
+    --accent-light: #E3F2FD;   /* 交互：高亮淡蓝 */
+    --bg-mint: #F1F8E9;        /* 背景：清爽薄荷绿 */
+    --sidebar-bg: #F9FFF0;     /* 侧边：呼吸感浅色 */
     --text-main: #2C3E50;
     --text-sub: #546E7A;
     --glass-border: rgba(255, 255, 255, 0.8);
@@ -147,8 +147,6 @@ body {
 
 .chat-viewport { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.4); }
 
-.header-mobile { display: none; padding: 15px; background: white; text-align: center; font-weight: bold; border-bottom: 1px solid #eee; }
-
 .messages-area {
     flex: 1;
     padding: 30px 40px;
@@ -225,7 +223,6 @@ body {
 
 @media (max-width: 768px) {
     .side-panel { display: none; }
-    .header-mobile { display: block; }
     .glass-container { width: 100vw; height: 100vh; border-radius: 0; border: none; }
     .bubble { max-width: 88%; }
 }
