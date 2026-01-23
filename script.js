@@ -3,9 +3,17 @@
  * 核心：UI仪式分析 | 普适模板路由 | 加密存储 | 零风险
  */
 
+// 全局初始化chatHistory（修复Cannot access before initialization）
+let chatHistory = [];
+try {
+    chatHistory = JSON.parse(decodeData(localStorage.getItem('chatHistory'))) || [];
+} catch (e) {
+    console.error("Chat history load error:", e);
+    chatHistory = [];
+}
+
 let knowledgeBase = [];
 let isProcessing = false;
-let chatHistory = JSON.parse(decodeData(localStorage.getItem('chatHistory'))) || [];
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -42,7 +50,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         // 绑定上传事件
-        document.getElementById('file-upload').addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
+        document.getElementById('file-upload').addEventListener('change', (e) => {
+            try {
+                handleFileUpload(e.target.files[0]);
+            } catch (error) {
+                console.error("File upload error:", error);
+            }
+        });
 
         // 绑定发送按钮
         document.getElementById('send-btn').addEventListener('click', handleAction);
@@ -146,7 +160,14 @@ function forceMathJax(attempt = 0) {
 
 // 加密/解密存储（处理中文）
 function encodeData(data) { return btoa(unescape(encodeURIComponent(data))); }
-function decodeData(data) { return decodeURIComponent(escape(atob(data))); }
+function decodeData(data) {
+    try {
+        return decodeURIComponent(escape(atob(data)));
+    } catch (e) {
+        console.error("Decode error:", e);
+        return '';
+    }
+}
 
 function saveHistory(text, role) {
     try {
