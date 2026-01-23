@@ -26,22 +26,22 @@
             </div>
             <hr class="divider">
             <div id="nav-btns">
-                <button class="nav-btn" onclick="triggerPreset('推荐语校私塾')">
+                <button class="nav-btn" data-preset="推荐语校私塾">
                     🏢 语校/私塾推荐 (零成本辅导)
                 </button>
-                <button class="nav-btn" onclick="triggerPreset('旧帝国大学面试')">
+                <button class="nav-btn" data-preset="旧帝国大学面试">
                     ⚖️ 名校面试博弈 (一问多层)
                 </button>
-                <button class="nav-btn" onclick="triggerPreset('手术刀RP重构')">
+                <button class="nav-btn" data-preset="手术刀RP重构">
                     ✍️ 文书灵魂重构 (埋伏笔策略)
                 </button>
-                <button class="nav-btn" onclick="triggerPreset('签证与生存')">
+                <button class="nav-btn" data-preset="签证与生存">
                     🛡️ 签证/生存/读空气
                 </button>
-                <button class="nav-btn" onclick="document.getElementById('file-upload').click()">
+                <button class="nav-btn" id="upload-btn">
                     📂 上传数据 (哨兵分析)
                 </button>
-                <input type="file" id="file-upload" style="display:none;" onchange="handleFileUpload(this.files[0])">
+                <input type="file" id="file-upload" style="display:none;">
             </div>
             <div class="footer-info">
                 <p>Private Domain: <b>qiuwu999</b></p>
@@ -53,7 +53,7 @@
             <div class="input-bar">
                 <input type="text" id="user-input" placeholder="输入关键词 (如: 面试、内诺)..." onkeypress="if(event.keyCode==13) handleAction()">
                 <button id="clear-history" class="clear-btn">🧹 哨兵清除</button>
-                <button id="send-btn" onclick="handleAction()">发送</button>
+                <button id="send-btn">发送</button>
             </div>
         </div>
     </div>
