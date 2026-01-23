@@ -1,21 +1,36 @@
 /**
- * 秋武逻辑数字分身引擎 V16.2 / V32.0 融合版
- * 核心：逻辑解耦 | 物理隔离 | 异常熔断保护
+ * 秋武逻辑数字分身引擎 V37.0 (Sentinel Nexus Evolution Core)
+ * 核心：UI仪式分析 | 普适模板路由 | 加密存储 | 零风险
  */
 
 let knowledgeBase = [];
 let isProcessing = false;
+let chatHistory = JSON.parse(decodeData(localStorage.getItem('chatHistory'))) || [];
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const res = await fetch('knowledge.json');
         if (!res.ok) throw new Error("Database Logic Error");
         knowledgeBase = await res.json();
-        console.log("秋武逻辑：V32.0 语义模型已挂载。");
-        
-        setTimeout(() => {
-            renderLogicalChain("<b>System Online.</b> [BREAK] 很多升学问题，不是你不努力，而是逻辑被错用。 [BREAK] 点击左侧或直接咨询，我们开始<b>手术刀级</b>逻辑重构。");
-        }, 600);
+        console.log("秋武逻辑：V37.0 语义模型已挂载。");
+
+        // 恢复历史并强制渲染
+        if (chatHistory.length > 0) {
+            chatHistory.forEach(msg => restoreMessage(msg.text, msg.role));
+            forceMathJax(0); // 启动计数防护
+        } else {
+            setTimeout(() => {
+                renderLogicalChain("<b>System Online. V37.0</b> [BREAK] 融合哨兵逻辑。 [BREAK] 点击左侧或输入关键词开始重构。");
+            }, 600);
+        }
+
+        // 清除按钮事件
+        document.getElementById('clear-history').addEventListener('click', () => {
+            if (confirm("确认抹除所有逻辑痕迹？此操作不可逆。")) {
+                clearSentinelHistory();
+                postMessage("哨兵已彻底粉碎逻辑痕迹。", "bot");
+            }
+        });
     } catch (e) {
         console.error("System Crash:", e);
         postMessage("系统逻辑库加载异常，请检查 knowledge.json。", "bot");
@@ -34,14 +49,13 @@ function getSynergyMatch(query) {
     let topScore = -1;
 
     knowledgeBase.forEach(item => {
-        if (item.intent === "fallback") return; 
+        if (item.intent === "fallback") return;
         let score = 0;
         if (q.includes(item.intent.toLowerCase())) score += 80;
         
         item.keywords.forEach(key => {
             const k = key.toLowerCase();
-            if (q === k) score += (item.priority || 50);
-            else if (q.includes(k)) score += 20;
+            if (q.includes(k)) score += (item.priority || 50);
         });
 
         if (score > topScore) {
@@ -59,6 +73,8 @@ async function handleAction() {
     if (!text || isProcessing) return;
 
     postMessage(text, 'user');
+    saveHistory(text, 'user');
+    
     input.value = "";
     isProcessing = true;
 
@@ -73,13 +89,70 @@ async function handleAction() {
     }
 }
 
+// UI仪式感模拟分析（进度条动画）
+async function handleFileUpload(file) {
+    if (!file) return;
+    postMessage(`📁 上传文件: ${file.name}`, 'user');
+    saveHistory(`📁 上传文件: ${file.name}`, 'user');
+    
+    // 创建进度条
+    const container = document.getElementById('chat-container');
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+    row.innerHTML = '<div class="bubble"><div class="progress-bar"><div class="progress-fill" style="width:0%"></div><span>哨兵扫描: 0%</span></div></div>';
+    container.appendChild(row);
+    container.scrollTop = container.scrollHeight;
+
+    const progress = row.querySelector('.progress-bar');
+    const fill = progress.querySelector('.progress-fill');
+    const span = progress.querySelector('span');
+
+    for (let i = 0; i <= 100; i += 10) {
+        fill.style.width = i + '%';
+        span.textContent = `哨兵扫描: ${i}%`;
+        await new Promise(r => setTimeout(r, 200)); // 平滑动画
+    }
+
+    await renderLogicalChain("<b>扫描完成。</b> 该文件已进入“逻辑待命”状态。您可以输入<b>“指令”</b>来获取 AI 协作脚本。");
+    
+    // 触发普适意图
+    handleAction("FILE_UPLOAD_EVENT");
+}
+
+// 强制MathJax渲染（计数防护防死循环）
+function forceMathJax(attempt = 0) {
+    if (attempt > 10) return; // 终止计数
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise().catch(err => console.log(err));
+    } else {
+        setTimeout(() => forceMathJax(attempt + 1), 100);
+    }
+}
+
+// 加密/解密存储（处理中文）
+function encodeData(data) { return btoa(unescape(encodeURIComponent(data))); }
+function decodeData(data) { return decodeURIComponent(escape(atob(data))); }
+
+function saveHistory(text, role) {
+    chatHistory.push({ text, role });
+    if (chatHistory.length > 30) chatHistory.shift(); // 性能限
+    localStorage.setItem('chatHistory', encodeData(JSON.stringify(chatHistory)));
+}
+
+function clearSentinelHistory() {
+    localStorage.removeItem('chatHistory');
+    location.reload(); // 重置
+}
+
 async function renderLogicalChain(fullText) {
     const segments = fullText.split('[BREAK]').map(s => s.trim());
+    
     for (let i = 0; i < segments.length; i++) {
         await typeWriter(segments[i], i === 0);
-        const delay = Math.min(segments[i].length * 20 + 500, 1200); 
-        await new Promise(r => setTimeout(r, delay)); 
+        const delay = Math.min(segments[i].length * 20 + 500, 1500);
+        await new Promise(r => setTimeout(r, delay));
     }
+    forceMathJax(); // 渲染后同步
 }
 
 function typeWriter(content, isFirst) {
@@ -110,13 +183,27 @@ function typeWriter(content, isFirst) {
                 container.scrollTop = container.scrollHeight;
             } else {
                 clearInterval(timer);
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                    MathJax.typesetPromise([bubble]).catch(err => console.log(err));
-                }
                 resolve();
             }
         }, 12);
     });
+}
+
+function restoreMessage(htmlContent, role) {
+    const container = document.getElementById('chat-container');
+    const row = document.createElement('div');
+    row.className = `msg-row ${role}`;
+    
+    if (role === 'bot') {
+         row.innerHTML = `
+            <img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://ui-avatars.com/api/?name=A&background=154391&color=fff\'">
+            <div class="bubble">${htmlContent}</div>
+        `;
+    } else {
+        row.innerHTML = `<div class="bubble">${htmlContent}</div>`;
+    }
+    container.appendChild(row);
+    container.scrollTop = container.scrollHeight;
 }
 
 function postMessage(text, role) {
