@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武逻辑 · 升学防御系统 V32.0</title>
+    <title>秋武逻辑 · 升学防御系统 V37.0</title>
     <link rel="stylesheet" href="style.css">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
@@ -17,7 +17,7 @@
                 </div>
                 <h2 class="persona-name">秋武逻辑</h2>
                 <p class="persona-role">东大文理交叉 · 首席架构</p>
-                <div class="system-badge">System V32.0 Online</div>
+                <div class="system-badge">System V37.0 Online</div>
             </div>
             <div class="logic-modules">
                 <div class="module-item"><span class="icon">🧬</span><span class="label">逻辑补缝</span></div>
@@ -38,6 +38,10 @@
                 <button class="nav-btn" onclick="triggerPreset('签证与生存')">
                     🛡️ 签证/生存/读空气
                 </button>
+                <button class="nav-btn" onclick="document.getElementById('file-upload').click()">
+                    📂 上传数据 (哨兵分析)
+                </button>
+                <input type="file" id="file-upload" style="display:none;" onchange="handleFileUpload(this.files[0])">
             </div>
             <div class="footer-info">
                 <p>Private Domain: <b>qiuwu999</b></p>
@@ -48,6 +52,7 @@
             <div class="messages-area" id="chat-container"></div>
             <div class="input-bar">
                 <input type="text" id="user-input" placeholder="输入关键词 (如: 面试、内诺)..." onkeypress="if(event.keyCode==13) handleAction()">
+                <button id="clear-history" class="clear-btn">🧹 哨兵清除</button>
                 <button id="send-btn" onclick="handleAction()">发送</button>
             </div>
         </div>
