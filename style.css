@@ -189,9 +189,10 @@ body {
 .input-bar {
     padding: 20px 30px;
     background: white;
-    border-top: 1px solid #E8F0E0;
+    border-top: 1px solid #E0E7D8;
     display: flex;
     gap: 15px;
+    align-items: center;
 }
 
 #user-input {
@@ -219,10 +220,45 @@ body {
 
 #send-btn:hover { background: var(--accent-blue); }
 
+.clear-btn {
+    padding: 8px 15px; background: #f44336; color: white;
+    border: none; border-radius: 10px; cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.clear-btn:hover { background: #d32f2f; }
+
+.progress-bar {
+    background: #f0f0f0; border-radius: 10px; height: 20px; position: relative;
+    overflow: hidden; margin: 10px 0;
+}
+
+.progress-fill {
+    background: var(--accent-blue); height: 100%; transition: width 0.3s ease;
+}
+
+.progress-bar span {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    color: #fff; font-size: 0.8rem; line-height: 20px;
+}
+
+.copy-box {
+    background: #f0f0f0; padding: 10px; border-radius: 8px; margin: 10px 0;
+    font-style: italic; position: relative;
+}
+
+.copy-box::after {
+    content: '复制'; position: absolute; top: 5px; right: 10px;
+    background: var(--accent-blue); color: white; padding: 2px 8px;
+    border-radius: 4px; cursor: pointer;
+}
+
 @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 768px) {
     .side-panel { display: none; }
     .glass-container { width: 100vw; height: 100vh; border-radius: 0; border: none; }
     .bubble { max-width: 88%; }
+    .input-bar { flex-wrap: wrap; gap: 10px; }
 }
