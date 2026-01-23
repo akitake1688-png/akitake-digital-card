@@ -31,6 +31,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 postMessage("哨兵已彻底粉碎逻辑痕迹。", "bot");
             }
         });
+
+        // 绑定nav-btn事件（避免inline onclick初始化问题）
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const preset = btn.dataset.preset; // 用data-preset存储
+                if (preset) triggerPreset(preset);
+                if (btn.id === 'upload-btn') document.getElementById('file-upload').click();
+            });
+        });
+
+        // 绑定上传事件
+        document.getElementById('file-upload').addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
+
+        // 绑定发送按钮
+        document.getElementById('send-btn').addEventListener('click', handleAction);
     } catch (e) {
         console.error("System Crash:", e);
         postMessage("系统逻辑库加载异常，请检查 knowledge.json。", "bot");
@@ -134,9 +149,13 @@ function encodeData(data) { return btoa(unescape(encodeURIComponent(data))); }
 function decodeData(data) { return decodeURIComponent(escape(atob(data))); }
 
 function saveHistory(text, role) {
-    chatHistory.push({ text, role });
-    if (chatHistory.length > 30) chatHistory.shift(); // 性能限
-    localStorage.setItem('chatHistory', encodeData(JSON.stringify(chatHistory)));
+    try {
+        chatHistory.push({ text, role });
+        if (chatHistory.length > 30) chatHistory.shift(); // 性能限
+        localStorage.setItem('chatHistory', encodeData(JSON.stringify(chatHistory)));
+    } catch (e) {
+        console.error("Save history error:", e);
+    }
 }
 
 function clearSentinelHistory() {
