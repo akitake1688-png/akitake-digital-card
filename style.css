@@ -1,15 +1,15 @@
 :root {
-    --accent-blue: #154391;    /* 核心：东大理科深蓝 */
-    --accent-light: #E3F2FD;   /* 交互：高亮淡蓝 */
-    --bg-mint: #F1F8E9;        /* 背景：清爽薄荷绿 */
-    --sidebar-bg: #F9FFF0;     /* 侧边：呼吸感浅色 */
+    --accent-blue: #154391;
+    --accent-light: #E3F2FD;
+    --bg-mint: #F1F8E9;
+    --sidebar-bg: #F9FFF0;
     --text-main: #2C3E50;
     --text-sub: #546E7A;
     --glass-border: rgba(255, 255, 255, 0.8);
 }
 
 body {
-    background: var(--bg-mint);
+    background: var(--bg-mint, #f0f8ff);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -38,7 +38,7 @@ body {
     padding: 35px 25px;
     display: flex;
     flex-direction: column;
-    background: var(--sidebar-bg);
+    background: var(--sidebar-bg, #ffffff);
     transition: all 0.3s ease;
 }
 
@@ -168,10 +168,13 @@ body {
     line-height: 1.7;
     position: relative;
     box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    overflow-x: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .user .bubble {
-    background: var(--accent-blue, blue); /* fallback */
+    background: var(--accent-blue, #0066cc);
     color: white;
     border-top-right-radius: 4px;
     box-shadow: 0 5px 15px rgba(21, 67, 145, 0.25);
@@ -205,7 +208,7 @@ body {
     transition: border 0.2s;
 }
 
-#user-input:focus { border-color: var(--accent-blue); }
+#user-input:focus { border-color: var(--accent-blue, #0066cc); }
 
 #send-btn {
     padding: 0 25px;
@@ -218,11 +221,15 @@ body {
     transition: background 0.2s;
 }
 
-#send-btn:hover { background: var(--accent-blue); }
+#send-btn:hover { background: var(--accent-blue, #0066cc); }
 
 .clear-btn {
-    padding: 8px 15px; background: #f44336; color: white;
-    border: none; border-radius: 10px; cursor: pointer;
+    padding: 8px 15px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
     font-weight: 600;
     transition: background 0.2s;
 }
@@ -230,28 +237,58 @@ body {
 .clear-btn:hover { background: #d32f2f; }
 
 .progress-bar {
-    background: #f0f0f0; border-radius: 10px; height: 20px; position: relative;
-    overflow: hidden; margin: 10px 0;
+    background: #f0f0f0;
+    border-radius: 10px;
+    height: 20px;
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
 }
 
 .progress-fill {
-    background: var(--accent-blue); height: 100%; transition: width 0.3s ease;
+    background: var(--accent-blue, #0066cc);
+    height: 100%;
+    transition: width 0.3s ease;
 }
 
 .progress-bar span {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    color: #fff; font-size: 0.8rem; line-height: 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 0.8rem;
+    line-height: 20px;
 }
 
 .copy-box {
-    background: #f0f0f0; padding: 10px; border-radius: 8px; margin: 10px 0;
-    font-style: italic; position: relative;
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-style: italic;
+    position: relative;
+    cursor: pointer;
+    user-select: text;
 }
 
 .copy-box::after {
-    content: '复制'; position: absolute; top: 5px; right: 10px;
-    background: var(--accent-blue); color: white; padding: 2px 8px;
-    border-radius: 4px; cursor: pointer;
+    content: '复制';
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: var(--accent-blue, #0066cc);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.copy-box.copied::after {
+    content: '已复制 !';
+    background: #4CAF50;
+    padding-right: 12px;
 }
 
 @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
