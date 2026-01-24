@@ -1,12 +1,15 @@
 /**
- * 秋武逻辑数字分身引擎 V37.0 (Sentinel Nexus Evolution Core)
- * 核心：UI仪式分析 | 普适模板路由 | 加密存储 | 零风险
+ * 秋武逻辑数字分身引擎 V37.1 Final (Sentinel Nexus Evolution Core)
+ * 修复：幽灵复制按钮、双重废话、URI malformed、CORS提示、MathJax防护、上传事件精准匹配
  */
 
-// 全局初始化chatHistory（修复Cannot access before initialization）
 let chatHistory = [];
 try {
-    chatHistory = JSON.parse(decodeData(localStorage.getItem('chatHistory'))) || [];
+    const saved = localStorage.getItem('chatHistory');
+    if (saved && saved !== "null" && saved !== "undefined") {
+        const decoded = decodeData(saved);
+        if (decoded) chatHistory = JSON.parse(decoded) || [];
+    }
 } catch (e) {
     console.error("Chat history load error:", e);
     chatHistory = [];
@@ -20,56 +23,82 @@ document.addEventListener('DOMContentLoaded', async () => {
         const res = await fetch('knowledge.json');
         if (!res.ok) throw new Error("Database Logic Error");
         knowledgeBase = await res.json();
-        console.log("秋武逻辑：V37.0 语义模型已挂载。");
+        console.log("秋武逻辑：V37.1 Final 已挂载。");
 
-        // 恢复历史并强制渲染
         if (chatHistory.length > 0) {
             chatHistory.forEach(msg => restoreMessage(msg.text, msg.role));
-            forceMathJax(0); // 启动计数防护
+            forceMathJax(0);
         } else {
             setTimeout(() => {
-                renderLogicalChain("<b>System Online. V37.0</b> [BREAK] 融合哨兵逻辑。 [BREAK] 点击左侧或输入关键词开始重构。");
+                renderLogicalChain("<b>System Online. V37.1 Final</b> [BREAK] 融合哨兵逻辑。 [BREAK] 点击左侧或输入关键词开始重构。");
             }, 600);
         }
 
-        // 清除按钮事件
-        document.getElementById('clear-history').addEventListener('click', () => {
+        document.getElementById('clear-history')?.addEventListener('click', () => {
             if (confirm("确认抹除所有逻辑痕迹？此操作不可逆。")) {
-                clearSentinelHistory();
-                postMessage("哨兵已彻底粉碎逻辑痕迹。", "bot");
+                localStorage.removeItem('chatHistory');
+                location.reload();
             }
         });
 
-        // 绑定nav-btn事件（避免inline onclick初始化问题）
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const preset = btn.dataset.preset; // 用data-preset存储
+                const preset = btn.dataset.preset;
                 if (preset) triggerPreset(preset);
-                if (btn.id === 'upload-btn') document.getElementById('file-upload').click();
+                if (btn.id === 'upload-btn') document.getElementById('file-upload')?.click();
             });
         });
 
-        // 绑定上传事件
-        document.getElementById('file-upload').addEventListener('change', (e) => {
+        document.getElementById('file-upload')?.addEventListener('change', e => {
             try {
                 handleFileUpload(e.target.files[0]);
-            } catch (error) {
-                console.error("File upload error:", error);
+            } catch (err) {
+                console.error("Upload error:", err);
             }
         });
 
-        // 绑定发送按钮
-        document.getElementById('send-btn').addEventListener('click', handleAction);
+        document.getElementById('send-btn')?.addEventListener('click', handleAction);
+        document.getElementById('user-input')?.addEventListener('keypress', e => {
+            if (e.key === 'Enter') handleAction();
+        });
+
+        // 全局复制按钮事件委托（修复幽灵按钮）
+        document.getElementById('chat-container')?.addEventListener('click', async e => {
+            const target = e.target.closest('.copy-box');
+            if (target) {
+                try {
+                    let textToCopy = target.innerText.trim();
+                    textToCopy = textToCopy.replace(/(复制|已复制 !)$/, '').trim();
+
+                    await navigator.clipboard.writeText(textToCopy);
+
+                    target.classList.add('copied');
+                    setTimeout(() => target.classList.remove('copied'), 2000);
+
+                    console.log("指令已复制");
+                } catch (err) {
+                    console.error("复制失败:", err);
+                    alert("浏览器限制复制，请手动选中文字复制。");
+                }
+            }
+        });
+
+        // 本地打开友好提示
+        if (location.protocol === 'file:') {
+            postMessage("警告：请使用服务器环境（如GitHub Pages或VS Code Live Server）运行此页面，直接双击打开可能导致功能异常（CORS限制）。", "bot");
+        }
     } catch (e) {
         console.error("System Crash:", e);
-        postMessage("系统逻辑库加载异常，请检查 knowledge.json。", "bot");
+        postMessage("系统加载异常，请使用服务器环境运行（不可直接双击打开）。", "bot");
     }
 });
 
 function triggerPreset(text) {
     const input = document.getElementById('user-input');
-    input.value = text;
-    handleAction();
+    if (input) {
+        input.value = text;
+        handleAction();
+    }
 }
 
 function getSynergyMatch(query) {
@@ -81,12 +110,9 @@ function getSynergyMatch(query) {
         if (item.intent === "fallback") return;
         let score = 0;
         if (q.includes(item.intent.toLowerCase())) score += 80;
-        
         item.keywords.forEach(key => {
-            const k = key.toLowerCase();
-            if (q.includes(k)) score += (item.priority || 50);
+            if (q.includes(key.toLowerCase())) score += (item.priority || 50);
         });
-
         if (score > topScore) {
             topScore = score;
             winner = item;
@@ -98,12 +124,12 @@ function getSynergyMatch(query) {
 
 async function handleAction() {
     const input = document.getElementById('user-input');
+    if (!input) return;
     const text = input.value.trim();
     if (!text || isProcessing) return;
 
     postMessage(text, 'user');
     saveHistory(text, 'user');
-    
     input.value = "";
     isProcessing = true;
 
@@ -111,93 +137,89 @@ async function handleAction() {
         const match = getSynergyMatch(text);
         if (match) await renderLogicalChain(match.response);
     } catch (e) {
-        postMessage("逻辑链路发生波动，正在重置...", "bot");
+        postMessage("逻辑波动，正在重置...", "bot");
     } finally {
         isProcessing = false;
         input.focus();
     }
 }
 
-// UI仪式感模拟分析（进度条动画）
 async function handleFileUpload(file) {
     if (!file) return;
     postMessage(`📁 上传文件: ${file.name}`, 'user');
     saveHistory(`📁 上传文件: ${file.name}`, 'user');
-    
-    // 创建进度条
+
     const container = document.getElementById('chat-container');
+    if (!container) return;
+
     const row = document.createElement('div');
     row.className = 'msg-row bot';
     row.innerHTML = '<div class="bubble"><div class="progress-bar"><div class="progress-fill" style="width:0%"></div><span>哨兵扫描: 0%</span></div></div>';
     container.appendChild(row);
     container.scrollTop = container.scrollHeight;
 
-    const progress = row.querySelector('.progress-bar');
-    const fill = progress.querySelector('.progress-fill');
-    const span = progress.querySelector('span');
+    const fill = row.querySelector('.progress-fill');
+    const span = row.querySelector('span');
 
     for (let i = 0; i <= 100; i += 10) {
         fill.style.width = i + '%';
         span.textContent = `哨兵扫描: ${i}%`;
-        await new Promise(r => setTimeout(r, 200)); // 平滑动画
+        await new Promise(r => setTimeout(r, 150));
     }
 
-    await renderLogicalChain("<b>扫描完成。</b> 该文件已进入“逻辑待命”状态。您可以输入<b>“指令”</b>来获取 AI 协作脚本。");
-    
-    // 触发普适意图
+    // 直接触发 JSON 事件，避免重复输出
     handleAction("FILE_UPLOAD_EVENT");
 }
 
-// 强制MathJax渲染（计数防护防死循环）
 function forceMathJax(attempt = 0) {
-    if (attempt > 10) return; // 终止计数
+    if (attempt > 10) return;
     if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise().catch(err => console.log(err));
+        window.MathJax.typesetPromise().catch(() => {});
     } else {
         setTimeout(() => forceMathJax(attempt + 1), 100);
     }
 }
 
-// 加密/解密存储（处理中文）
-function encodeData(data) { return btoa(unescape(encodeURIComponent(data))); }
+function encodeData(data) {
+    try {
+        return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    } catch {
+        return "";
+    }
+}
+
 function decodeData(data) {
+    if (!data || data === "null" || data === "undefined") return "[]";
     try {
         return decodeURIComponent(escape(atob(data)));
-    } catch (e) {
-        console.error("Decode error:", e);
-        return '';
+    } catch {
+        return "[]";
     }
 }
 
 function saveHistory(text, role) {
     try {
         chatHistory.push({ text, role });
-        if (chatHistory.length > 30) chatHistory.shift(); // 性能限
-        localStorage.setItem('chatHistory', encodeData(JSON.stringify(chatHistory)));
-    } catch (e) {
-        console.error("Save history error:", e);
-    }
+        if (chatHistory.length > 30) chatHistory.shift();
+        localStorage.setItem('chatHistory', encodeData(chatHistory));
+    } catch {}
 }
 
-function clearSentinelHistory() {
-    localStorage.removeItem('chatHistory');
-    location.reload(); // 重置
-}
-
-async function renderLogicalChain(fullText) {
+function renderLogicalChain(fullText) {
     const segments = fullText.split('[BREAK]').map(s => s.trim());
-    
-    for (let i = 0; i < segments.length; i++) {
-        await typeWriter(segments[i], i === 0);
-        const delay = Math.min(segments[i].length * 20 + 500, 1500);
-        await new Promise(r => setTimeout(r, delay));
-    }
-    forceMathJax(); // 渲染后同步
+    let promiseChain = Promise.resolve();
+    segments.forEach((segment, i) => {
+        promiseChain = promiseChain.then(() => typeWriter(segment, i === 0));
+        promiseChain = promiseChain.then(() => new Promise(r => setTimeout(r, Math.min(segment.length * 20 + 500, 1500))));
+    });
+    promiseChain.then(() => forceMathJax());
 }
 
 function typeWriter(content, isFirst) {
     return new Promise(resolve => {
         const container = document.getElementById('chat-container');
+        if (!container) return resolve();
+
         const row = document.createElement('div');
         row.className = 'msg-row bot';
         row.innerHTML = `
@@ -205,7 +227,7 @@ function typeWriter(content, isFirst) {
             <div class="bubble"></div>
         `;
         container.appendChild(row);
-        
+
         const bubble = row.querySelector('.bubble');
         let index = 0;
         const timer = setInterval(() => {
@@ -231,23 +253,21 @@ function typeWriter(content, isFirst) {
 
 function restoreMessage(htmlContent, role) {
     const container = document.getElementById('chat-container');
+    if (!container) return;
+
     const row = document.createElement('div');
     row.className = `msg-row ${role}`;
-    
-    if (role === 'bot') {
-         row.innerHTML = `
-            <img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://ui-avatars.com/api/?name=A&background=154391&color=fff\'">
-            <div class="bubble">${htmlContent}</div>
-        `;
-    } else {
-        row.innerHTML = `<div class="bubble">${htmlContent}</div>`;
-    }
+    row.innerHTML = role === 'bot' 
+        ? `<img src="profile.jpg" class="avatar-chat" onerror="this.src='https://ui-avatars.com/api/?name=A&background=154391&color=fff'"><div class="bubble">${htmlContent}</div>`
+        : `<div class="bubble">${htmlContent}</div>`;
     container.appendChild(row);
     container.scrollTop = container.scrollHeight;
 }
 
 function postMessage(text, role) {
     const chat = document.getElementById('chat-container');
+    if (!chat) return;
+
     const div = document.createElement('div');
     div.className = `msg-row ${role}`;
     div.innerHTML = `<div class="bubble">${text}</div>`;
