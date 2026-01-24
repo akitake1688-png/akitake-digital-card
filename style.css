@@ -1,301 +1,133 @@
+/* ============================================================
+   秋武数字卡 V38.0 核心样式表
+   设计原则：高对比度、知性、逻辑感、异文化氛围
+   ============================================================ */
+
+/* 1. 全局基础重置 */
 :root {
-    --accent-blue: #154391;
-    --accent-light: #E3F2FD;
-    --bg-mint: #F1F8E9;
-    --sidebar-bg: #F9FFF0;
-    --text-main: #2C3E50;
-    --text-sub: #546E7A;
-    --glass-border: rgba(255, 255, 255, 0.8);
+    --qiuwu-black: #1a1a1a;
+    --qiuwu-gray: #4a4a4a;
+    --qiuwu-light-gray: #f4f4f4;
+    --qiuwu-accent: #333333;
+    --qiuwu-white: #ffffff;
+    --qiuwu-shadow: 0 10px 40px rgba(0,0,0,0.1);
 }
 
 body {
-    background: var(--bg-mint, #f0f8ff);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Hiragino Kaku Gothic Pro", sans-serif;
+    line-height: 1.6;
+    color: var(--qiuwu-black);
+    background-color: var(--qiuwu-light-gray);
     margin: 0;
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    overflow: hidden;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
 }
 
-.glass-container {
-    width: 95vw;
-    height: 92vh;
-    max-width: 1100px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(25px);
-    border-radius: 16px;
-    display: flex;
-    box-shadow: 0 25px 60px rgba(21, 67, 145, 0.1);
-    border: 1px solid var(--glass-border);
-    overflow: hidden;
+/* 2. 容器与布局 */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
-.side-panel {
-    width: 280px;
-    border-right: 1px solid #E0E7D8;
-    padding: 35px 25px;
-    display: flex;
-    flex-direction: column;
-    background: var(--sidebar-bg, #ffffff);
+/* 3. 输入区域样式 */
+.search-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    border: 2px solid var(--qiuwu-accent);
+    border-radius: 4px;
+    box-sizing: border-box;
     transition: all 0.3s ease;
+    background: var(--qiuwu-white);
 }
 
-.avatar-container {
+.search-input:focus {
+    outline: none;
+    box-shadow: var(--qiuwu-shadow);
+}
+
+/* 4. 【核心】高维范式固定回复样式 (Paradigm Box) */
+.qiuwu-paradigm-box {
+    background: var(--qiuwu-white);
+    border-left: 8px solid var(--qiuwu-black); /* 极黑加粗侧边，体现绝对立场 */
+    padding: 30px;
+    margin: 25px 0;
+    border-radius: 2px;
+    box-shadow: var(--qiuwu-shadow);
+    animation: fadeInSlide 0.5s ease-out; /* 降临感动画 */
     position: relative;
-    width: 90px;
-    margin: 0 auto 15px;
+    overflow: hidden;
 }
 
-.avatar-main {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-    object-fit: cover;
-}
-
-.status-indicator {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 14px;
-    height: 14px;
-    background: #4CAF50;
-    border: 2px solid white;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-}
-
-.persona-name {
-    text-align: center;
+/* 范式标识标签 */
+.qiuwu-paradigm-box b {
     font-size: 1.3rem;
-    color: var(--text-main);
-    margin: 5px 0;
+    color: var(--qiuwu-black);
+    display: block;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
     font-weight: 700;
 }
 
-.persona-role {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--text-sub);
-    margin-bottom: 12px;
+/* 逻辑审计与知性点拨的视觉分割 */
+.qiuwu-paradigm-box hr {
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    margin: 20px 0;
 }
 
-.system-badge {
-    background: var(--accent-blue);
-    color: white;
-    font-size: 0.7rem;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin: 0 auto 25px;
-    width: fit-content;
-    letter-spacing: 0.5px;
+.qiuwu-paradigm-box p {
+    font-size: 1.05rem;
+    color: var(--qiuwu-gray);
+    margin: 0;
+    text-align: justify;
+    word-break: break-all;
 }
 
-.logic-modules {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.module-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 0.75rem;
-    color: var(--text-sub);
-    gap: 5px;
-}
-
-.divider { border: 0; border-top: 1px solid #E0E7D8; margin: 15px 0 25px; }
-
-.nav-btn {
-    width: 100%;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-    border: 1px solid transparent;
-    background: #FFFFFF;
-    color: var(--text-main);
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    display: flex;
-    align-items: center;
-}
-
-.nav-btn:hover {
-    background: var(--accent-light);
-    color: var(--accent-blue);
-    border-color: rgba(21, 67, 145, 0.1);
-    transform: translateY(-2px);
-}
-
-.footer-info {
-    margin-top: auto;
-    font-size: 0.75rem;
-    color: #90A4AE;
-    text-align: center;
-    line-height: 1.6;
-}
-
-.chat-viewport { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.4); }
-
-.messages-area {
-    flex: 1;
-    padding: 30px 40px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    scroll-behavior: smooth;
-}
-
-.msg-row { display: flex; width: 100%; animation: slideIn 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
-.msg-row.user { justify-content: flex-end; }
-
-.bubble {
-    max-width: 75%;
-    padding: 16px 22px;
-    border-radius: 18px;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    position: relative;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-    overflow-x: auto;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-.user .bubble {
-    background: var(--accent-blue, #0066cc);
-    color: white;
-    border-top-right-radius: 4px;
-    box-shadow: 0 5px 15px rgba(21, 67, 145, 0.25);
-}
-
-.bot .bubble {
-    background: #FFFFFF;
-    border: 1px solid #E8F0E0;
-    color: var(--text-main);
-    border-top-left-radius: 4px;
-}
-
-.avatar-chat { width: 38px; height: 38px; border-radius: 50%; margin-right: 14px; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-
-.input-bar {
-    padding: 20px 30px;
-    background: white;
-    border-top: 1px solid #E0E7D8;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-#user-input {
-    flex: 1;
-    border: 1px solid #CFD8DC;
-    border-radius: 10px;
-    padding: 12px 18px;
-    outline: none;
-    font-size: 0.95rem;
-    transition: border 0.2s;
-}
-
-#user-input:focus { border-color: var(--accent-blue, #0066cc); }
-
-#send-btn {
-    padding: 0 25px;
-    border-radius: 10px;
-    background: var(--text-main);
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-#send-btn:hover { background: var(--accent-blue, #0066cc); }
-
-.clear-btn {
-    padding: 8px 15px;
-    background: #f44336;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s;
-}
-
-.clear-btn:hover { background: #d32f2f; }
-
-.progress-bar {
-    background: #f0f0f0;
-    border-radius: 10px;
-    height: 20px;
-    position: relative;
-    overflow: hidden;
-    margin: 10px 0;
-}
-
-.progress-fill {
-    background: var(--accent-blue, #0066cc);
-    height: 100%;
-    transition: width 0.3s ease;
-}
-
-.progress-bar span {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-size: 0.8rem;
-    line-height: 20px;
-}
-
-.copy-box {
-    background: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-style: italic;
-    position: relative;
-    cursor: pointer;
-    user-select: text;
-}
-
-.copy-box::after {
-    content: '复制';
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    background: var(--accent-blue, #0066cc);
-    color: white;
-    padding: 2px 8px;
+/* 5. 常规权重回复样式 (Normal Data) */
+.qiuwu-normal-result {
+    background: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin: 15px 0;
     border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.qiuwu-normal-result:hover {
+    border-color: var(--qiuwu-accent);
+}
+
+/* 6. 辅助元素 */
+.tag-label {
+    display: inline-block;
+    background: var(--qiuwu-black);
+    color: var(--qiuwu-white);
+    padding: 4px 10px;
     font-size: 0.8rem;
-    cursor: pointer;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
-.copy-box.copied::after {
-    content: '已复制 !';
-    background: #4CAF50;
-    padding-right: 12px;
+/* 7. 响应式与动画 */
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-@media (max-width: 768px) {
-    .side-panel { display: none; }
-    .glass-container { width: 100vw; height: 100vh; border-radius: 0; border: none; }
-    .bubble { max-width: 88%; }
-    .input-bar { flex-wrap: wrap; gap: 10px; }
+@media (max-width: 600px) {
+    .container {
+        margin: 10px auto;
+        padding: 10px;
+    }
+    .qiuwu-paradigm-box {
+        padding: 20px;
+    }
 }
