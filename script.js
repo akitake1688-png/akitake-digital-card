@@ -1,50 +1,55 @@
 /**
- * 秋武数字卡 V38.0 核心引擎
- * 自动适配、高维拦截、无损升级
+ * 秋武数字卡 V38.0 统一熔接引擎
+ * A层：隐私/自毁指令 | B层：高维指纹拦截 | C层：权重算法 fallback
  */
-function handleQiuwuSearch(userInput) {
-    // --- 1. 自动变量适配层 (适配您主逻辑中的变量名) ---
-    // 请确保您的 JSON 数据加载后存储在以下变量之一，或在下方直接引用
-    const rawData = typeof allData !== 'undefined' ? allData : 
-                    (typeof knowledgeBase !== 'undefined' ? knowledgeBase : 
-                    (typeof data !== 'undefined' ? data : []));
+let akitakeData = [];
 
-    const query = userInput.toLowerCase().trim();
-    if (!query || rawData.length === 0) return null;
+// 数据加载与初始化
+async function initAkitakeApp() {
+    try {
+        const response = await fetch('knowledge.json');
+        akitakeData = await response.json();
+        console.log("V38.0 熔接系统：数据资产与拦截引擎已同步。");
+    } catch (err) {
+        console.error("加载失败:", err);
+    }
+}
 
-    // --- 2. 前置：高维范式指纹匹配 (Priority: 985) ---
-    const paradigm = rawData.find(item => {
+// 统一搜索入口
+function search(userInput) {
+    const s = userInput.toLowerCase().trim();
+    if (!s) return null;
+
+    // --- A层：隐私主权逻辑 (保护您的清理优化) ---
+    if (s === '清除' || s === '自毁' || s === 'clear') {
+        localStorage.clear();
+        return { type: 'SYS', html: '<div class="sys-alert"><b>【哨兵指令】</b> 缓存灵感已物理粉碎，逻辑足迹已抹除。</div>' };
+    }
+
+    // --- B层：高维范式拦截 (V38 指纹指纹识别) ---
+    const paradigm = akitakeData.find(item => {
         if (!item.is_paradigm) return false;
-        // 核心算法：检测输入是否包含指纹库中至少 3 个词
-        let hits = 0;
-        for (const word of item.fingerprints) {
-            if (query.includes(word.toLowerCase())) hits++;
-        }
-        return hits >= 3; 
+        // 交叉检测：必须命中至少 3 个指纹词
+        const hits = item.fingerprints.filter(f => s.includes(f.toLowerCase())).length;
+        return hits >= 3;
     });
 
     if (paradigm) {
-        return {
-            type: "PARADIGM",
-            tag: paradigm.tag,
-            html: `<div class="qiuwu-paradigm-box">
-                    <b>${paradigm.tag}</b>
-                    <hr>
-                    <p>${paradigm.response}</p>
-                   </div>`
+        return { 
+            type: 'PARADIGM', 
+            html: `<div class="qiuwu-paradigm-box"><b>${paradigm.tag}</b><hr><p>${paradigm.response}</p></div>` 
         };
     }
 
-    // --- 3. 后置：旧有权重逻辑 Fallback ---
-    // 如果没有命中范式，则执行您原有的权重搜索逻辑
+    // --- C层：常规权重博弈 (保留您所有的旧有优化数据) ---
     let bestMatch = null;
     let maxScore = -1;
 
-    rawData.filter(item => !item.is_paradigm).forEach(item => {
+    akitakeData.filter(item => !item.is_paradigm).forEach(item => {
         let currentScore = 0;
         const keywords = item.keywords || [];
         keywords.forEach(kw => {
-            if (query.includes(kw.toLowerCase())) {
+            if (s.includes(kw.toLowerCase())) {
                 currentScore += (item.priority || 100);
             }
         });
@@ -55,5 +60,14 @@ function handleQiuwuSearch(userInput) {
         }
     });
 
-    return bestMatch ? { type: "NORMAL", data: bestMatch } : null;
+    if (bestMatch) {
+        return { 
+            type: 'NORMAL', 
+            html: `<div class="normal-box"><b>${bestMatch.title || '秋武逻辑建议'}</b><p>${bestMatch.content}</p></div>` 
+        };
+    }
+    
+    return null;
 }
+
+initAkitakeApp();
