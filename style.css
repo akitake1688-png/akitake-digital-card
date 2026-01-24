@@ -1,133 +1,51 @@
-/* ============================================================
-   秋武数字卡 V38.0 核心样式表
-   设计原则：高对比度、知性、逻辑感、异文化氛围
-   ============================================================ */
-
-/* 1. 全局基础重置 */
+/* 秋武数字卡 V38.0 熔接版样式表 */
 :root {
     --qiuwu-black: #1a1a1a;
-    --qiuwu-gray: #4a4a4a;
-    --qiuwu-light-gray: #f4f4f4;
-    --qiuwu-accent: #333333;
     --qiuwu-white: #ffffff;
-    --qiuwu-shadow: 0 10px 40px rgba(0,0,0,0.1);
 }
 
 body {
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Hiragino Kaku Gothic Pro", sans-serif;
-    line-height: 1.6;
-    color: var(--qiuwu-black);
-    background-color: var(--qiuwu-light-gray);
+    background-color: #f5f5f5;
+    font-family: "PingFang SC", "Hiragino Sans", sans-serif;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
 }
 
-/* 2. 容器与布局 */
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-/* 3. 输入区域样式 */
-.search-input {
-    width: 100%;
-    padding: 16px 20px;
-    font-size: 1.1rem;
-    border: 2px solid var(--qiuwu-accent);
-    border-radius: 4px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    background: var(--qiuwu-white);
-}
-
-.search-input:focus {
-    outline: none;
-    box-shadow: var(--qiuwu-shadow);
-}
-
-/* 4. 【核心】高维范式固定回复样式 (Paradigm Box) */
+/* 范式回复：高维拦截视觉层 */
 .qiuwu-paradigm-box {
-    background: var(--qiuwu-white);
-    border-left: 8px solid var(--qiuwu-black); /* 极黑加粗侧边，体现绝对立场 */
+    background: var(--qiuwu-white) !important;
+    border-left: 10px solid var(--qiuwu-black) !important;
     padding: 30px;
-    margin: 25px 0;
-    border-radius: 2px;
-    box-shadow: var(--qiuwu-shadow);
-    animation: fadeInSlide 0.5s ease-out; /* 降临感动画 */
-    position: relative;
-    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    animation: qiuwuFadeIn 0.5s ease;
 }
 
-/* 范式标识标签 */
 .qiuwu-paradigm-box b {
     font-size: 1.3rem;
-    color: var(--qiuwu-black);
+    color: #000;
     display: block;
     margin-bottom: 15px;
-    letter-spacing: 1.5px;
-    font-weight: 700;
+    letter-spacing: 1px;
 }
 
-/* 逻辑审计与知性点拨的视觉分割 */
-.qiuwu-paradigm-box hr {
-    border: 0;
-    border-top: 1px solid #eeeeee;
-    margin: 20px 0;
-}
-
-.qiuwu-paradigm-box p {
-    font-size: 1.05rem;
-    color: var(--qiuwu-gray);
-    margin: 0;
-    text-align: justify;
-    word-break: break-all;
-}
-
-/* 5. 常规权重回复样式 (Normal Data) */
-.qiuwu-normal-result {
-    background: #fdfdfd;
-    border: 1px solid #e0e0e0;
+/* 常规/旧有权重回复：保留原有体感 */
+.normal-box {
+    background: var(--qiuwu-white);
     padding: 20px;
     margin: 15px 0;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    transition: transform 0.2s;
 }
 
-.qiuwu-normal-result:hover {
-    border-color: var(--qiuwu-accent);
+.sys-alert {
+    color: #d9534f;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
 }
 
-/* 6. 辅助元素 */
-.tag-label {
-    display: inline-block;
-    background: var(--qiuwu-black);
-    color: var(--qiuwu-white);
-    padding: 4px 10px;
-    font-size: 0.8rem;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-/* 7. 响应式与动画 */
-@keyframes fadeInSlide {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 600px) {
-    .container {
-        margin: 10px auto;
-        padding: 10px;
-    }
-    .qiuwu-paradigm-box {
-        padding: 20px;
-    }
+@keyframes qiuwuFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
