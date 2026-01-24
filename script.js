@@ -1,276 +1,59 @@
 /**
- * 秋武逻辑数字分身引擎 V37.1 Final (Sentinel Nexus Evolution Core)
- * 修复：幽灵复制按钮、双重废话、URI malformed、CORS提示、MathJax防护、上传事件精准匹配
+ * 秋武数字卡 V38.0 核心引擎
+ * 自动适配、高维拦截、无损升级
  */
+function handleQiuwuSearch(userInput) {
+    // --- 1. 自动变量适配层 (适配您主逻辑中的变量名) ---
+    // 请确保您的 JSON 数据加载后存储在以下变量之一，或在下方直接引用
+    const rawData = typeof allData !== 'undefined' ? allData : 
+                    (typeof knowledgeBase !== 'undefined' ? knowledgeBase : 
+                    (typeof data !== 'undefined' ? data : []));
 
-let chatHistory = [];
-try {
-    const saved = localStorage.getItem('chatHistory');
-    if (saved && saved !== "null" && saved !== "undefined") {
-        const decoded = decodeData(saved);
-        if (decoded) chatHistory = JSON.parse(decoded) || [];
-    }
-} catch (e) {
-    console.error("Chat history load error:", e);
-    chatHistory = [];
-}
+    const query = userInput.toLowerCase().trim();
+    if (!query || rawData.length === 0) return null;
 
-let knowledgeBase = [];
-let isProcessing = false;
-
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const res = await fetch('knowledge.json');
-        if (!res.ok) throw new Error("Database Logic Error");
-        knowledgeBase = await res.json();
-        console.log("秋武逻辑：V37.1 Final 已挂载。");
-
-        if (chatHistory.length > 0) {
-            chatHistory.forEach(msg => restoreMessage(msg.text, msg.role));
-            forceMathJax(0);
-        } else {
-            setTimeout(() => {
-                renderLogicalChain("<b>System Online. V37.1 Final</b> [BREAK] 融合哨兵逻辑。 [BREAK] 点击左侧或输入关键词开始重构。");
-            }, 600);
+    // --- 2. 前置：高维范式指纹匹配 (Priority: 985) ---
+    const paradigm = rawData.find(item => {
+        if (!item.is_paradigm) return false;
+        // 核心算法：检测输入是否包含指纹库中至少 3 个词
+        let hits = 0;
+        for (const word of item.fingerprints) {
+            if (query.includes(word.toLowerCase())) hits++;
         }
+        return hits >= 3; 
+    });
 
-        document.getElementById('clear-history')?.addEventListener('click', () => {
-            if (confirm("确认抹除所有逻辑痕迹？此操作不可逆。")) {
-                localStorage.removeItem('chatHistory');
-                location.reload();
-            }
-        });
-
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const preset = btn.dataset.preset;
-                if (preset) triggerPreset(preset);
-                if (btn.id === 'upload-btn') document.getElementById('file-upload')?.click();
-            });
-        });
-
-        document.getElementById('file-upload')?.addEventListener('change', e => {
-            try {
-                handleFileUpload(e.target.files[0]);
-            } catch (err) {
-                console.error("Upload error:", err);
-            }
-        });
-
-        document.getElementById('send-btn')?.addEventListener('click', handleAction);
-        document.getElementById('user-input')?.addEventListener('keypress', e => {
-            if (e.key === 'Enter') handleAction();
-        });
-
-        // 全局复制按钮事件委托（修复幽灵按钮）
-        document.getElementById('chat-container')?.addEventListener('click', async e => {
-            const target = e.target.closest('.copy-box');
-            if (target) {
-                try {
-                    let textToCopy = target.innerText.trim();
-                    textToCopy = textToCopy.replace(/(复制|已复制 !)$/, '').trim();
-
-                    await navigator.clipboard.writeText(textToCopy);
-
-                    target.classList.add('copied');
-                    setTimeout(() => target.classList.remove('copied'), 2000);
-
-                    console.log("指令已复制");
-                } catch (err) {
-                    console.error("复制失败:", err);
-                    alert("浏览器限制复制，请手动选中文字复制。");
-                }
-            }
-        });
-
-        // 本地打开友好提示
-        if (location.protocol === 'file:') {
-            postMessage("警告：请使用服务器环境（如GitHub Pages或VS Code Live Server）运行此页面，直接双击打开可能导致功能异常（CORS限制）。", "bot");
-        }
-    } catch (e) {
-        console.error("System Crash:", e);
-        postMessage("系统加载异常，请使用服务器环境运行（不可直接双击打开）。", "bot");
+    if (paradigm) {
+        return {
+            type: "PARADIGM",
+            tag: paradigm.tag,
+            html: `<div class="qiuwu-paradigm-box">
+                    <b>${paradigm.tag}</b>
+                    <hr>
+                    <p>${paradigm.response}</p>
+                   </div>`
+        };
     }
-});
 
-function triggerPreset(text) {
-    const input = document.getElementById('user-input');
-    if (input) {
-        input.value = text;
-        handleAction();
-    }
-}
+    // --- 3. 后置：旧有权重逻辑 Fallback ---
+    // 如果没有命中范式，则执行您原有的权重搜索逻辑
+    let bestMatch = null;
+    let maxScore = -1;
 
-function getSynergyMatch(query) {
-    const q = query.toLowerCase();
-    let winner = null;
-    let topScore = -1;
-
-    knowledgeBase.forEach(item => {
-        if (item.intent === "fallback") return;
-        let score = 0;
-        if (q.includes(item.intent.toLowerCase())) score += 80;
-        item.keywords.forEach(key => {
-            if (q.includes(key.toLowerCase())) score += (item.priority || 50);
+    rawData.filter(item => !item.is_paradigm).forEach(item => {
+        let currentScore = 0;
+        const keywords = item.keywords || [];
+        keywords.forEach(kw => {
+            if (query.includes(kw.toLowerCase())) {
+                currentScore += (item.priority || 100);
+            }
         });
-        if (score > topScore) {
-            topScore = score;
-            winner = item;
+
+        if (currentScore > maxScore && currentScore > 0) {
+            maxScore = currentScore;
+            bestMatch = item;
         }
     });
 
-    return (topScore < 10) ? knowledgeBase.find(item => item.intent === "fallback") : winner;
-}
-
-async function handleAction() {
-    const input = document.getElementById('user-input');
-    if (!input) return;
-    const text = input.value.trim();
-    if (!text || isProcessing) return;
-
-    postMessage(text, 'user');
-    saveHistory(text, 'user');
-    input.value = "";
-    isProcessing = true;
-
-    try {
-        const match = getSynergyMatch(text);
-        if (match) await renderLogicalChain(match.response);
-    } catch (e) {
-        postMessage("逻辑波动，正在重置...", "bot");
-    } finally {
-        isProcessing = false;
-        input.focus();
-    }
-}
-
-async function handleFileUpload(file) {
-    if (!file) return;
-    postMessage(`📁 上传文件: ${file.name}`, 'user');
-    saveHistory(`📁 上传文件: ${file.name}`, 'user');
-
-    const container = document.getElementById('chat-container');
-    if (!container) return;
-
-    const row = document.createElement('div');
-    row.className = 'msg-row bot';
-    row.innerHTML = '<div class="bubble"><div class="progress-bar"><div class="progress-fill" style="width:0%"></div><span>哨兵扫描: 0%</span></div></div>';
-    container.appendChild(row);
-    container.scrollTop = container.scrollHeight;
-
-    const fill = row.querySelector('.progress-fill');
-    const span = row.querySelector('span');
-
-    for (let i = 0; i <= 100; i += 10) {
-        fill.style.width = i + '%';
-        span.textContent = `哨兵扫描: ${i}%`;
-        await new Promise(r => setTimeout(r, 150));
-    }
-
-    // 直接触发 JSON 事件，避免重复输出
-    handleAction("FILE_UPLOAD_EVENT");
-}
-
-function forceMathJax(attempt = 0) {
-    if (attempt > 10) return;
-    if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise().catch(() => {});
-    } else {
-        setTimeout(() => forceMathJax(attempt + 1), 100);
-    }
-}
-
-function encodeData(data) {
-    try {
-        return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    } catch {
-        return "";
-    }
-}
-
-function decodeData(data) {
-    if (!data || data === "null" || data === "undefined") return "[]";
-    try {
-        return decodeURIComponent(escape(atob(data)));
-    } catch {
-        return "[]";
-    }
-}
-
-function saveHistory(text, role) {
-    try {
-        chatHistory.push({ text, role });
-        if (chatHistory.length > 30) chatHistory.shift();
-        localStorage.setItem('chatHistory', encodeData(chatHistory));
-    } catch {}
-}
-
-function renderLogicalChain(fullText) {
-    const segments = fullText.split('[BREAK]').map(s => s.trim());
-    let promiseChain = Promise.resolve();
-    segments.forEach((segment, i) => {
-        promiseChain = promiseChain.then(() => typeWriter(segment, i === 0));
-        promiseChain = promiseChain.then(() => new Promise(r => setTimeout(r, Math.min(segment.length * 20 + 500, 1500))));
-    });
-    promiseChain.then(() => forceMathJax());
-}
-
-function typeWriter(content, isFirst) {
-    return new Promise(resolve => {
-        const container = document.getElementById('chat-container');
-        if (!container) return resolve();
-
-        const row = document.createElement('div');
-        row.className = 'msg-row bot';
-        row.innerHTML = `
-            ${isFirst ? '<img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://ui-avatars.com/api/?name=A&background=154391&color=fff\'">' : '<div style="width:52px"></div>'}
-            <div class="bubble"></div>
-        `;
-        container.appendChild(row);
-
-        const bubble = row.querySelector('.bubble');
-        let index = 0;
-        const timer = setInterval(() => {
-            if (index < content.length) {
-                if (content[index] === '<') {
-                    const end = content.indexOf('>', index);
-                    if (end !== -1) {
-                        bubble.innerHTML += content.substring(index, end + 1);
-                        index = end + 1;
-                        return;
-                    }
-                }
-                bubble.innerHTML += content[index];
-                index++;
-                container.scrollTop = container.scrollHeight;
-            } else {
-                clearInterval(timer);
-                resolve();
-            }
-        }, 12);
-    });
-}
-
-function restoreMessage(htmlContent, role) {
-    const container = document.getElementById('chat-container');
-    if (!container) return;
-
-    const row = document.createElement('div');
-    row.className = `msg-row ${role}`;
-    row.innerHTML = role === 'bot' 
-        ? `<img src="profile.jpg" class="avatar-chat" onerror="this.src='https://ui-avatars.com/api/?name=A&background=154391&color=fff'"><div class="bubble">${htmlContent}</div>`
-        : `<div class="bubble">${htmlContent}</div>`;
-    container.appendChild(row);
-    container.scrollTop = container.scrollHeight;
-}
-
-function postMessage(text, role) {
-    const chat = document.getElementById('chat-container');
-    if (!chat) return;
-
-    const div = document.createElement('div');
-    div.className = `msg-row ${role}`;
-    div.innerHTML = `<div class="bubble">${text}</div>`;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
+    return bestMatch ? { type: "NORMAL", data: bestMatch } : null;
 }
