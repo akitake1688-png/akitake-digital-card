@@ -1,270 +1,92 @@
-/**
- * 秋武逻辑数字分身引擎 V37.1 Final (Sentinel Nexus Evolution Core)
- * 修复：幽灵复制按钮、双重废话、URI malformed、CORS提示、MathJax防护
- */
-
-let chatHistory = [];
-try {
-    const saved = localStorage.getItem('chatHistory');
-    if (saved && saved !== "null" && saved !== "undefined") {
-        const decoded = decodeData(saved);
-        if (decoded) chatHistory = JSON.parse(decoded) || [];
-    }
-} catch (e) {
-    console.error("Chat history load error:", e);
-    chatHistory = [];
-}
-
 let knowledgeBase = [];
 let isProcessing = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const res = await fetch('knowledge.json');
-        if (!res.ok) throw new Error("Database Logic Error");
         knowledgeBase = await res.json();
-        console.log("秋武逻辑：V37.1 Final 已挂载。");
-
-        if (chatHistory.length > 0) {
-            chatHistory.forEach(msg => restoreMessage(msg.text, msg.role));
-            forceMathJax(0);
-        } else {
-            setTimeout(() => {
-                renderLogicalChain("<b>System Online. V37.1 Final</b> [BREAK] 融合哨兵逻辑。 [BREAK] 点击左侧或输入关键词开始重构。");
-            }, 600);
-        }
-
-        document.getElementById('clear-history')?.addEventListener('click', () => {
-            if (confirm("确认抹除所有逻辑痕迹？此操作不可逆。")) {
-                localStorage.removeItem('chatHistory');
-                location.reload();
-            }
-        });
-
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const preset = btn.dataset.preset;
-                if (preset) triggerPreset(preset);
-                if (btn.id === 'upload-btn') document.getElementById('file-upload')?.click();
-            });
-        });
-
-        document.getElementById('file-upload')?.addEventListener('change', e => {
-            try {
-                handleFileUpload(e.target.files[0]);
-            } catch (err) {
-                console.error("Upload error:", err);
-            }
-        });
-
-        document.getElementById('send-btn')?.addEventListener('click', handleAction);
-        document.getElementById('user-input')?.addEventListener('keypress', e => {
-            if (e.key === 'Enter') handleAction();
-        });
-
-        // 全局复制按钮事件委托
-        document.getElementById('chat-container')?.addEventListener('click', async e => {
-            const target = e.target.closest('.copy-box');
-            if (target) {
-                try {
-                    let textToCopy = target.innerText.trim();
-                    textToCopy = textToCopy.replace(/(复制|已复制 !)$/, '').trim();
-
-                    await navigator.clipboard.writeText(textToCopy);
-
-                    target.classList.add('copied');
-                    setTimeout(() => target.classList.remove('copied'), 2000);
-
-                    console.log("指令已复制到剪贴板");
-                } catch (err) {
-                    console.error("复制失败:", err);
-                    alert("浏览器限制复制，请手动选中文字复制。");
-                }
-            }
-        });
+        console.log("秋武逻辑：V38.1 救急引擎已挂载");
     } catch (e) {
-        console.error("System Crash:", e);
-        postMessage("系统加载异常，请使用服务器环境运行（不可直接双击打开）。", "bot");
+        console.error("JSON 加载异常:", e);
     }
+
+    // 绑定上传
+    document.getElementById('upload-btn')?.addEventListener('click', () => document.getElementById('file-upload')?.click());
+    document.getElementById('file-upload')?.addEventListener('change', e => handleFileUpload(e.target.files[0]));
 });
-
-function triggerPreset(text) {
-    const input = document.getElementById('user-input');
-    if (input) {
-        input.value = text;
-        handleAction();
-    }
-}
-
-function getSynergyMatch(query) {
-    const q = query.toLowerCase();
-    let winner = null;
-    let topScore = -1;
-
-    knowledgeBase.forEach(item => {
-        if (item.intent === "fallback") return;
-        let score = 0;
-        if (q.includes(item.intent.toLowerCase())) score += 80;
-        item.keywords.forEach(key => {
-            if (q.includes(key.toLowerCase())) score += (item.priority || 50);
-        });
-        if (score > topScore) {
-            topScore = score;
-            winner = item;
-        }
-    });
-
-    return (topScore < 10) ? knowledgeBase.find(item => item.intent === "fallback") : winner;
-}
 
 async function handleAction() {
     const input = document.getElementById('user-input');
-    if (!input) return;
-    const text = input.value.trim();
+    const text = input?.value.trim().toLowerCase();
     if (!text || isProcessing) return;
 
-    postMessage(text, 'user');
-    saveHistory(text, 'user');
+    // 显示用户消息 (用原input.value，避免小写)
+    postMessage(input.value, 'user');
     input.value = "";
     isProcessing = true;
 
-    try {
-        const match = getSynergyMatch(text);
-        if (match) await renderLogicalChain(match.response);
-    } catch (e) {
-        postMessage("逻辑链路波动，正在重置...", "bot");
-    } finally {
-        isProcessing = false;
-        input.focus();
-    }
-}
+    // 匹配逻辑
+    let match = null;
+    let topScore = -1;
 
-async function handleFileUpload(file) {
-    if (!file) return;
-    postMessage(`📁 上传文件: ${file.name}`, 'user');
-    saveHistory(`📁 上传文件: ${file.name}`, 'user');
-
-    const container = document.getElementById('chat-container');
-    if (!container) return;
-
-    const row = document.createElement('div');
-    row.className = 'msg-row bot';
-    row.innerHTML = '<div class="bubble"><div class="progress-bar"><div class="progress-fill" style="width:0%"></div><span>哨兵扫描: 0%</span></div></div>';
-    container.appendChild(row);
-    container.scrollTop = container.scrollHeight;
-
-    const fill = row.querySelector('.progress-fill');
-    const span = row.querySelector('span');
-
-    for (let i = 0; i <= 100; i += 10) {
-        fill.style.width = i + '%';
-        span.textContent = `哨兵扫描: ${i}%`;
-        await new Promise(r => setTimeout(r, 150));
-    }
-
-    // 不输出重复文字，直接触发 JSON 事件
-    handleAction("FILE_UPLOAD_EVENT");
-}
-
-function forceMathJax(attempt = 0) {
-    if (attempt > 10) return;
-    if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise().catch(() => {});
-    } else {
-        setTimeout(() => forceMathJax(attempt + 1), 100);
-    }
-}
-
-function encodeData(data) {
-    try {
-        return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    } catch {
-        return "";
-    }
-}
-
-function decodeData(data) {
-    if (!data || data === "null" || data === "undefined") return "[]";
-    try {
-        return decodeURIComponent(escape(atob(data)));
-    } catch {
-        return "[]";
-    }
-}
-
-function saveHistory(text, role) {
-    try {
-        chatHistory.push({ text, role });
-        if (chatHistory.length > 30) chatHistory.shift();
-        localStorage.setItem('chatHistory', encodeData(chatHistory));
-    } catch {}
-}
-
-async function renderLogicalChain(fullText) {
-    const segments = fullText.split('[BREAK]').map(s => s.trim());
-    for (let i = 0; i < segments.length; i++) {
-        await typeWriter(segments[i], i === 0);
-        await new Promise(r => setTimeout(r, Math.min(segments[i].length * 20 + 500, 1500)));
-    }
-    forceMathJax();
-}
-
-function typeWriter(content, isFirst) {
-    return new Promise(resolve => {
-        const container = document.getElementById('chat-container');
-        if (!container) return resolve();
-
-        const row = document.createElement('div');
-        row.className = 'msg-row bot';
-        row.innerHTML = `
-            ${isFirst ? '<img src="profile.jpg" class="avatar-chat" onerror="this.src=\'https://ui-avatars.com/api/?name=A&background=154391&color=fff\'">' : '<div style="width:52px"></div>'}
-            <div class="bubble"></div>
-        `;
-        container.appendChild(row);
-
-        const bubble = row.querySelector('.bubble');
-        let index = 0;
-        const timer = setInterval(() => {
-            if (index < content.length) {
-                if (content[index] === '<') {
-                    const end = content.indexOf('>', index);
-                    if (end !== -1) {
-                        bubble.innerHTML += content.substring(index, end + 1);
-                        index = end + 1;
-                        return;
-                    }
-                }
-                bubble.innerHTML += content[index];
-                index++;
-                container.scrollTop = container.scrollHeight;
-            } else {
-                clearInterval(timer);
-                resolve();
-            }
-        }, 12);
+    knowledgeBase.forEach(item => {
+        let score = 0;
+        item.keywords.forEach(k => {
+            if (text.includes(k.toLowerCase())) score += item.priority;
+        });
+        if (score > topScore) {
+            topScore = score;
+            match = item;
+        }
     });
-}
 
-function restoreMessage(htmlContent, role) {
-    const container = document.getElementById('chat-container');
-    if (!container) return;
+    const response = (topScore > 0) ? match.response : knowledgeBase.find(i => i.id === "FALLBACK_CORE").response;
+    
+    // 渲染回复 (处理 [BREAK])
+    const segments = response.split('[BREAK]');
+    for (const segment of segments) {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'msg-row bot';
+        botMsg.innerHTML = `<div class="bubble">${segment.trim()}</div>`;
+        document.getElementById('chat-container').appendChild(botMsg);
+        await new Promise(r => setTimeout(r, 400)); // 模拟思考感
+    }
 
-    const row = document.createElement('div');
-    row.className = `msg-row ${role}`;
-    row.innerHTML = role === 'bot' 
-        ? `<img src="profile.jpg" class="avatar-chat" onerror="this.src='https://ui-avatars.com/api/?name=A&background=154391&color=fff'"><div class="bubble">${htmlContent}</div>`
-        : `<div class="bubble">${htmlContent}</div>`;
-    container.appendChild(row);
-    container.scrollTop = container.scrollHeight;
+    if (text.includes('清除') || text.includes('自毁')) {
+        localStorage.clear();
+        setTimeout(() => location.reload(), 2000);
+    }
+
+    isProcessing = false;
+    const chat = document.getElementById('chat-container');
+    chat.scrollTop = chat.scrollHeight;
+    forceMathJax();
 }
 
 function postMessage(text, role) {
     const chat = document.getElementById('chat-container');
-    if (!chat) return;
-
     const div = document.createElement('div');
     div.className = `msg-row ${role}`;
     div.innerHTML = `<div class="bubble">${text}</div>`;
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
+
+function handleFileUpload(file) {
+    // 文件上传逻辑 (最小版，输出成功消息)
+    postMessage(`📁 上传文件: ${file.name}`, 'user');
+    postMessage("哨兵扫描成功：文件已锚定。输入‘指令’获取脚本。", 'bot');
+}
+
+function forceMathJax() {
+    if (window.MathJax) MathJax.typeset();
+}
+
+document.getElementById('send-btn').addEventListener('click', handleAction);
+document.getElementById('user-input').addEventListener('keypress', e => { if (e.key === 'Enter') handleAction(); });
+document.getElementById('clear-history').addEventListener('click', () => {
+    if (confirm("确认清除？")) {
+        localStorage.clear();
+        location.reload();
+    }
+});
