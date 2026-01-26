@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武逻辑 | 哨兵数字卡</title>
+    <title>秋武老师 | 逻辑审计哨兵 V40.8</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="style.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="glass-container">
         <aside class="side-panel">
             <img src="https://raw.githubusercontent.com/qiuwu999/qiuwu/main/qiuwu.png" class="avatar-main" alt="秋武">
-            <div class="persona-name">秋武老师 | 哨兵系统</div>
-            <button class="nav-btn" data-preset="诊疗：我的文献读不完">📚 文献诊疗</button>
-            <button class="nav-btn" data-preset="面试博弈：一问多层策略">🗣️ 面试博弈</button>
-            <button class="nav-btn" id="upload-btn">📄 文档逻辑审计</button>
-            <button class="nav-btn" data-preset="合伙人模式">🤝 合伙人加盟</button>
-            <button class="nav-btn clear-btn" id="clear-history">🧹 清除对话记录</button>
+            <div class="persona-name">秋武老师</div>
+            <button class="nav-btn" data-preset="分析：研究计划书的逻辑缺陷">🧩 RP逻辑审计</button>
+            <button class="nav-btn" data-preset="费用怎么收？辅导模式是什么？">💰 模式与费用</button>
+            <button class="nav-btn" id="upload-btn">📤 上传文档审计</button>
+            <button class="nav-btn clear-btn" id="clear-history">🧹 清除对话</button>
         </aside>
 
         <main class="chat-viewport">
             <div class="messages-area" id="chat-container">
                 <div class="msg-row bot">
-                    <div class="bubble"><b>【秋武哨兵数字卡 V40.6】</b>已激活。直接上传文档或输入困惑，开启逻辑审计。</div>
+                    <div class="bubble"><b>【秋武哨兵 V40.8 精诚版】</b><br>承蒙您的垂询。我会以东大理科本阵的逻辑严谨度，协助您完成留学的跨文化重构。您可以点击左侧按钮或直接输入问题。</div>
                 </div>
             </div>
             <div class="input-bar">
-                <input type="file" id="file-upload" style="display:none" accept=".pdf,.docx,.txt">
-                <input type="text" id="user-input" placeholder="输入关键词 (如: 面接, 合作)...">
+                <input type="file" id="file-upload" style="display:none">
+                <input type="text" id="user-input" placeholder="请在此输入您的问题或关键词..." autofocus>
                 <button id="send-btn">发送</button>
             </div>
         </main>
