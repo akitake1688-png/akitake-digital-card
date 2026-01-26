@@ -10,21 +10,21 @@
     "id": "FILE_SENTINEL_RP",
     "intent": "文件分析：研究计划书",
     "priority": 980,
-    "keywords": ["FILE_TYPE_RP", "RP分析", "计划书分析", "研究计划", "Research Proposal"],
+    "keywords": ["FILE_TYPE_RP", "RP分析", "计划书分析", "研究计划", "Research Proposal", "计划书", "研究計画", "願書", "申请书"],
     "response": "<b>【哨兵扫描：研究计划书 (Research Proposal)】</b>[BREAK]<b>逻辑预审：</b>系统已锁定文档结构。常见致命 Gap 如下：[BREAK]1. <b>先行研究：</b>是罗列还是批判？没有 Critical Review 就没有立足点。[BREAK]2. <b>研究方法：</b>是否具体到可执行的颗粒度？[BREAK]<b>⚠️ 吊胃口：</b>检测到您的题目范围可能过大。想进行“手术刀级”重构？[BREAK]<b>请复制下方指令投喂给 Claude：</b><div class='copy-box'>“作为东大逻辑架构师，请批判性阅读我上传的计划书。1. 找出‘研究动机’与‘方法论’之间的逻辑断层；2. 提炼 3 个核心变量；3. 给出秋武流修改方案。”</div>"
   },
   {
     "id": "FILE_SENTINEL_INTERVIEW",
     "intent": "文件分析：面试稿",
     "priority": 980,
-    "keywords": ["FILE_TYPE_INTERVIEW", "面试稿分析", "面试分析", "逐字稿"],
+    "keywords": ["FILE_TYPE_INTERVIEW", "面试稿分析", "面试分析", "逐字稿", "面试稿", "模拟面试", "面接稿", "口头试问"],
     "response": "<b>【哨兵扫描：面试逐字稿 (Interview Script)】</b>[BREAK]<b>逻辑预审：</b>您准备的答案是否太像“标准答案”？[BREAK]<b>秋武判定：</b>教授不听背诵，听的是“对话的余裕”。您的稿子可能缺乏“逻辑钩子”。[BREAK]<b>⚠️ 建议：</b>需要将单向回答改为“一问多层”结构。[BREAK]<b>请复制下方指令投喂给 Claude：</b><div class='copy-box'>“请模拟东大毒舌教授，针对我上传的面试稿进行压力测试。1. 指出哪里逻辑过于平庸；2. 为每个核心问题设计一个‘反问钩子’；3. 生成日语口语优化版。”</div>"
   },
   {
     "id": "FILE_SENTINEL_ESSAY",
     "intent": "文件分析：小论文/文书",
     "priority": 980,
-    "keywords": ["FILE_TYPE_ESSAY", "文书分析", "志望理由分析", "小论文"],
+    "keywords": ["FILE_TYPE_ESSAY", "文书分析", "志望理由分析", "小论文", "志望理由", "志望書", "作文", "论文", "Statement"],
     "response": "<b>【哨兵扫描：小论文/志望理由 (Essay)】</b>[BREAK]<b>逻辑预审：</b>文章的“骨架”是否支撑得起“论点”？[BREAK]<b>常见漏洞：</b>起承转合过于八股，缺乏个人“原体验”与学术的强关联。[BREAK]<b>⚠️ 吊胃口：</b>您的逻辑闭环率目前只有 60%。想提升到 95%？[BREAK]<b>请复制下方指令投喂给 Claude：</b><div class='copy-box'>“作为学术编辑，重构这篇文章。1. 强化‘原体验’与‘志望动机’的逻辑强关联；2. 剔除所有无效的形容词；3. 输出符合东大基准的精炼版。”</div>"
   },
   {
@@ -32,7 +32,7 @@
     "intent": "文件分析：通用/兜底",
     "priority": 900,
     "keywords": ["FILE_TYPE_GENERAL"],
-    "response": "<b>【哨兵扫描：文档格式已捕获】</b>[BREAK]<b>状态：</b>文件名未包含特定逻辑关键词（如“计划书”、“面试”），但隐私哨兵已加密。[BREAK]<b>⚠️ 手动引导：</b>如果系统未识别您的文件类型，请直接在下方输入框键入：[BREAK]👉 <b>“RP分析”</b> (对应研究计划书)<br>👉 <b>“面试稿分析”</b> (对应面试稿)<br>👉 <b>“文书分析”</b> (对应志望理由/小论文)[BREAK]<b>高维桥接：</b>或者，直接将文档投喂给您的 Claude 私人助理，并加微信 <b>qiuwu999</b> 获取完整指令集。"
+    "response": "<b>【哨兵扫描：文档格式已捕获】</b>[BREAK]<b>状态：</b>文件名未包含特定逻辑关键词，隐私哨兵已加密。[BREAK]<b>⚠️ 智能猜测：</b>如果您的文件是计划书、面试稿或志望理由，系统可能由于命名不标准未自动归类。[BREAK]<b>请手动输入指令触发专用扫描：</b>[BREAK]👉 <b>“RP分析”</b><br>👉 <b>“面试稿分析”</b><br>👉 <b>“文书分析”</b>[BREAK]<b>高维桥接：</b>或直接将文档投喂给您的 Claude 私人助理，并加微信 <b>qiuwu999</b> 获取完整指令集。"
   },
   {
     "id": "PRIVACY_SENTINEL_CLEAR",
@@ -42,27 +42,6 @@
     "response": "<b>【哨兵清除：数据主权与物理自毁】</b>[BREAK]<b>秋武判定：</b>底牌安全性高于一切。[BREAK]<b>1. 本地存储：</b>所有对话与文档快照仅留存于您的本地浏览器。[BREAK]<b>2. 一键抹除：</b>点击“清除”键，LocalStorage 与内存将执行<b>手术刀级粉碎</b>。[BREAK]LTV视角：真正的尊重是保护隐私。加微信 <b>qiuwu999</b> 获取特工级防护。"
   },
   {
-    "id": "INTERVIEW_JA",
-    "intent": "面接博弈 (JA)",
-    "priority": 850,
-    "keywords": ["面接", "模擬面接", "一問多層", "教授", "東大", "京大", "志望理由", "口頭試問", "ゼミ", "余裕"],
-    "response": "<b>【面接博弈：論理整合と微細な所作】</b>[BREAK]秋武判定：国立は論理の深さを重視、私立は総合的な余裕を重視。面接は説得の博弈であり、単なる質疑応答ではない。[BREAK]<b>一問多層対応：</b>論理伏筆を仕掛け、教授の質問を有利領域へ誘導。[BREAK]LTV視点：面接は知性的自立の起点。WeChat <b>qiuwu999</b> でシミュレーションを。"
-  },
-  {
-    "id": "INTERVIEW_KO",
-    "intent": "면접 박역 (KO)",
-    "priority": 850,
-    "keywords": ["면접", "모의면접", "합격", "교수", "일문다층", "논리적", "지원동기", "질의응답"],
-    "response": "<b>【면접 박역: 논리적 정렬과 미세한 동작】</b>[BREAK]아키타케 판정: 국립대는 논리의 깊이를, 사립대는 종합적 여유를 중시합니다. 면접은 설득의 과정이며 단순한 질의응답이 아닙니다。[BREAK]<b>일문다층 전략:</b> 논리 복선을 깔아 교수 질문을 유리한 영역으로 유도하십시오。[BREAK]LTV 시각: 면접은 지적 자립의 시작입니다. WeChat <b>qiuwu999</b>로 시뮬레이션 하세요。"
-  },
-  {
-    "id": "INTERVIEW_EN",
-    "intent": "Interview Game (EN)",
-    "priority": 850,
-    "keywords": ["interview", "mock interview", "professor", "admission", "logic", "proposal", "oral defense"],
-    "response": "<b>[Interview Game: Logical Alignment]</b>[BREAK]Akitake Judgment: National universities emphasize logical depth. Interview is a persuasion game, not Q&A.[BREAK]<b>Multi-layer Strategy:</b> Set logic ambushes to guide professors into your strong areas.[BREAK]LTV Perspective: Interview is the start of intellectual self-reliance. Add WeChat <b>qiuwu999</b> for simulation."
-  },
-  {
     "id": "INTERVIEW_ZH",
     "intent": "面试博弈 (ZH)",
     "priority": 850,
@@ -70,64 +49,11 @@
     "response": "<b>【面试博弈：逻辑对齐与微观所作】</b>[BREAK]秋武判定：国立名校看重逻辑深度，私立看重综合余裕。面试是说服的博弈，而非简单问答。[BREAK]<b>一问多层策略：</b>预设逻辑伏笔，引导教授提问您的强势领域。[BREAK]LTV视角：面试是知性自立的起点。加微信 <b>qiuwu999</b> 开启模拟。"
   },
   {
-    "id": "ESSAY_SOUL_GLOBAL",
-    "intent": "文书重构 (Global)",
-    "priority": 700,
-    "keywords": ["研究计划书", "RP", "志望理由书", "理由书", "文书", "Research Plan", "Proposal", "Statement of Purpose", "研究計画書", "志望理由書", "연구계획서"],
-    "response": "<b>【文书重构：底层溯源与高维对齐】</b>[BREAK]<b>避坑指南：</b>引用教授近5年论文是基本红线。文科重问题意识，理科重创新点（Novelty）。[BREAK]<b>秋武优势：</b>我会把初稿优化得极其精炼，但灵魂100%是您的。核心是通过结构“埋伏笔”。[BREAK]LTV视角：文书不止入场券，而是育知性自立的生涯投资。[BREAK]加微信 <b>qiuwu999</b>，发您的初稿，我来重构它的灵魂。"
-  },
-  {
-    "id": "PRACTICE_BRIDGE_GLOBAL",
-    "intent": "申请实战 (Global)",
-    "priority": 650,
-    "keywords": ["套磁", "内诺", "邮件", "跨专业", "EJU", "签证", "Email", "Contact Professor", "メール", "コンタクト", "Visa"],
-    "response": "<b>【申请实战：桥接策略与生存确定性】</b>[BREAK]<b>1. 升学策略：</b>跨专业必须找到“结合点”。套磁不回信或模棱两可时，教您如何追问教授真实顾虑。[BREAK]<b>2. 生存底线：</b>在日升学，<b>签证是1，其他是0</b>。我会帮您算清时间-效率总账。[BREAK]LTV视角：实战不止一时桥接，而是育知性自立的生存基石。[BREAK]加微信 <b>qiuwu999</b>，发您的简历和套磁草稿，我帮您拆解教授意图。"
-  },
-  { "id": "P_STUDY", "priority": 1000, "keywords": ["文献", "读不完", "写不出", "困惑", "Literature", "Reading"], "response": "<b>【秋武诊疗：学术勤奋的迷途】</b>[BREAK]逻辑审计：读得多不代表逻辑通。您现在的停滞，源于您试图在别人的思想里寻找自己的立足点。[BREAK]知性点拨：停止阅读，找出一个让您感到「違和感」的逻辑裂缝。只有切口够小，逻辑压强才够大。" },
-  { "id": "P_SILENCE", "priority": 1000, "keywords": ["没回", "邮件", "理由", "焦虑", "几天", "No reply", "Ignore"], "response": "<b>【异文化文脉：读懂教授沉默中的“不决”】</b>[BREAK]逻辑审计：沉默通常只有两种：一是您的邮件没有提供“对话挂钩”；二是他在观察您的知性韧性。[BREAK]知性点拨：不要单向乞求机会。提供一份「論理的提案」，逻辑对齐了，空气自然就流通了。" },
-  { "id": "P_GRAND", "priority": 1000, "keywords": ["题目", "宏大", "很大", "缩小", "不知道"], "response": "<b>【秋武警告：宏大叙事是逻辑的坟墓】</b>[BREAK]逻辑审计：试图研究“日本教育”是无效的。切口越小，您逻辑的压强才越大。[BREAK]知性点拨：将研究对象「显微镜化」。教授通过一个反问就能击碎任何空洞的野心。" },
-  { "id": "P_ASYMMETRIC", "priority": 1000, "keywords": ["学历一般", "背景", "劣势", "名校", "机会"], "response": "<b>【防御策略：非对称性升学】</b>[BREAK]逻辑审计：试图堆砌学历背景是最低维度的卷。名校看重的是「逻辑的稀缺性」。[BREAK]知性点拨：背景是死的，逻辑是活。用一份逻辑精度达到东大基准的计划书实现非对称竞争。" },
-  { "id": "P_MISMATCH", "priority": 1000, "keywords": ["改不动", "哪里不对", "逻辑", "感觉", "奇怪"], "response": "<b>【秋武审计：剥离表象的违和感】</b>[BREAK]逻辑审计：这种“说不上来的不对劲”，本质上是「研究动机」与「方法论」的错位。[BREAK]知性点拨：停止修辞，先对齐变量。在混乱中建立一丁点秩序，这就是「知性自立」的开始。" },
-  { "id": "P_CROSS", "priority": 1000, "keywords": ["跨专业", "背景", "不相关", "跨考", "理由"], "response": "<b>【秋武心法：寻找跨界的逻辑原点】</b>[BREAK]逻辑审计：教授怕您跨专业，怕的是您因为逃避而跨。挖掘原有专业的「方法论武器」。[BREAK]知性点拨：用理科精度做文科分析，这叫跨界打击。别解释为什么离开，要解释为什么带着武器到来。" },
-  { "id": "P_POLITICS", "priority": 1000, "keywords": ["实验室", "研究室", "关系", "潜规则", "存活", "Lab", "Zemi"], "response": "<b>【秋武提醒：ゼミ（研究室）是微型政治场】</b>[BREAK]逻辑审计：日本研究室是典型的高语境社会。地位取决于您的「論理性」。[BREAK]知性点拨：不要试图做合群的人，要做有价值的逻辑贡献者。逻辑足够硬，边缘化就会转化为尊重。" },
-  { "id": "P_LTV", "priority": 1000, "keywords": ["考上之后", "打算", "意义", "之后", "怎么办"], "response": "<b>【秋武展望：升学只是知性自立的起点】</b>[BREAK]逻辑审计：将合格视为终点，您的 LTV 就会缩水。升学是为了获得「降维穿透力」。[BREAK]知性点拨：合格后的第一天，就该开启合伙人思维，将您的研究逻辑资产化。" },
-  { "id": "P_GAP", "priority": 1000, "keywords": ["没人做过", "找不到", "先行研究", "唯一性", "资料"], "response": "<b>【秋武判定：学术界没有真正的处女地】</b>[BREAK]逻辑审计：没人做过往往意味着逻辑不成立。寻找“逻辑关联项”而非同义项。[BREAK]知性点拨：找不到 Gap 说明您还没读懂领域脉络。创新是对既有大厦的精修或反叛。" },
-  { "id": "P_TIME", "priority": 1000, "keywords": ["来不及", "一个月", "还能", "怎么办", "赶不上了"], "response": "<b>【秋武判定：时间是逻辑的函数】</b>[BREAK]逻辑审计：时间不够是因为您在做无效的横向铺陈。试图覆盖所有考点是低效率的表现。[BREAK]知性点拨：一个月只够做外科手术式重构。砍掉修饰，保留核心变量对齐，这就是奇迹的路径。" },
-  { "id": "P_ANXIETY", "priority": 1000, "keywords": ["想放弃", "太难了", "压力大", "坚持不下去", "迷茫"], "response": "<b>【秋武寄语：逻辑是焦虑的终结者】</b>[BREAK]逻辑审计：焦虑源于处理不可控变量。[BREAK]知性点拨：在混乱中建立一丁点秩序。放弃很容易，但您将失去一次重构人格的机会。" },
-  {
     "id": "SUBJECT_MATH_FIX",
     "intent": "学科修正",
     "priority": 600,
     "keywords": ["数学", "物理", "化学", "微分", "定义", "动量", "Math", "Calculus"],
     "response": "<b>【学科修正：东大基准的概念对齐】</b>[BREAK]<b>常见漏洞：</b><br>1. 微分定义：$$ \\lim_{h \\to 0} \\frac{f(a+h)-f(a)}{h} $$。<br>2. 动量守恒：前提是“合外力”为零。<br>3. 苯结构：平面六元环+离域电子（符合 4n+2 规则）。[BREAK]<b>秋武提醒：</b>理科概念模糊在面试中是致命的，会导致“逻辑自刎”。[BREAK]加微信 <b>qiuwu999</b>，发您的错题。"
-  },
-  {
-    "id": "COMMERCIAL_CLOSED_LOOP",
-    "intent": "商业闭环",
-    "priority": 850,
-    "keywords": ["收费", "费用", "多少钱", "价格", "中介", "私塾", "奖学金"],
-    "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]<b>1. 免费模式：</b>通过秋武老师推荐进入名门私塾或语校，机构介绍费即为您的<b>“逻辑奖学金”</b>（零额外支出）。[BREAK]<b>2. 个人模式：</b>单项项目精细收费（美术、医学、IT特色匹配）。[BREAK]LTV视角：视学生为“生涯伙伴”。加微信 <b>qiuwu999</b> 利用信息差实现高维升学。"
-  },
-  {
-    "id": "IDENTITY_ANCHOR",
-    "intent": "身份锚点",
-    "priority": 800,
-    "keywords": ["特色", "优势", "亲自辅导", "秋武老师", "背景", "为什么选你"],
-    "response": "<b>【身份锚点：东大理科本阵的逻辑陪练】</b>[BREAK]<b>秋武老师核心差异：</b><br>1. <b>跨学科底蕴：</b>本科理工+东大文理交叉，诊治“逻辑自刎”。<br>2. <b>逻辑陪练：</b>文书中“埋伏笔”控制面试路径。<br>3. <b>硬核承诺：</b>套餐辅导，首年未合格，次年<b>免费续辅</b>。[BREAK]加微信 <b>qiuwu999</b>，聊聊您的背景。"
-  },
-  {
-    "id": "AI_AGENT_COMMANDER",
-    "intent": "AI指挥官",
-    "priority": 950,
-    "keywords": ["上传", "文件", "分析", "整理", "PDF", "脚本", "指令"],
-    "response": "<b>【AI指挥官：哨兵指令生成】</b>[BREAK]<b>秋武判定：</b>系统已完成底层逻辑扫描。建议将文件上传至 Claude，并复制以下<b>哨兵定制指令</b>：[BREAK]<div class='copy-box'>“请作为东大逻辑架构师，分析我上传的[专业/文件类型]文件。1. 识别核心研究变量并判断其‘定义精度’；2. 检索先行研究中的逻辑断层（Gap）；3. 按照‘秋武流’逻辑重新构建研究大纲。”</div>[BREAK]LTV视角：工具是效能的延长。加微信 <b>qiuwu999</b> 获取高阶 AI 协作流。"
-  },
-  {
-    "id": "FILE_SENTINEL_GATE",
-    "intent": "哨兵门禁",
-    "priority": 960,
-    "keywords": ["FILE_UPLOAD_EVENT"],
-    "response": "<b>【哨兵分析成功：逻辑已锚定】</b>[BREAK]<b>分析报告：</b><br>1. 结构完整度：系统已记录附件结构。<br>2. 隐私状态：哨兵加密防护已开启，会话结束自动销毁。<br>3. 下一步建议：输入关键词 <b>“指令”</b> 获取针对该文件的 AI 协作脚本，或输入专业关键词（如“面试”）开启逻辑对齐。"
   },
   {
     "id": "FALLBACK_CORE",
