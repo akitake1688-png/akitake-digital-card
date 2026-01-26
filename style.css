@@ -1,21 +1,20 @@
-:root { --accent-blue: #154391; --bg-mint: #F1F8E9; --text-main: #2C3E50; }
-body { background: var(--bg-mint); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; font-family: "PingFang SC", sans-serif; overflow: hidden; }
-.glass-container { width: 95vw; height: 92vh; max-width: 1100px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(25px); border-radius: 16px; display: flex; box-shadow: 0 25px 60px rgba(0,0,0,0.1); overflow: hidden; }
-.side-panel { width: 280px; border-right: 1px solid #E0E7D8; padding: 25px; display: flex; flex-direction: column; background: #fff; }
+:root { --accent: #154391; --bg: #F1F8E9; }
+body { background: var(--bg); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; font-family: sans-serif; overflow: hidden; }
+.glass-container { width: 95vw; height: 92vh; max-width: 1100px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border-radius: 16px; display: flex; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden; }
+.side-panel { width: 260px; border-right: 1px solid #E0E7D8; padding: 20px; display: flex; flex-direction: column; background: #fff; }
 .avatar-main { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; display: block; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.persona-name { text-align: center; font-size: 1.1rem; font-weight: bold; margin-bottom: 25px; color: var(--text-main); }
-.nav-btn { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #eee; background: #fdfdfd; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-.nav-btn:hover { background: var(--accent-blue); color: #fff; transform: translateX(4px); }
-.chat-viewport { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,0.4); }
+.persona-name { text-align: center; font-weight: bold; margin-bottom: 25px; }
+.nav-btn { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 0.9rem; }
+.nav-btn:hover { background: var(--accent); color: #fff; }
+.clear-btn { margin-top: auto; color: #ff4d4f; border-color: #ffccc7; }
+.chat-viewport { flex: 1; display: flex; flex-direction: column; }
 .messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
 .msg-row { display: flex; width: 100%; }
 .msg-row.user { justify-content: flex-end; }
-.bubble { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; position: relative; }
-.user .bubble { background: var(--accent-blue); color: #fff; border-bottom-right-radius: 2px; }
-.bot .bubble { background: #fff; color: var(--text-main); border-bottom-left-radius: 2px; border: 1px solid #eee; }
-.copy-box { background: #f8f9fa; padding: 12px; border-radius: 8px; font-family: monospace; border: 1px dashed var(--accent-blue); margin-top: 10px; cursor: pointer; position: relative; font-size: 0.85rem; transition: 0.2s; }
-.copy-box:hover { background: #f0f4f8; }
-.copy-box::after { content: "📋 点击复制"; position: absolute; right: 10px; bottom: 5px; font-size: 0.7rem; color: var(--accent-blue); opacity: 0.7; }
-.input-bar { padding: 20px; border-top: 1px solid #eee; display: flex; gap: 10px; background: #fff; }
-#user-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-#send-btn { background: var(--text-main); color: #fff; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; }
+.bubble { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; }
+.user .bubble { background: var(--accent); color: #fff; }
+.bot .bubble { background: #fff; border: 1px solid #eee; }
+.copy-box { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px dashed var(--accent); margin-top: 10px; cursor: pointer; font-family: monospace; font-size: 0.85rem; }
+.input-bar { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; background: #fff; }
+#user-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; outline: none; }
+#send-btn { background: #333; color: #fff; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; }
