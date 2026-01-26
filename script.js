@@ -11,36 +11,6 @@
             const sendBtn = document.getElementById('send-btn');
             const chat = document.getElementById('chat-container');
 
-            document.querySelectorAll('.nav-btn[data-preset]').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    if (isProcessing) return;
-                    input.value = btn.getAttribute('data-preset');
-                    await handleSend(); 
-                });
-            });
-
-            document.getElementById('clear-history')?.addEventListener('click', () => {
-                if (confirm("确认清除所有逻辑记录？")) { 
-                    chat.innerHTML = '';
-                    localStorage.clear(); 
-                    location.reload(true); 
-                }
-            });
-
-            document.getElementById('file-upload')?.addEventListener('change', async e => {
-                const file = e.target.files[0];
-                if (!file) return;
-                if (!/\.(pdf|doc|docx|txt)$/i.test(file.name)) {
-                    alert("格式限制：仅支持 PDF/DOCX/TXT");
-                    return;
-                }
-                appendMessage('user', `📄 上传文档: ${file.name}`);
-                appendMessage('bot', '<b>【哨兵扫描】</b> 逻辑特征提取中...');
-                setTimeout(() => {
-                    appendMessage('bot', '扫描完成。该研究计划逻辑链已捕获。请告诉您的困惑，或联系微信：qiuwu999。');
-                }, 1500);
-            });
-
             const handleSend = async () => {
                 const text = input.value.trim();
                 if (!text || isProcessing) return;
@@ -52,6 +22,7 @@
                 appendMessage('user', text);
                 input.value = '';
 
+                // 核心逻辑：权重梯队计算
                 let matches = [];
                 knowledgeBase.forEach(item => {
                     let score = 0;
@@ -67,20 +38,16 @@
                 matches.sort((a, b) => b.score - a.score);
                 const best = matches[0]?.item || knowledgeBase.find(i => i.id === "SENTINEL_GATE");
 
+                // 分段呼吸感渲染
                 const segments = best.response.split('[BREAK]');
-                for (let i = 0; i < segments.length; i++) {
-                    if (segments[i].trim()) {
-                        appendMessage('bot', segments[i].trim());
-                        await new Promise(r => setTimeout(r, Math.min(segments[i].length * 25 + 400, 1100)));
+                for (let seg of segments) {
+                    if (seg.trim()) {
+                        appendMessage('bot', seg.trim());
+                        await new Promise(r => setTimeout(r, Math.min(seg.length * 25 + 400, 1100)));
                     }
                 }
 
-                if (window.MathJax) {
-                    window.MathJax.typesetPromise().catch(err => {
-                        console.warn("MathJax Error:", err);
-                        appendMessage('bot', '<small style="color:#999">（渲染异常，请加微信 qiuwu999）</small>');
-                    });
-                }
+                if (window.MathJax) window.MathJax.typesetPromise();
 
                 isProcessing = false;
                 sendBtn.disabled = false;
@@ -91,23 +58,28 @@
             sendBtn.addEventListener('click', handleSend);
             input.addEventListener('keypress', e => { if (e.key === 'Enter') handleSend(); });
 
-        } catch (e) { console.error("Loading Error"); }
+            // 侧边栏监听
+            document.querySelectorAll('.nav-btn[data-preset]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (isProcessing) return;
+                    input.value = btn.getAttribute('data-preset');
+                    handleSend();
+                });
+            });
+
+        } catch (e) { console.error("Sentinel Core Error"); }
     });
 
     function appendMessage(role, html) {
         const chat = document.getElementById('chat-container');
-        if (!chat) return;
         const div = document.createElement('div');
         div.className = `msg-row ${role}`;
         div.innerHTML = `<div class="bubble">${html}</div>`;
-        
         if (role === 'bot') {
-            div.querySelector('.bubble').addEventListener('click', async function() {
-                try {
-                    await navigator.clipboard.writeText(this.innerText);
-                    this.classList.add('copied');
-                    setTimeout(() => this.classList.remove('copied'), 1200);
-                } catch(e) {}
+            div.querySelector('.bubble').addEventListener('click', function() {
+                navigator.clipboard.writeText(this.innerText);
+                this.classList.add('copied');
+                setTimeout(() => this.classList.remove('copied'), 1000);
             });
         }
         chat.appendChild(div);
