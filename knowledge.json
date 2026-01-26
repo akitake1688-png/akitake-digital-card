@@ -2,25 +2,37 @@
   {
     "id": "BIZ_LOGIC",
     "priority": 2000,
-    "keywords": ["费用", "模式", "收费", "私塾", "介绍费"],
-    "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]1. <b>免费模式：</b>通过我推荐优质私塾/语校，机构介绍费直接覆盖辅导成本。[BREAK]2. <b>个人模式：</b>单项项目精细化收费。[BREAK]加微信 <b>qiuwu999</b> 咨询。"
+    "keywords": ["费用", "模式", "收费", "私塾", "介绍费", "合伙人"],
+    "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]1. <b>免费模式：</b>通过我推荐优质私塾/语校，机构介绍费直接覆盖辅导成本，您零支出。[BREAK]2. <b>个人模式：</b>单项项目精细化收费。[BREAK]<b>秋武直言：</b>算不明白这笔“效率账”的人很难胜出。想知道您的专业适合哪所机构？加微信 <b>qiuwu999</b>。"
+  },
+  {
+    "id": "P_IDENTITY",
+    "priority": 1950,
+    "keywords": ["特色", "优势", "理科本阵", "特点", "为什么选你"],
+    "response": "<b>【身份锚点：东大理科本阵的逻辑陪练】</b>[BREAK]核心差异：[BREAK]1. 10年现役辅导经验，提供文理融合的东大级逻辑重构。[BREAK]2. 擅长在文书中“埋伏笔”引导教授提问思路。[BREAK]3. <b>承诺：</b>第一年未合格，下一年免费续辅导。[BREAK]<b>不同之处：</b>我不是流水线机构，我是您的舵手。即便您已在私塾，依然需要这种高维逻辑。加微信 <b>qiuwu999</b>。"
   },
   {
     "id": "INTERVIEW_JP",
     "priority": 1800,
-    "keywords": ["面接", "見せれば", "模擬面接"],
-    "response": "<b>【面接博弈：論理整合と微細な所作】</b>[BREAK]秋武判定：国立は論理の深さを重視、私立は総合的な余裕を重視。面接は説得の博弈である。[BREAK]LTV視点：WeChat <b>qiuwu999</b> でシミュレーションを。"
+    "keywords": ["面接", "椅子", "どう見せれば", "模擬面接"],
+    "response": "<b>【面接博弈：論理整合と微細な所作】</b>[BREAK]秋武判定：国立は論理の深さを重視、私立は総合的な余裕を重視。面接は説得の博弈であり、単なる質疑応答ではない。[BREAK]<b>一問多層対応：</b>論理伏筆を仕掛け、教授の質問を有利領域へ誘導。[BREAK]<b>LTV視点：</b>面接は知性的自立の起点。WeChat <b>qiuwu999</b> でシミュレーションを。"
   },
   {
     "id": "INTERVIEW_EN",
     "priority": 1800,
-    "keywords": ["interview", "multi-layer", "crush me"],
-    "response": "<b>[Interview Game: Logical Alignment & Subtle Details]</b>[BREAK]Akitake Judgment: National universities emphasize logical depth. It is a persuasion game, not Q&A.[BREAK]Add WeChat <b>qiuwu999</b> for simulation."
+    "keywords": ["interview", "multi-layer", "crush me", "how to prepare"],
+    "response": "<b>[Interview Game: Logical Alignment & Subtle Details]</b>[BREAK]Akitake Judgment: National universities emphasize logical depth, private ones comprehensive yoyuu. Interview is a persuasion game, not Q&A.[BREAK]<b>Multi-layer Strategy:</b> Set logic ambushes to guide professors into your strong areas.[BREAK]<b>LTV Perspective:</b> Interview is the start of intellectual self-reliance. Add WeChat <b>qiuwu999</b> for simulation."
   },
   {
     "id": "INTERVIEW_KR",
     "priority": 1800,
-    "keywords": ["면접", "일문다층", "허점"],
-    "response": "<b>【면접 박역: 논리적 정렬과 미세한 동작】</b>[BREAK]아키타케 판정: 국립대는 논리의 깊이를 중시합니다. 면접은 설득의 과정입니다。[BREAK]LTV 시각: WeChat <b>qiuwu999</b>로 시뮬레이션 하세요。"
+    "keywords": ["면접", "일문다층", "허점", "대응 방법"],
+    "response": "<b>【면접 박역: 논리적 정렬과 미세한 동작】</b>[BREAK]아키타케 판정: 국립대는 논리의 깊이를, 사립대는 종합적 여유를 중시합니다. 면접은 설득의 과정이며 단순한 질의응답이 아닙니다。[BREAK]<b>일문다층 전략:</b> 논리 복선을 깔아 교수 질문을 유리한 영역으로 유도하십시오。[BREAK]<b>LTV 시각:</b> 면접은 지적 자립의 시작입니다. WeChat <b>qiuwu999</b>로 시뮬레이션 하세요。"
+  },
+  {
+    "id": "SENTINEL_GATE",
+    "priority": 1,
+    "keywords": ["你好", "在吗", "Hello", "Hi"],
+    "response": "<b>【秋武哨兵：高维审计入口】</b>[BREAK]我是秋武。已加载 15+ 诊疗维度。您可输入：<b>‘费用模式’‘面接’‘interview’‘면접’</b> 触发专用审计。[BREAK]即时对话请加微信：<b>qiuwu999</b>。"
   }
 ]
