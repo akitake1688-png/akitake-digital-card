@@ -13,6 +13,9 @@ body { background: var(--bg-mint); height: 100vh; display: flex; align-items: ce
 .bubble { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; line-height: 1.6; position: relative; word-wrap: break-word; }
 .user .bubble { background: var(--accent-blue); color: white; border-bottom-right-radius: 2px; }
 .bot .bubble { background: white; color: var(--text-main); border-bottom-left-radius: 2px; border: 1px solid #eee; }
+.copy-box { background: #eef2f5; padding: 10px; border-radius: 6px; font-family: monospace; border: 1px dashed #bbb; margin-top: 5px; cursor: pointer; position: relative; font-size: 0.85rem; color: #444; transition: background 0.3s; }
+.copy-box:hover { background: #e0e0e0; }
+.copy-box::after { content: "📋 点击复制"; position: absolute; right: 5px; top: 5px; font-size: 0.7rem; color: #888; }
 .input-bar { padding: 20px; border-top: 1px solid #eee; display: flex; gap: 10px; background: white; }
 #user-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
 #send-btn { background: var(--text-main); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; }
