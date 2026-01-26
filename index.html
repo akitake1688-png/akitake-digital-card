@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武逻辑 · 升学防御系统 V40.1</title>
+    <title>秋武逻辑 | 哨兵数字卡</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
     <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="glass-container">
-        <div class="side-panel">
-            <img src="profile.jpg" class="avatar-main" onerror="this.src='https://ui-avatars.com/api/?name=A&background=154391&color=fff'">
-            <div class="persona-name">秋武逻辑</div>
-            <div id="nav-btns">
-                <button class="nav-btn" data-preset="文献读不完困惑">📚 文献与计划书诊疗</button>
-                <button class="nav-btn" data-preset="面试回复不知道">⚖️ 面试博弈策略</button>
-                <button class="nav-btn" data-preset="我想合作怎么分成">🤝 合伙人价值共建</button>
-                <button class="nav-btn" data-preset="数学微分定义">📐 学科逻辑修正</button>
-                <button class="nav-btn" id="upload-btn">📂 上传文档 (哨兵分析)</button>
-                <input type="file" id="file-upload" style="display:none;">
+        <aside class="side-panel">
+            <img src="https://raw.githubusercontent.com/qiuwu999/qiuwu/main/qiuwu.png" class="avatar-main" alt="秋武">
+            <div class="persona-name">秋武老师 | 哨兵系统</div>
+            <button class="nav-btn" data-preset="诊疗：我的文献读不完">📚 文献诊疗</button>
+            <button class="nav-btn" data-preset="面试博弈：一问多层策略">🗣️ 面试博弈</button>
+            <button class="nav-btn" id="upload-btn">📄 文档逻辑审计</button>
+            <button class="nav-btn" data-preset="合伙人模式">🤝 合伙人加盟</button>
+            <button class="nav-btn clear-btn" id="clear-history">🧹 清除对话记录</button>
+        </aside>
+
+        <main class="chat-viewport">
+            <div class="messages-area" id="chat-container">
+                <div class="msg-row bot">
+                    <div class="bubble"><b>【秋武哨兵数字卡 V40.6】</b>已激活。直接上传文档或输入困惑，开启逻辑审计。</div>
+                </div>
             </div>
-            <div style="margin-top:auto; font-size:0.7rem; color:#999; text-align:center;">
-                Private Domain: qiuwu999<br>© 2026 Akitake Lab
-            </div>
-        </div>
-        <div class="chat-viewport">
-            <div id="chat-container" class="messages-area"></div>
             <div class="input-bar">
+                <input type="file" id="file-upload" style="display:none" accept=".pdf,.docx,.txt">
                 <input type="text" id="user-input" placeholder="输入关键词 (如: 面接, 合作)...">
-                <button id="clear-history" class="clear-btn">🧹 清除</button>
                 <button id="send-btn">发送</button>
             </div>
-        </div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
