@@ -2,9 +2,23 @@
     let knowledgeBase = [];
     let isProcessing = false;
 
+    // 核心匹配算法：语种隔离 + 优先级判定
+    function getBestResponse(userInput) {
+        const text = userInput.toLowerCase();
+        let matches = [];
+
+        knowledgeBase.forEach(item => {
+            const hasMatch = item.keywords.some(k => text.includes(k.toLowerCase()));
+            if (hasMatch) matches.push(item);
+        });
+
+        if (matches.length === 0) return null;
+        // 关键：按优先级降序排列，取最高权重的条目
+        return matches.sort((a, b) => b.priority - a.priority)[0];
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
         try {
-            // 1. 加载数据库
             const res = await fetch('knowledge.json?v=' + Date.now());
             knowledgeBase = await res.json();
             
@@ -13,68 +27,50 @@
             const clearBtn = document.getElementById('clear-btn');
             const chat = document.getElementById('chat-container');
 
-            // 2. 核心发送逻辑
             const handleSend = async () => {
                 const text = input.value.trim();
                 if (!text || isProcessing) return;
                 
                 isProcessing = true;
-                sendBtn.disabled = true;
                 appendMessage('user', text);
                 input.value = '';
 
-                // 3. 匹配算法：基于Priority的加权检索
-                let bestMatch = null;
-                let highestPriority = -1;
-
-                knowledgeBase.forEach(item => {
-                    const match = item.keywords.some(k => text.toLowerCase().includes(k.toLowerCase()));
-                    if (match && item.priority > highestPriority) {
-                        highestPriority = item.priority;
-                        bestMatch = item;
-                    }
-                });
-
-                const responseObj = bestMatch || knowledgeBase.find(i => i.id === "SENTINEL_GATE");
-                const segments = responseObj.response.split('[BREAK]');
-
-                // 4. 分段呼吸渲染
+                const matchedItem = getBestResponse(text);
+                const responseText = matchedItem ? matchedItem.response : "【秋武哨兵】未检测到逻辑锚点，请输入：费用、面接、interview、면접。";
+                
+                const segments = responseText.split('[BREAK]');
                 for (let seg of segments) {
                     if (seg.trim()) {
                         appendMessage('bot', seg.trim());
-                        await new Promise(r => setTimeout(r, Math.min(seg.length * 20 + 450, 1200)));
+                        await new Promise(r => setTimeout(r, 600)); // 职人呼吸感
                     }
                 }
-
-                if (window.MathJax) window.MathJax.typesetPromise();
+                
                 isProcessing = false;
-                sendBtn.disabled = false;
+                chat.scrollTop = chat.scrollHeight;
+            };
+
+            // 物理清除：真正挂载成功
+            clearBtn.onclick = () => {
+                chat.innerHTML = "";
+                localStorage.clear();
+                appendMessage('bot', "<b>🧹 哨兵清除：数据主权已回归</b><br>LocalStorage 已粉碎，记录归于虚无。");
+                isProcessing = false;
                 input.focus();
             };
 
-            // 5. 事件监听绑定
-            sendBtn.addEventListener('click', handleSend);
-            input.addEventListener('keypress', e => { if (e.key === 'Enter') handleSend(); });
+            sendBtn.onclick = handleSend;
+            input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
 
-            // 物理清除功能
-            if (clearBtn) {
-                clearBtn.addEventListener('click', () => {
-                    chat.innerHTML = `<div class="msg-row bot"><div class="bubble"><b>【数据已物理抹除】</b><br>知性对话记录已清空，哨兵随时待命。</div></div>`;
-                    input.focus();
-                });
-            }
-
-            // 侧边栏预设词
+            // 侧边栏按钮逻辑
             document.querySelectorAll('.nav-btn[data-preset]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (!isProcessing) {
-                        input.value = btn.getAttribute('data-preset');
-                        handleSend();
-                    }
-                });
+                btn.onclick = () => {
+                    input.value = btn.getAttribute('data-preset');
+                    handleSend();
+                };
             });
 
-        } catch (e) { console.error("Sentinel Loader Error:", e); }
+        } catch (e) { console.error("Critical System Error:", e); }
     });
 
     function appendMessage(role, html) {
