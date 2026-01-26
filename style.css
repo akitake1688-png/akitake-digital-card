@@ -1,48 +1,36 @@
-:root { --accent: #154391; --bg: #f4f7f1; }
-body { margin: 0; height: 100vh; background: var(--bg); display: flex; justify-content: center; align-items: center; font-family: -apple-system, "Hiragino Sans", sans-serif; }
+:root { --accent: #154391; --danger: #d9534f; --bg: #f4f7f1; }
+body { margin: 0; height: 100vh; background: var(--bg); display: flex; justify-content: center; align-items: center; font-family: -apple-system, sans-serif; }
 
-.glass-container { 
-    width: 96vw; max-width: 1200px; height: 94vh; background: #fff; 
-    border-radius: 24px; display: flex; box-shadow: 0 20px 50px rgba(0,0,0,0.1); overflow: hidden;
-}
+.glass-container { width: 96vw; max-width: 1200px; height: 94vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
 
-/* 侧边栏锁定：确保头像永不消失 */
-.side-panel { 
-    width: 260px; min-width: 260px; background: #fff; border-right: 1px solid #eee; 
-    padding: 30px 20px; display: flex; flex-direction: column; flex-shrink: 0;
-}
+/* 侧边栏锁定 */
+.side-panel { width: 280px; min-width: 280px; background: #fff; border-right: 1px solid #eee; padding: 30px 20px; display: flex; flex-direction: column; flex-shrink: 0; }
 
 .avatar-wrapper { 
-    width: 100px; height: 100px; margin: 0 auto 15px; 
+    width: 120px; height: 120px; margin: 0 auto 20px; 
     border-radius: 50%; border: 3px solid var(--accent); 
-    overflow: hidden; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden; flex-shrink: 0; background: #f0f0f0;
 }
-.avatar-main { width: 100%; height: 100%; object-fit: cover; }
+.avatar-main { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.persona-name { text-align: center; font-weight: bold; margin-bottom: 30px; color: var(--accent); font-size: 1.1rem; }
+.persona-name { text-align: center; font-weight: 800; color: var(--accent); margin-bottom: 30px; font-size: 1.2rem; }
 .nav-group { flex: 1; display: flex; flex-direction: column; gap: 10px; }
 
-.nav-btn { 
-    padding: 12px; border: 1px solid #eee; border-radius: 10px; background: #fff; 
-    cursor: pointer; text-align: left; transition: 0.2s; font-size: 0.9rem;
-}
-.nav-btn:hover { background: var(--accent); color: white; transform: translateX(4px); }
+.nav-btn { padding: 12px; border: 1px solid #f0f0f0; border-radius: 10px; background: #fff; cursor: pointer; text-align: left; transition: 0.2s; font-size: 0.9rem; }
+.nav-btn:hover { background: var(--accent); color: white; transform: translateX(5px); }
 
-.clear-btn { 
-    margin-top: 20px; padding: 12px; border: none; border-radius: 10px; 
-    background: #fff0f0; color: #d9534f; cursor: pointer; font-weight: bold; transition: 0.3s;
-}
-.clear-btn:hover { background: #d9534f; color: white; }
+.clear-btn { padding: 14px; border: none; border-radius: 10px; background: #fff0f0; color: var(--danger); cursor: pointer; font-weight: bold; margin-top: 15px; border: 1px solid #ffebeb; }
+.clear-btn:hover { background: var(--danger); color: white; }
 
-/* 聊天区布局 */
+/* 聊天区 */
 .chat-viewport { flex: 1; display: flex; flex-direction: column; background: #fafafa; }
-.messages-area { flex: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-.msg-row { display: flex; width: 100%; }
+.messages-area { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+.msg-row { display: flex; width: 100%; margin-bottom: 10px; }
 .msg-row.user { justify-content: flex-end; }
-.bubble { max-width: 80%; padding: 12px 18px; border-radius: 15px; line-height: 1.6; font-size: 14px; white-space: pre-wrap; word-break: break-word; }
+.bubble { max-width: 80%; padding: 15px 20px; border-radius: 15px; line-height: 1.7; font-size: 14px; white-space: pre-wrap; word-break: break-word; }
 .user .bubble { background: var(--accent); color: white; border-bottom-right-radius: 4px; }
-.bot .bubble { background: white; border: 1px solid #eee; border-bottom-left-radius: 4px; color: #2c3e50; }
+.bot .bubble { background: white; border: 1px solid #eee; border-bottom-left-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
 
-.input-bar { padding: 20px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 10px; }
+.input-bar { padding: 20px; background: #fff; border-top: 1px solid #f0f0f0; display: flex; gap: 10px; }
 #user-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; }
-#send-btn { padding: 0 25px; background: #333; color: white; border: none; border-radius: 10px; cursor: pointer; }
+#send-btn { padding: 0 25px; background: #333; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
