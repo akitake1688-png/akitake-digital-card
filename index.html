@@ -10,22 +10,25 @@
 <body>
     <div class="glass-container">
         <aside class="side-panel">
-            <img src="https://raw.githubusercontent.com/qiuwu999/qiuwu/main/qiuwu.png" class="avatar-main" alt="秋武">
+            <div class="avatar-wrapper">
+                <img src="https://raw.githubusercontent.com/qiuwu999/qiuwu/main/qiuwu.png" class="avatar-main" alt="秋武">
+            </div>
             <div class="persona-name">秋武老师 | 哨兵</div>
-            <button class="nav-btn" data-preset="费用模式">🍀 协作模式/费用</button>
-            <button class="nav-btn" data-preset="理科本阵特色">📚 秋武优势/特色</button>
-            <button class="nav-btn" data-preset="研究计划书改不动">🔎 逻辑手术</button>
-            <button class="nav-btn" data-preset="读空气">🔄 文化心法</button>
-            <button class="nav-btn" onclick="document.getElementById('file-upload').click()">📄 RP 文档扫描</button>
+            <div class="nav-group">
+                <button class="nav-btn" data-preset="费用模式">🍀 协作模式/费用</button>
+                <button class="nav-btn" data-preset="理科本阵特色">📚 秋武优势/特色</button>
+                <button class="nav-btn" data-preset="研究计划书改不动">🔎 逻辑手术</button>
+                <button class="nav-btn" data-preset="读空气">🔄 文化心法</button>
+            </div>
+            <button id="clear-btn" class="clear-btn">🧹 清除记录</button>
         </aside>
         <main class="chat-viewport">
             <div class="messages-area" id="chat-container">
                 <div class="msg-row bot">
-                    <div class="bubble"><b>【秋武逻辑哨兵 V42.3】</b> 已激活。<br><br>请输入您的痛点关键词（支持中/日/英/韩语）。</div>
+                    <div class="bubble"><b>【秋武逻辑哨兵 V42.3】</b> 已激活。<br><br>请输入您的知性困惑（支持中/日/英/韩语）。</div>
                 </div>
             </div>
             <div class="input-bar">
-                <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.txt" style="display:none">
                 <input type="text" id="user-input" placeholder="输入您的知性困惑..." autofocus>
                 <button id="send-btn">发送</button>
             </div>
