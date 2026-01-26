@@ -1,125 +1,121 @@
-/* * 秋武逻辑 V40.2 智能增强版 
- * 请【全量覆盖】此文件，确保第一行没有重复的声明 
- */
-let knowledgeBase = [];
-let isProcessing = false;
+(function() {
+    let knowledgeBase = [];
+    let isProcessing = false;
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const res = await fetch('knowledge.json');
-        if (!res.ok) throw new Error('Knowledge source 404');
-        knowledgeBase = await res.json();
-        console.log("秋武逻辑 V40.2 哨兵系统启动成功");
-        
-        // 绑定侧边栏按钮
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (btn.id === 'upload-btn') {
-                    document.getElementById('file-upload').click();
-                } else {
-                    const preset = btn.dataset.preset;
-                    if (preset) {
-                        document.getElementById('user-input').value = preset;
-                        handleAction();
-                    }
-                }
-            });
-        });
-
-        // 绑定文件上传
-        const fileInput = document.getElementById('file-upload');
-        if (fileInput) fileInput.addEventListener('change', handleFileUpload);
-
-        // 复制功能反馈优化
-        document.getElementById('chat-container').addEventListener('click', function(e) {
-            const target = e.target.closest('.copy-box');
-            if (target) {
-                const text = target.innerText.replace("📋 点击复制", "").replace("✅ 已复制！", "").trim();
-                navigator.clipboard.writeText(text).then(() => {
-                    const originalHTML = target.innerHTML;
-                    target.style.background = "#d4edda"; 
-                    target.innerHTML = "✅ 已复制！请投喂给 Claude";
-                    setTimeout(() => {
-                        target.style.background = "";
-                        target.innerHTML = originalHTML;
-                    }, 2000);
-                });
-            }
-        });
-
-    } catch (e) { console.error("初始化逻辑失败:", e); }
-});
-
-async function handleAction() {
-    const input = document.getElementById('user-input');
-    const text = input?.value.trim();
-    if (!text || isProcessing) return;
-
-    postMessage(input.value, 'user');
-    input.value = "";
-    isProcessing = true;
-    await processLogic(text.toLowerCase());
-    isProcessing = false;
-}
-
-async function processLogic(query) {
-    let match = null;
-    let topScore = -1;
-
-    knowledgeBase.forEach(item => {
-        let score = 0;
-        (item.keywords || []).forEach(k => { 
-            if (query.includes(k.toLowerCase())) score += (item.priority || 100); 
-        });
-        if (score > topScore) { topScore = score; match = item; }
+    // 全局错误防御
+    window.addEventListener('error', (e) => {
+        console.warn('哨兵拦截:', e.message);
+        if (!document.querySelector('.error-guard')) {
+            postMessage("<b>【警报】</b> 环境加载异常，请按 <b>Ctrl+Shift+R</b> 刷新。", 'bot');
+        }
     });
 
-    const response = (topScore > 0) ? match.response : knowledgeBase.find(i => i.id === "FALLBACK_CORE").response;
-    await renderResponse(response);
-}
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const res = await fetch('knowledge.json?v=' + Date.now());
+            knowledgeBase = await res.json();
+            console.log("秋武逻辑 V40.6 部署完毕");
 
-async function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+            document.getElementById('send-btn')?.addEventListener('click', handleAction);
+            document.getElementById('user-input')?.addEventListener('keypress', e => e.key === 'Enter' && handleAction());
+            
+            // 清除功能绑定
+            document.getElementById('clear-history')?.addEventListener('click', () => {
+                if (confirm("确认清除本地对话缓存？")) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            });
 
-    postMessage(`📄 已上传文件: ${file.name}`, 'user');
-    isProcessing = true;
-    await renderResponse("<b>【哨兵扫描中】</b>[BREAK]正在进行结构化建模...[BREAK]██████████ 100%");
+            // 上传及导航
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.id === 'upload-btn') document.getElementById('file-upload').click();
+                    else if (btn.dataset.preset) {
+                        document.getElementById('user-input').value = btn.dataset.preset;
+                        handleAction();
+                    }
+                });
+            });
 
-    const name = file.name.toLowerCase();
-    let typeKeyword = "FILE_TYPE_GENERAL";
+            document.getElementById('file-upload')?.addEventListener('change', handleFileUpload);
 
-    // 智能嗅探逻辑
-    if (/rp|计划|plan|proposal/.test(name)) {
-        typeKeyword = "FILE_TYPE_RP";
-    } else if (/面试|interview|面接|稿/.test(name)) {
-        typeKeyword = "FILE_TYPE_INTERVIEW";
-    } else if (/文书|essay|志望|理由|作文|thesis|statement/.test(name) || name.endsWith(".pdf") || name.endsWith(".docx")) {
-        typeKeyword = "FILE_TYPE_ESSAY";
+            // 复制反馈
+            document.getElementById('chat-container').addEventListener('click', e => {
+                const box = e.target.closest('.copy-box');
+                if (box) {
+                    const text = box.innerText.replace(/📋|✅|点击复制|已复制/g, "").trim();
+                    navigator.clipboard.writeText(text).then(() => {
+                        const old = box.innerHTML;
+                        box.innerHTML = "✅ 已复制指令！请投喂给 Claude";
+                        setTimeout(() => box.innerHTML = old, 2000);
+                    });
+                }
+            });
+
+        } catch (e) { console.error("内核加载失败:", e); }
+    });
+
+    async function handleAction() {
+        const input = document.getElementById('user-input');
+        const text = input?.value.trim();
+        if (!text || isProcessing) return;
+        postMessage(input.value, 'user');
+        input.value = "";
+        isProcessing = true;
+        await processLogic(text.toLowerCase());
+        isProcessing = false;
     }
 
-    await processLogic(typeKeyword);
-    event.target.value = ''; 
-    isProcessing = false;
-}
-
-async function renderResponse(rawText) {
-    const segments = rawText.split('[BREAK]');
-    for (const segment of segments) {
-        postMessage(segment.trim(), 'bot');
-        await new Promise(r => setTimeout(r, 600));
+    async function processLogic(query) {
+        let match = null;
+        let maxScore = -1;
+        knowledgeBase.forEach(item => {
+            let score = 0;
+            item.keywords.forEach(k => { if (query.includes(k.toLowerCase())) score += (item.priority || 100); });
+            if (score > maxScore) { maxScore = score; match = item; }
+        });
+        const res = (maxScore > 0) ? match.response : knowledgeBase.find(i => i.id === "FALLBACK_CORE").response;
+        await renderResponse(res);
     }
-    if (window.MathJax) MathJax.typeset();
-}
 
-function postMessage(content, role) {
-    const chat = document.getElementById('chat-container');
-    const div = document.createElement('div');
-    div.className = `msg-row ${role}`;
-    div.innerHTML = `<div class="bubble">${content}</div>`;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-}
+    async function handleFileUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) return postMessage("<b>【警报】</b> 文件体积超限(>5MB)。", "bot");
 
-document.getElementById('send-btn').addEventListener('click', handleAction);
-document.getElementById('user-input').addEventListener('keypress', e => { if (e.key === 'Enter') handleAction(); });
+        postMessage(`📄 捕获文档: ${file.name}`, 'user');
+        isProcessing = true;
+        await renderResponse("<b>【哨兵扫描】</b>[BREAK]特征码匹配中...[BREAK]██████████ 100%");
+        
+        const name = file.name.toLowerCase();
+        let kw = "FILE_TYPE_GENERAL";
+        if (/rp|计划|plan/.test(name)) kw = "FILE_TYPE_RP";
+        else if (/面试|面接|interview/.test(name)) kw = "FILE_TYPE_INTERVIEW";
+        else if (/志望|essay|文书|pdf|docx/.test(name)) kw = "FILE_TYPE_ESSAY";
+
+        await processLogic(kw);
+        e.target.value = "";
+        isProcessing = false;
+    }
+
+    async function renderResponse(raw) {
+        const segments = raw.split('[BREAK]');
+        for (const s of segments) {
+            if (s.trim()) { // 补丁：防空气泡
+                postMessage(s.trim(), 'bot');
+                await new Promise(r => setTimeout(r, 600));
+            }
+        }
+        setTimeout(() => { if(window.MathJax) window.MathJax.typeset(); }, 100);
+    }
+
+    function postMessage(content, role) {
+        const chat = document.getElementById('chat-container');
+        const div = document.createElement('div');
+        div.className = `msg-row ${role}`;
+        div.innerHTML = `<div class="bubble">${content}</div>`;
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+})();
