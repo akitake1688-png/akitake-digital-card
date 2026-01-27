@@ -238,4 +238,84 @@
                 fileUpload.click();
             };
             
-            fileUpload.o
+            fileUpload.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // 文件类型检查
+                const allowedTypes = /\.(pdf|doc|docx|txt|md)$/i;
+                if (!allowedTypes.test(file.name)) {
+                    appendMessage('bot', '<b>【哨兵警报】</b>仅支持 PDF、Word、TXT、Markdown 格式文件。');
+                    fileUpload.value = '';
+                    return;
+                }
+                
+                // 文件大小检查（5MB限制）
+                if (file.size > 5 * 1024 * 1024) {
+                    appendMessage('bot', '<b>【哨兵警报】</b>文件大小超过 5MB 限制。<br>大文件请直接加微信 <b>qiuwu999</b> 发送，我将为您开启 Sentinel Cowork 专属审计通道。');
+                    fileUpload.value = '';
+                    return;
+                }
+                
+                appendMessage('user', `📄 已上传文件：${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
+                appendMessage('bot', '<b>【哨兵扫描中】</b>正在提取文本内容...');
+                
+                try {
+                    let extractedText = '';
+                    
+                    // TXT 和 MD 文件直接读取
+                    if (/\.(txt|md)$/i.test(file.name)) {
+                        extractedText = await file.text();
+                    } 
+                    // PDF 和 Word 需要特殊处理
+                    else {
+                        appendMessage('bot', '<b>【技术限制】</b>网页端暂不支持直接解析 PDF/Word 文件。');
+                        await new Promise(r => setTimeout(r, 800));
+                    }
+                    
+                    // 如果成功提取文本（TXT/MD）
+                    if (extractedText && extractedText.trim()) {
+                        const charCount = extractedText.length;
+                        const lineCount = extractedText.split('\n').length;
+                        
+                        appendMessage('bot', `<b>【初步扫描完成】</b>[BREAK]● 文本长度：${charCount} 字符[BREAK]● 段落数：${lineCount} 行[BREAK][BREAK]<b>⚠️ 重要提示：</b>网页端仅能做初步文本统计，无法进行深度逻辑审计。`);
+                        await new Promise(r => setTimeout(r, 600));
+                    }
+                    
+                    // 引导加微信进行真正的审计
+                    appendMessage('bot', '<b>【秋武逻辑手术建议】</b>[BREAK]要获得真正的东大基准逻辑审计，请：[BREAK][BREAK]1️⃣ 加微信：<b>qiuwu999</b>[BREAK]2️⃣ 发送完整文档（支持 PDF/Word/文本）[BREAK]3️⃣ 我将为您开启 <b>Sentinel Cowork</b> 专属通道[BREAK][BREAK]<b>审计内容包括：</b>[BREAK]● 逻辑断层定位[BREAK]● 论证薄弱环节诊断[BREAK]● 故事线重构建议[BREAK]● 逻辑伏笔埋设指导[BREAK]● 东大基准修改范例[BREAK][BREAK]<b>数据安全承诺：</b>您的文书内容将在审计后物理级删除，绝不留存。');
+                    
+                } catch (error) {
+                    console.error('文件处理错误:', error);
+                    appendMessage('bot', '<b>【哨兵错误】</b>文件处理失败。请直接加微信 <b>qiuwu999</b> 发送文件，我将亲自为您审计。');
+                }
+                
+                // 清空文件选择
+                fileUpload.value = '';
+            };
+            
+        } catch (e) { 
+            console.error("❌ Sentinel System Error:", e); 
+        }
+    });
+    
+    // 消息追加函数
+    function appendMessage(role, html) {
+        const chat = document.getElementById('chat-container');
+        const div = document.createElement('div');
+        div.className = `msg-row ${role}`;
+        div.innerHTML = `<div class="bubble">${html}</div>`;
+        
+        // 点击复制功能
+        div.onclick = () => {
+            navigator.clipboard.writeText(div.innerText).then(() => {
+                div.classList.add('copied');
+                setTimeout(() => div.classList.remove('copied'), 2000);
+            }).catch(err => console.error('复制失败:', err));
+        };
+        
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+    
+})();
