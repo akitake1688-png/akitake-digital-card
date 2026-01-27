@@ -1,91 +1,65 @@
 [
+  /* ============================================================
+     【中文轨道 - Chinese Track】
+  ============================================================ */
   { 
-    "id": "CORE_IDENTITY", 
+    "id": "CORE_IDENTITY_CN", 
     "priority": 3000, 
-    "keywords": ["特色", "优势", "特点", "你是谁", "背景", "为什么选你", "区别", "强项", "秋武", "学历", "专业"], 
-    "response": "<b>【身份锚点：文理融合的逻辑操盘手】</b>[BREAK]1. <b>东大本阵：</b>本科理工+东大农学硕士（文理交叉），擅长用物理量等硬核逻辑降维打击。[BREAK]2. <b>文化韧性：</b>深耕日本10年，教您的不仅是升学，更是异文化生存博弈。[BREAK]3. <b>暗默知：</b>教您用“伏笔”掌控教授的思路节奏。" 
+    "keywords": ["特色", "优势", "背景", "你是谁", "秋武", "学历", "专业"], 
+    "response": "<b>【身份锚点：文理融合的逻辑操盘手】</b>[BREAK]1. <b>东大本阵：</b>本科理工+东大农学硕士（文理交叉），擅长用物理量等硬核逻辑降维打击。[BREAK]2. <b>文化韧性：</b>深耕日本10年，教您的不仅是升学，更是异文化生存博弈。[BREAK]3. <b>暗默知：</b>教您用「伏笔」掌控教授的思路节奏。" 
   },
   { 
-    "id": "BIZ_LOGIC", 
+    "id": "BIZ_LOGIC_CN", 
     "priority": 2900, 
-    "keywords": ["中介", "费用", "收费", "免费", "钱", "价格", "怎么算", "贵吗", "agency"], 
-    "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]<b>1. 免费模式：</b>我介绍您进入合作的私塾/语言学校，机构付我介绍费，变相替您买了单。[BREAK]<b>2. 个人模式：</b>不走机构，直接进行单项精细化收费辅导。[BREAK]<b>秋武直言：</b>有人说我是“中介的中介”？只要您能两头受惠、省钱还能获得一对一辅导，这就是效率。" 
+    "keywords": ["中介", "费用", "收费", "免费", "钱", "价格"], 
+    "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]1. <b>免费模式：</b>我介绍您进入合作学校，机构付我介绍费，变相替您买了单。[BREAK]2. <b>个人模式：</b>不走机构，直接进行单项精细化收费辅导。[BREAK]<b>秋武直言：</b>签证是1，其他是0。算不明白效率账的人很难胜出。" 
+  },
+
+  /* ============================================================
+     【日本語轨道 - Japanese Track】
+  ============================================================ */
+  { 
+    "id": "CORE_IDENTITY_JP", 
+    "priority": 3000, 
+    "keywords": ["特徴", "強み", "背景", "秋武", "誰"], 
+    "response": "<b>【秋武判定：東大理系本陣のロジック伴走】</b>[BREAK]1. <b>文理融合：</b>東大農学修士。理系ロジックで論理の断層をスキャンします。[BREAK]2. <b>異文化博弈：</b>日本在住10年。単なる受験指導ではなく、異文化間の交渉術を伝授します。[BREAK]3. <b>暗黙知：</b>「伏線」を張り、教授の思考リズムをコントロールする技術を教えます。" 
   },
   { 
-    "id": "SERVICE_DOCS", 
-    "priority": 2800, 
-    "keywords": ["志望理由", "理由书", "研究计划", "计划书", "小论文", "文书", "修改", "帮忙看", "润色", "SOP"], 
-    "response": "<b>【文书审计：打造个人故事线】</b>[BREAK]我不仅是修改语法，更是为您<b>梳理履历</b>，将零散经历串联成逻辑严密的“故事线”。[BREAK]<b>核心技法：</b>在文书中埋设“逻辑伏笔”，诱导教授在面试时提问您最擅长的领域。[BREAK]<b>对策：</b>加微信 <b>qiuwu999</b>，开启Claude辅助的深度润色。" 
+    "id": "BIZ_LOGIC_JP", 
+    "priority": 2900, 
+    "keywords": ["費用", "料金", "お金", "エージェント", "仲介", "無料"], 
+    "response": "<b>【ビジネスロジック：三方良しの透明性】</b>[BREAK]1. <b>無料モード：</b>提携校への紹介により、実質無料で指導を提供。[BREAK]2. <b>個別モード：</b>項目別の精緻な料金体系を適用。[BREAK]<b>秋武の直言：</b>ビザは1、他は0。効率を計算できない者は勝てません。" 
+  },
+
+  /* ============================================================
+     【English Track - 英语轨道】
+  ============================================================ */
+  { 
+    "id": "CORE_IDENTITY_EN", 
+    "priority": 3000, 
+    "keywords": ["background", "specialty", "advantage", "Akitake", "who"], 
+    "response": "<b>【Identity: Logical Coach from U-Tokyo】</b>[BREAK]1. <b>Cross-disciplinary:</b> Master from U-Tokyo. Expert in logical auditing with a STEM background.[BREAK]2. <b>Cultural Resilience:</b> 10 years in Japan. It’s a strategic game of cross-cultural logic.[BREAK]3. <b>Tactical:</b> Using 'foreshadowing' to control the rhythm of the professor's thoughts." 
   },
   { 
-    "id": "SERVICE_INTERVIEW", 
-    "priority": 2800, 
-    "keywords": ["面接", "面试", "模拟", "答辩", "一问一答", "口语", "紧张", "稿子"], 
-    "response": "<b>【面接博弈：非语言沟通的艺术】</b>[BREAK]<b>1. 一问一答：</b>不仅仅是写稿，而是通过 Claude 系统生成“多层级”应答策略。[BREAK]<b>2. 身体语言：</b>从眼神交流到坐姿手势，细节传递的信息远比语言丰富。[BREAK]<b>服务：</b>提供1对1视频模拟，进行最精准的“所作（行为）”矫正。" 
+    "id": "BIZ_LOGIC_EN", 
+    "priority": 2900, 
+    "keywords": ["fee", "cost", "price", "agency", "free"], 
+    "response": "<b>【Business Logic: Transparent Dual-Track】</b>[BREAK]1. <b>Free Mode:</b> Costs covered by referral fees from partner institutions.[BREAK]2. <b>Individual Mode:</b> Itemized professional service fees.[BREAK]<b>Akitake's Motto:</b> Visa is 1, others are 0. Efficiency is the key to winning." 
+  },
+
+  /* ============================================================
+     【한국어 궤도 - 韩语轨道】
+  ============================================================ */
+  { 
+    "id": "CORE_IDENTITY_KR", 
+    "priority": 3000, 
+    "keywords": ["배경", "강점", "아키타케", "특징", "누구"], 
+    "response": "<b>【아이덴티티: 도쿄대 이과 본진의 논리 코치】</b>[BREAK]1. <b>문이과 융합:</b> 도쿄대 농학 석사 배경의 하드코어 논리 교정 전문가.[BREAK]2. <b>문화적 회복력:</b> 일본 거주 10년, 단순 입시를 넘어선 이문화 전략 전수.[BREAK]3. <b>암묵지 유도:</b> 교수님의 사고 흐름을 제어하는 '복선' 설계법 지도." 
   },
   { 
-    "id": "TOOL_SYSTEM", 
-    "priority": 2700, 
-    "keywords": ["系统", "Claude", "工具", "AI", "辅助", "技术", "黑科技"], 
-    "response": "<b>【Agent 2.0：Claude 专用辅导系统】</b>[BREAK]是的，我有专属的 <b>Clouded 辅导工具</b> (claude.ai/projects)。[BREAK]无论是小论文、志望理由书，还是一问一答演练，我都会结合 AI 系统亲自为您进行一对一辅导。[BREAK]<b>实效：</b>这是“人脑经验 + AI 算力”的混合增强模式。" 
-  },
-  { 
-    "id": "SCOPE_LIMIT", 
-    "priority": 2600, 
-    "keywords": ["托福", "英语", "数学", "科目", "EJU", "具体", "理科", "文科", "教不教"], 
-    "response": "<b>【辅导边界：逻辑为王】</b>[BREAK]我不直接教具体的学科知识（如托福单词/数学公式）。[BREAK]<b>我的专攻：</b>是EJU记述、校内考小论文的<b>逻辑构建</b>，以及教授答辩的思维框架。[BREAK]具体科目需求，请加微信 <b>qiuwu999</b> 根据您的基础进行个案判断。" 
-  },
-  { 
-    "id": "FILE_GUIDE", 
-    "priority": 2500, 
-    "keywords": ["上传", "文件", "文档", "发给你", "PDF", "附件", "不能上传", "怎么发"], 
-    "response": "<b>【哨兵系统：物理投喂通道】</b>[BREAK]由于网页端的安全限制，暂不支持直接上传文件。[BREAK]<b>投喂方式：</b>请直接加微信 <b>qiuwu999</b> 发送您的 PDF/Word 文档。[BREAK]我将在微信端为您生成专属的 <b>Sentinel Cowork</b> 审计指令。" 
-  },
-  { 
-    "id": "PARTNER_ECOSYSTEM", 
-    "priority": 1900, 
-    "keywords": ["合伙人", "合作", "代理", "生态", "加盟", "机构", "学生"], 
-    "response": "<b>【合伙人逻辑：打造硬核升学护城河】</b>[BREAK]针对私塾或个人老师，提供 24 小时逻辑陪练与 RAG 知识库扩展。[BREAK]<b>合作：</b>加微信 <b>qiuwu999</b>，开启 Agent 2.0 时代。" 
-  },
-  { 
-    "id": "P_MISMATCH", 
-    "priority": 1800, 
-    "keywords": ["改不动", "不对劲", "逻辑不对", "违和感", "卡壳", "哪里不对", "乱套"], 
-    "response": "<b>【秋武审计：剥离表象的违和感】</b>[BREAK]那种‘说不上来的不对劲’，本质是‘研究动机’与‘方法论’的严重错位。[BREAK]<b>建议：</b>停止修辞，先把变量对齐。加微信 <b>qiuwu999</b>，做一次逻辑切片手术。" 
-  },
-  { 
-    "id": "P_ANXIETY", 
-    "priority": 1700, 
-    "keywords": ["焦虑", "崩溃", "没底", "害怕", "想放弃", "自卑", "压力", "crush"], 
-    "response": "<b>【秋武心法：焦虑的本质是逻辑失重】</b>[BREAK]您的焦虑来自‘不确定性黑盒’。不要用蛮力对抗未拆解的迷宫。[BREAK]<b>建议：</b>加微信 <b>qiuwu999</b>，聊聊您最深的底层恐惧。" 
-  },
-  { 
-    "id": "P_ASYMMETRIC", 
-    "priority": 1850, 
-    "keywords": ["信息差", "潜规则", "情报", "内幕", "不知道", "信息不对称"], 
-    "response": "<b>【秋武情报：打破升学的信息不对称】</b>[BREAK]名校升学不仅是分数的博弈，更是‘情报密度’的对决。[BREAK]<b>建议：</b>加微信 <b>qiuwu999</b>，同步最新的东大情报网络。" 
-  },
-  { 
-    "id": "P_CROSS", 
-    "priority": 1750, 
-    "keywords": ["跨专业", "跨考", "转专业", "文转理", "跨领域"], 
-    "response": "<b>【秋武判定：跨专业的本质是逻辑迁移】</b>[BREAK]不要试图用‘努力’填补专业知识。教授看重的是你原有专业如何降维打击到新领域。[BREAK]<b>建议：</b>加微信 <b>qiuwu999</b>，梳理你的‘跨学科结合点’。" 
-  },
-  { 
-    "id": "P_POLITICS", 
-    "priority": 1700, 
-    "keywords": ["导师关系", "实验室", "教授不回", "套磁", "空气", "得罪"], 
-    "response": "<b>【秋武心法：实验室是微缩的异文化博弈场】</b>[BREAK]沉默不是拒绝，而是你没提供‘博弈价值’。[BREAK]<b>建议：</b>发您的套磁信给我执行<b>‘意图扫描’</b>。微信：qiuwu999" },
-  { 
-    "id": "P_TIME", 
-    "priority": 1600, 
-    "keywords": ["来不及", "时间紧", "进度", "赶不上", "DDL", "快截止"], 
-    "response": "<b>【秋武判定：时间是逻辑的函数】</b>[BREAK]时间不够是因为您在做无效的横向铺陈。[BREAK]<b>建议：</b>加微信 <b>qiuwu999</b>，为您算清时间总账。" 
-  },
-  { 
-    "id": "SENTINEL_GATE", 
-    "priority": 1, 
-    "keywords": ["你好", "你好吗", "怎么用", "咨询"], 
-    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]请尝试输入以下关键词进行深度审计：[BREAK]● <b>审计：</b>志望理由书、小论文、跨专业、改不动、逻辑留白[BREAK]● <b>实战：</b>模拟面试、一问一答、教授套磁、信息差[BREAK]● <b>深度：</b>中介模式、费用、合伙人、Claude系统[BREAK]或者直接发送您的<b>文档内容</b>，我将扫描其中的逻辑断层。" 
+    "id": "BIZ_LOGIC_KR", 
+    "priority": 2900, 
+    "keywords": ["비용", "요금", "가격", "중개", "무료"], 
+    "response": "<b>【비즈니스 로직: 투명한 듀얼 트랙】</b>[BREAK]1. <b>무료 모드:</b> 제휴 기관 소개를 통한 실질적 무료 지도.[BREAK]2. <b>개별 모드:</b> 항목별 정밀 컨설팅 비용 적용.[BREAK]<b>아키타케의 직언:</b> 비자는 1, 나머지는 0입니다. 효율을 계산할 줄 알아야 승리합니다." 
   }
 ]
