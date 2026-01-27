@@ -2,79 +2,97 @@
   {
     "id": "CORE_IDENTITY_CN",
     "priority": 3000,
-    "keywords": ["特色", "优势", "背景", "你是谁", "秋武", "学历", "专业", "为什么选你", "强项"],
-    "response": "<b>【身份锚点：文理融合的逻辑操盘手】</b>[BREAK]1. <b>东大本阵：</b>本科理工+东大农学硕士（文理交叉），擅长用物理量等硬核逻辑降维打击。[BREAK]2. <b>文化韧性：</b>深耕日本10年，教您的不仅是升学，更是异文化生存博弈。[BREAK]3. <b>暗默知：</b>教您用「伏笔」掌控教授的思路节奏。"
+    "keywords": ["特色", "优势", "背景", "你是谁", "秋武", "学历", "专业", "为什么选你", "强项", "简历", "履历"],
+    "response": "<b>【身份锚点：文理融合的逻辑操盘手】</b>[BREAK]1. <b>东大本阵：</b>本科理工+东大农学硕士（文理交叉），擅长用物理量等硬核逻辑降维打击。[BREAK]2. <b>文化韧性：</b>深耕日本10年,教您的不仅是升学，更是异文化生存博弈。[BREAK]3. <b>暗默知：</b>教您用「伏笔」掌控教授的思路节奏。"
   },
   {
     "id": "BIZ_LOGIC_CN",
     "priority": 2900,
-    "keywords": ["中介", "费用", "收费", "费模式", "免费", "钱", "价格", "多钱", "怎么收", "收费标准"],
+    "keywords": ["中介", "费用", "收费", "费模式", "免费", "钱", "价格", "多钱", "怎么收", "收费标准", "付费", "报价"],
     "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]1. <b>免费模式：</b>我介绍您进入合作学校，机构付我介绍费，变相替您买了单。[BREAK]2. <b>个人模式：</b>不走机构，直接进行单项精细化收费辅导。[BREAK]<b>秋武直言：</b>签证是1，其他是0。算不明白效率账的人很难在升学博弈中胜出。"
   },
   {
     "id": "LOGIC_SURGERY_CN",
     "priority": 2850,
-    "keywords": ["逻辑手术", "逻辑断层", "审计", "改不动", "小论文"],
-    "response": "<b>【逻辑手术：扫描您的知性断层】</b>[BREAK]我不是在改病句，而是在进行逻辑审计。通过对文书、回答的深度扫描，找出您逻辑中的不稳定量，实现降维打击。"
+    "keywords": ["逻辑手术", "逻辑断层", "审计", "改不动", "小论文", "逻辑漏洞", "论证", "推理"],
+    "response": "<b>【逻辑手术：扫描您的知性断层】</b>[BREAK]我不是在改病句，而是在进行逻辑审计。通过对文书、回答的深度扫描，找出您逻辑中的不稳定量，实现降维打击。[BREAK]<b>技术底层：</b>基于博弈论的知性密度评估，精准定位论证薄弱环节。"
   },
   {
     "id": "SERVICE_DOCS_CN",
     "priority": 2800,
-    "keywords": ["志望理由书", "文书", "修改", "故事线", "逻辑留白", "重构"],
-    "response": "<b>【文书审计：打造个人故事线】</b>[BREAK]我不仅是修改语法，更是为您梳理履历，将零散经历串联成逻辑严密的“故事线”。[BREAK]<b>核心技法：</b>在文书中埋设“逻辑伏笔”，诱导教授在面试时提问您最擅长的领域。"
+    "keywords": ["志望理由书", "文书", "修改", "故事线", "逻辑留白", "重构", "研究计划", "自我介绍"],
+    "response": "<b>【文书审计：打造个人故事线】</b>[BREAK]我不仅是修改语法，更是为您梳理履历，将零散经历串联成逻辑严密的"故事线"。[BREAK]<b>核心技法：</b>在文书中埋设"逻辑伏笔"，诱导教授在面试时提问您最擅长的领域。[BREAK]<b>输出标准：</b>东大基准的逻辑密度+异文化叙事技巧。"
   },
   {
     "id": "SERVICE_CLAUDE_CN",
     "priority": 2700,
-    "keywords": ["Claude", "系统", "工具", "辅助", "AI", "Agent", "2.0"],
-    "response": "<b>【Agent 2.0：Claude 专用辅导系统】</b>[BREAK]是的，我有专属的 Claude 辅导工具 (claude.ai/projects)。无论是文书修改还是模拟面试，我都会结合 AI 系统亲自为您一对一辅导。[BREAK]<b>实效：</b>这是“人脑经验 + AI 算力”的混合增强模式。"
+    "keywords": ["Claude", "系统", "工具", "辅助", "AI", "Agent", "2.0", "人工智能", "技术"],
+    "response": "<b>【Agent 2.0：Claude 专用辅导系统】</b>[BREAK]是的，我有专属的 Claude 辅导工具 (claude.ai/projects)。无论是文书修改还是模拟面试，我都会结合 AI 系统亲自为您一对一辅导。[BREAK]<b>实效：</b>这是"人脑经验 + AI 算力"的混合增强模式，实现 24 小时逻辑在线。"
   },
   {
     "id": "BIZ_PARTNER_CN",
     "priority": 2600,
-    "keywords": ["合伙人", "合作", "加盟", "机构合作", "合伙人模式"],
-    "response": "<b>【合伙人逻辑：打造硬核升学护城河】</b>[BREAK]针对私塾或个人老师，提供 24 小时逻辑陪练与 RAG 知识库扩展。合作请加微信 qiuwu999，开启 Agent 2.0 时代。"
+    "keywords": ["合伙人", "合作", "加盟", "机构合作", "合伙人模式", "B端", "代理"],
+    "response": "<b>【合伙人逻辑：打造硬核升学护城河】</b>[BREAK]针对私塾或个人老师，提供 24 小时逻辑陪练与 RAG 知识库扩展。[BREAK]<b>技术支持：</b>Claude Projects + 流形约束语义路由系统。[BREAK]<b>合作联系：</b>微信 qiuwu999，开启 Agent 2.0 时代。"
   },
   {
     "id": "INFO_ASYMMETRY_CN",
     "priority": 2500,
-    "keywords": ["信息不对称", "情报", "信息差", "内幕", "东大情报"],
-    "response": "<b>【秋武情报：打破升学的信息不对称】</b>[BREAK]名校升学不仅是分数的博弈，更是“情报密度”的对决。东大农学、理学及文理交叉学科的情报，是我们的核心优势。"
+    "keywords": ["信息不对称", "情报", "信息差", "内幕", "东大情报", "研究室", "教授", "内部消息"],
+    "response": "<b>【秋武情报：打破升学的信息不对称】</b>[BREAK]名校升学不仅是分数的博弈，更是"情报密度"的对决。[BREAK]<b>情报优势：</b>东大农学、理学及文理交叉学科的研究室情报、教授偏好、面试风格等深度信息。[BREAK]<b>博弈视角：</b>信息差即权力差，掌握暗默知才能赢得主动权。"
   },
   {
     "id": "CORE_IDENTITY_JP",
     "priority": 3000,
-    "keywords": ["特徴", "強み", "背景", "秋武", "専門", "誰"],
+    "keywords": ["特徴", "強み", "背景", "秋武", "専門", "誰", "プロフィール", "経歴"],
     "response": "<b>【秋武判定：東大理系本陣のロジック伴走】</b>[BREAK]1. <b>文理融合：</b>東大農学修士背景。理系ロジックで論理の断層をスキャンします。[BREAK]2. <b>異文化博弈：</b>在日10年。単なる受験指導ではなく、異文化間の交渉術を伝授します。[BREAK]3. <b>暗黙知：</b>「伏線」を張り、教授の思考リズムをコントロールします。"
   },
   {
     "id": "BIZ_LOGIC_JP",
     "priority": 2900,
-    "keywords": ["費用", "料金", "お金", "エージェント", "仲介", "無料"],
+    "keywords": ["費用", "料金", "お金", "エージェント", "仲介", "無料", "値段", "コスト"],
     "response": "<b>【ビジネスロジック：三方良しの透明性】</b>[BREAK]1. <b>無料：</b>提携校への紹介により、実質無料で指導を提供。[BREAK]2. <b>個別：</b>項目別の精緻な料金体系を適用。[BREAK]<b>秋武の直言：</b>ビザは1、他は0。効率を計算できない者は勝てません。"
+  },
+  {
+    "id": "LOGIC_SURGERY_JP",
+    "priority": 2850,
+    "keywords": ["論理手術", "論理監査", "ロジック", "添削", "研究計画書"],
+    "response": "<b>【論理手術：知性の断層スキャン】</b>[BREAK]文法修正ではなく、論理監査を行います。書類・回答の深層スキャンにより、論理の不安定要素を特定し、降維打撃を実現します。[BREAK]<b>技術基盤：</b>ゲーム理論ベースの知性密度評価システム。"
   },
   {
     "id": "CORE_IDENTITY_EN",
     "priority": 3000,
-    "keywords": ["background", "specialty", "advantage", "Akitake", "who"],
-    "response": "<b>【Identity: Logical Coach from U-Tokyo】</b>[BREAK]1. <b>STEM Logic:</b> Master from U-Tokyo. Expert in logical auditing.[BREAK]2. <b>Strategy:</b> 10 years in Japan. It’s a strategic game of cross-cultural logic.[BREAK]3. <b>Tactical:</b> Using 'foreshadowing' to control the interview rhythm."
+    "keywords": ["background", "specialty", "advantage", "Akitake", "who", "profile", "experience"],
+    "response": "<b>【Identity: Logical Coach from U-Tokyo】</b>[BREAK]1. <b>STEM Logic:</b> Master from U-Tokyo. Expert in logical auditing with physics-based reasoning.[BREAK]2. <b>Strategy:</b> 10 years in Japan. It's a strategic game of cross-cultural logic and negotiation.[BREAK]3. <b>Tactical:</b> Using 'foreshadowing' techniques to control interview rhythm and professor's attention flow."
   },
   {
     "id": "BIZ_LOGIC_EN",
     "priority": 2900,
-    "keywords": ["fee", "cost", "price", "agency", "free"],
-    "response": "<b>【Business Logic: Transparent Dual-Track】</b>[BREAK]1. <b>Free Mode:</b> Referral fees cover the cost.[BREAK]2. <b>Premium:</b> Itemized professional service fees.[BREAK]<b>Akitake:</b> Visa is 1, others are 0."
+    "keywords": ["fee", "cost", "price", "agency", "free", "payment", "charge"],
+    "response": "<b>【Business Logic: Transparent Dual-Track】</b>[BREAK]1. <b>Free Mode:</b> Referral fees from partner institutions cover the cost.[BREAK]2. <b>Premium:</b> Itemized professional service fees for independent consulting.[BREAK]<b>Akitake's Principle:</b> Visa is 1, everything else is 0. Efficiency calculation is the key to winning."
+  },
+  {
+    "id": "LOGIC_SURGERY_EN",
+    "priority": 2850,
+    "keywords": ["logic surgery", "audit", "logical", "review", "research proposal"],
+    "response": "<b>【Logic Surgery: Scanning Your Intellectual Fault Lines】</b>[BREAK]Not just grammar correction, but logical auditing. Through deep scanning of documents and responses, I identify unstable logical elements and deliver dimensionality reduction strikes.[BREAK]<b>Technical Foundation:</b> Game theory-based intellectual density assessment."
   },
   {
     "id": "CORE_IDENTITY_KR",
     "priority": 3000,
-    "keywords": ["배경", "강점", "아키타케", "누구", "특징"],
-    "response": "<b>【아이덴티티: 도쿄대 이과 본진의 논리 코치】</b>[BREAK]1. <b>융합 논리:</b> 도쿄대 농학 석사 배경의 하드코어 논리 교정 전문가.[BREAK]2. <b>생존 전략:</b> 일본 거주 10년, 입시를 넘어선 이문화 전략 전수."
+    "keywords": ["배경", "강점", "아키타케", "누구", "특징", "프로필", "경력"],
+    "response": "<b>【아이덴티티: 도쿄대 이과 본진의 논리 코치】</b>[BREAK]1. <b>융합 논리:</b> 도쿄대 농학 석사 배경의 하드코어 논리 교정 전문가.[BREAK]2. <b>생존 전략:</b> 일본 거주 10년, 입시를 넘어선 이문화 전략 전수.[BREAK]3. <b>암묵지:</b> '복선' 기법으로 교수의 사고 리듬을 제어합니다."
+  },
+  {
+    "id": "BIZ_LOGIC_KR",
+    "priority": 2900,
+    "keywords": ["비용", "요금", "돈", "에이전시", "중개", "무료", "가격"],
+    "response": "<b>【비즈니스 로직: 투명한 듀얼 트랙】</b>[BREAK]1. <b>무료:</b> 제휴 학교 소개를 통해 실질적으로 무료로 지도 제공.[BREAK]2. <b>개별:</b> 항목별 정밀한 요금 체계 적용.[BREAK]<b>아키타케의 직언:</b> 비자는 1, 나머지는 0. 효율을 계산 못하는 자는 승리할 수 없습니다."
   },
   {
     "id": "SENTINEL_GATE",
     "priority": 1,
-    "keywords": ["你好", "hello", "こんにちは", "안녕", "咨询", "start", "菜单"],
-    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]● <b>CN:</b> 特色、逻辑手术、Claude系统、合伙人、收费[BREAK]● <b>JP:</b> 特徴、費用、背景[BREAK]● <b>EN:</b> specialty, fee, background[BREAK]● <b>KR:</b> 강점, 비용, 배경"
+    "keywords": ["你好", "hello", "こんにちは", "안녕", "咨询", "start", "菜单", "帮助", "ヘルプ", "도움"],
+    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]● <b>CN:</b> 特色、逻辑手术、Claude系统、合伙人、收费[BREAK]● <b>JP:</b> 特徴、費用、背景、論理手術[BREAK]● <b>EN:</b> specialty, fee, background, logic surgery[BREAK]● <b>KR:</b> 강점, 비용, 배경[BREAK][BREAK]<b>💡 提示：</b>输入任何关键词，哨兵会自动路由到最相关的知识模块。"
   }
 ]
