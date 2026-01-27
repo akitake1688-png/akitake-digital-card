@@ -3,7 +3,7 @@
     "id": "CORE_IDENTITY_CN",
     "priority": 3000,
     "keywords": ["特色", "优势", "背景", "你是谁", "秋武", "学历", "专业", "为什么选你", "强项", "简历", "履历"],
-    "response": "<b>【身份锚点：文理融合的逻辑操盘手】</b>[BREAK]1. <b>东大本阵：</b>本科理工+东大农学硕士（文理交叉），擅长用物理量等硬核逻辑降维打击。[BREAK]2. <b>文化韧性：</b>深耕日本10年,教您的不仅是升学，更是异文化生存博弈。[BREAK]3. <b>暗默知：</b>教您用「伏笔」掌控教授的思路节奏。"
+    "response": "<b>【身份锚点：文理融合的逻辑操盘手】</b>[BREAK]1. <b>东大本阵：</b>本科理工+东大农学硕士（文理交叉），擅长用物理量等硬核逻辑降维打击。[BREAK]2. <b>文化韧性：</b>深耕日本10年,教您的不仅是升学，更是异文化生存博弈。[BREAK]3. <b>暗默知：</b>教您用伏笔掌控教授的思路节奏。"
   },
   {
     "id": "BIZ_LOGIC_CN",
@@ -21,13 +21,13 @@
     "id": "SERVICE_DOCS_CN",
     "priority": 2800,
     "keywords": ["志望理由书", "文书", "修改", "故事线", "逻辑留白", "重构", "研究计划", "自我介绍"],
-    "response": "<b>【文书审计：打造个人故事线】</b>[BREAK]我不仅是修改语法，更是为您梳理履历，将零散经历串联成逻辑严密的"故事线"。[BREAK]<b>核心技法：</b>在文书中埋设"逻辑伏笔"，诱导教授在面试时提问您最擅长的领域。[BREAK]<b>输出标准：</b>东大基准的逻辑密度+异文化叙事技巧。"
+    "response": "<b>【文书审计：打造个人故事线】</b>[BREAK]我不仅是修改语法，更是为您梳理履历，将零散经历串联成逻辑严密的故事线。[BREAK]<b>核心技法：</b>在文书中埋设逻辑伏笔，诱导教授在面试时提问您最擅长的领域。[BREAK]<b>输出标准：</b>东大基准的逻辑密度+异文化叙事技巧。"
   },
   {
     "id": "SERVICE_CLAUDE_CN",
     "priority": 2700,
     "keywords": ["Claude", "系统", "工具", "辅助", "AI", "Agent", "2.0", "人工智能", "技术"],
-    "response": "<b>【Agent 2.0：Claude 专用辅导系统】</b>[BREAK]是的，我有专属的 Claude 辅导工具 (claude.ai/projects)。无论是文书修改还是模拟面试，我都会结合 AI 系统亲自为您一对一辅导。[BREAK]<b>实效：</b>这是"人脑经验 + AI 算力"的混合增强模式，实现 24 小时逻辑在线。"
+    "response": "<b>【Agent 2.0：Claude 专用辅导系统】</b>[BREAK]是的，我有专属的 Claude 辅导工具 (claude.ai/projects)。无论是文书修改还是模拟面试，我都会结合 AI 系统亲自为您一对一辅导。[BREAK]<b>实效：</b>这是人脑经验 + AI 算力的混合增强模式，实现 24 小时逻辑在线。"
   },
   {
     "id": "BIZ_PARTNER_CN",
@@ -39,13 +39,13 @@
     "id": "INFO_ASYMMETRY_CN",
     "priority": 2500,
     "keywords": ["信息不对称", "情报", "信息差", "内幕", "东大情报", "研究室", "教授", "内部消息"],
-    "response": "<b>【秋武情报：打破升学的信息不对称】</b>[BREAK]名校升学不仅是分数的博弈，更是"情报密度"的对决。[BREAK]<b>情报优势：</b>东大农学、理学及文理交叉学科的研究室情报、教授偏好、面试风格等深度信息。[BREAK]<b>博弈视角：</b>信息差即权力差，掌握暗默知才能赢得主动权。"
+    "response": "<b>【秋武情报：打破升学的信息不对称】</b>[BREAK]名校升学不仅是分数的博弈，更是情报密度的对决。[BREAK]<b>情报优势：</b>东大农学、理学及文理交叉学科的研究室情报、教授偏好、面试风格等深度信息。[BREAK]<b>博弈视角：</b>信息差即权力差，掌握暗默知才能赢得主动权。"
   },
   {
     "id": "CORE_IDENTITY_JP",
     "priority": 3000,
     "keywords": ["特徴", "強み", "背景", "秋武", "専門", "誰", "プロフィール", "経歴"],
-    "response": "<b>【秋武判定：東大理系本陣のロジック伴走】</b>[BREAK]1. <b>文理融合：</b>東大農学修士背景。理系ロジックで論理の断層をスキャンします。[BREAK]2. <b>異文化博弈：</b>在日10年。単なる受験指導ではなく、異文化間の交渉術を伝授します。[BREAK]3. <b>暗黙知：</b>「伏線」を張り、教授の思考リズムをコントロールします。"
+    "response": "<b>【秋武判定：東大理系本陣のロジック伴走】</b>[BREAK]1. <b>文理融合：</b>東大農学修士背景。理系ロジックで論理の断層をスキャンします。[BREAK]2. <b>異文化博弈：</b>在日10年。単なる受験指導ではなく、異文化間の交渉術を伝授します。[BREAK]3. <b>暗黙知：</b>伏線を張り、教授の思考リズムをコントロールします。"
   },
   {
     "id": "BIZ_LOGIC_JP",
@@ -63,7 +63,7 @@
     "id": "CORE_IDENTITY_EN",
     "priority": 3000,
     "keywords": ["background", "specialty", "advantage", "Akitake", "who", "profile", "experience"],
-    "response": "<b>【Identity: Logical Coach from U-Tokyo】</b>[BREAK]1. <b>STEM Logic:</b> Master from U-Tokyo. Expert in logical auditing with physics-based reasoning.[BREAK]2. <b>Strategy:</b> 10 years in Japan. It's a strategic game of cross-cultural logic and negotiation.[BREAK]3. <b>Tactical:</b> Using 'foreshadowing' techniques to control interview rhythm and professor's attention flow."
+    "response": "<b>【Identity: Logical Coach from U-Tokyo】</b>[BREAK]1. <b>STEM Logic:</b> Master from U-Tokyo. Expert in logical auditing with physics-based reasoning.[BREAK]2. <b>Strategy:</b> 10 years in Japan. It's a strategic game of cross-cultural logic and negotiation.[BREAK]3. <b>Tactical:</b> Using foreshadowing techniques to control interview rhythm and professor's attention flow."
   },
   {
     "id": "BIZ_LOGIC_EN",
@@ -81,7 +81,7 @@
     "id": "CORE_IDENTITY_KR",
     "priority": 3000,
     "keywords": ["배경", "강점", "아키타케", "누구", "특징", "프로필", "경력"],
-    "response": "<b>【아이덴티티: 도쿄대 이과 본진의 논리 코치】</b>[BREAK]1. <b>융합 논리:</b> 도쿄대 농학 석사 배경의 하드코어 논리 교정 전문가.[BREAK]2. <b>생존 전략:</b> 일본 거주 10년, 입시를 넘어선 이문화 전략 전수.[BREAK]3. <b>암묵지:</b> '복선' 기법으로 교수의 사고 리듬을 제어합니다."
+    "response": "<b>【아이덴티티: 도쿄대 이과 본진의 논리 코치】</b>[BREAK]1. <b>융합 논리:</b> 도쿄대 농학 석사 배경의 하드코어 논리 교정 전문가.[BREAK]2. <b>생존 전략:</b> 일본 거주 10년, 입시를 넘어선 이문화 전략 전수.[BREAK]3. <b>암묵지:</b> 복선 기법으로 교수의 사고 리듬을 제어합니다."
   },
   {
     "id": "BIZ_LOGIC_KR",
