@@ -184,7 +184,6 @@
                     if (seg.trim()) {
                         appendMessage('bot', seg.trim());
                         await new Promise(r => setTimeout(r, 600));
-                        if (window.MathJax) MathJax.typesetPromise();
                     }
                 }
                 
