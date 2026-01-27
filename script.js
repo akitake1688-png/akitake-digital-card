@@ -2,6 +2,7 @@
     let knowledgeBase = [];
     let isProcessing = false;
 
+    // V46.0 修复版算法：回归稳健的 includes 检查，放弃脆弱的正则
     function findBestMatch(userInput) {
         const text = userInput.toLowerCase();
         let matches = [];
@@ -9,19 +10,25 @@
         knowledgeBase.forEach(item => {
             let score = 0;
             item.keywords.forEach(key => {
-                const regex = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-                const count = (text.match(regex) || []).length;
-                if (count > 0) {
-                    // 算法升级：密度分 + 优先级分，并设上限防止长文本爆炸
-                    score += (count * 3) + (item.priority / 1000);
+                const lowerKey = key.toLowerCase();
+                // 只要包含就得分，不整花活
+                if (text.includes(lowerKey)) {
+                    score += 10; // 基础命中分
+                    // 如果关键词很长（>=2字）且匹配，额外加分，防止单字误判
+                    if (lowerKey.length >= 2) score += 5;
                 }
             });
+            
+            // 加上优先级权重 (priority / 100)
             if (score > 0) {
-                matches.push({ item, score: Math.min(score, 5000) });
+                score += item.priority / 100;
+                matches.push({ item, score });
             }
         });
 
         if (matches.length === 0) return null;
+        
+        // 按分数降序排列
         matches.sort((a, b) => b.score - a.score);
         return matches[0].item;
     }
