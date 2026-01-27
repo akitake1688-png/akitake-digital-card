@@ -1,31 +1,393 @@
-:root { --accent: #154391; --danger: #d9534f; --bg: #f4f7f1; }
-body { margin: 0; height: 100vh; background: var(--bg); display: flex; justify-content: center; align-items: center; font-family: -apple-system, "Helvetica Neue", sans-serif; }
-.glass-container { width: 96vw; max-width: 1200px; height: 94vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-.side-panel { width: 280px; min-width: 280px; background: #fff; border-right: 1px solid #eee; padding: 30px; display: flex; flex-direction: column; flex-shrink: 0; }
-.avatar-wrapper { width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; border: 3px solid var(--accent); overflow: hidden; }
-.avatar-main { width: 100%; height: 100%; object-fit: cover; }
-.persona-name { text-align: center; font-weight: 800; color: var(--accent); margin-bottom: 30px; font-size: 1.1rem; }
-.nav-group { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.nav-btn { padding: 12px; border: 1px solid #f8f8f8; border-radius: 10px; background: #fff; cursor: pointer; text-align: left; transition: 0.3s; font-size: 0.85rem; }
-.nav-btn:hover { background: var(--accent); color: white; transform: translateX(5px); }
-.clear-btn { padding: 14px; border: none; border-radius: 10px; background: #fff5f5; color: var(--danger); cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 0.8rem; }
-.chat-viewport { flex: 1; display: flex; flex-direction: column; background: #fafafa; }
-.messages-area { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-.msg-row { display: flex; width: 100%; position: relative; cursor: pointer; }
-.msg-row.user { justify-content: flex-end; }
-.bubble { max-width: 80%; padding: 15px 20px; border-radius: 15px; line-height: 1.8; font-size: 14px; position: relative; }
-.user .bubble { background: var(--accent); color: white; border-bottom-right-radius: 4px; }
-.bot .bubble { background: white; border: 1px solid #eee; border-bottom-left-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-
-/* 修复：Grok 要求的 CSS Overlay 复制反馈 */
-.copied::after { 
-    content: "已复制逻辑锚点"; position: absolute; top: -25px; right: 0; 
-    background: rgba(21, 67, 145, 0.9); color: white; font-size: 11px; 
-    padding: 4px 10px; border-radius: 4px; animation: fade 2s forwards;
+:root { 
+    --accent: #154391; 
+    --danger: #d9534f; 
+    --bg: #f4f7f1; 
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-heavy: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
-@keyframes fade { 0% {opacity: 0; transform: translateY(5px);} 20% {opacity: 1; transform: translateY(0);} 100% {opacity: 0;} }
 
-.input-bar { padding: 20px; background: #fff; border-top: 1px solid #f0f0f0; display: flex; gap: 10px; }
-#user-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; }
-#user-input:disabled { background: #f5f5f5; }
-#send-btn { padding: 0 25px; background: #333; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+* {
+    box-sizing: border-box;
+}
+
+body { 
+    margin: 0; 
+    height: 100vh; 
+    background: linear-gradient(135deg, #f4f7f1 0%, #e8f0e8 100%);
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    overflow: hidden;
+}
+
+.glass-container { 
+    width: 96vw; 
+    max-width: 1200px; 
+    height: 94vh; 
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px; 
+    display: flex; 
+    overflow: hidden; 
+    box-shadow: var(--shadow-heavy);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: containerFadeIn 0.6s ease-out;
+}
+
+@keyframes containerFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ========== 侧边栏 ========== */
+
+.side-panel { 
+    width: 280px; 
+    min-width: 280px; 
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    border-right: 1px solid #eee; 
+    padding: 30px; 
+    display: flex; 
+    flex-direction: column; 
+    flex-shrink: 0;
+}
+
+.avatar-wrapper { 
+    width: 120px; 
+    height: 120px; 
+    margin: 0 auto 20px; 
+    border-radius: 50%; 
+    border: 3px solid var(--accent); 
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(21, 67, 145, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(21, 67, 145, 0.3);
+}
+
+.avatar-main { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+.persona-name { 
+    text-align: center; 
+    font-weight: 800; 
+    color: var(--accent); 
+    margin-bottom: 30px; 
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-group { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.nav-btn { 
+    padding: 12px 15px; 
+    border: 1px solid #f0f0f0; 
+    border-radius: 10px; 
+    background: #fff; 
+    cursor: pointer; 
+    text-align: left; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.85rem;
+    color: #333;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.nav-btn:hover {
+    color: white;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(21, 67, 145, 0.2);
+}
+
+.nav-btn:hover::before {
+    left: 0;
+}
+
+.clear-btn { 
+    padding: 14px; 
+    border: none; 
+    border-radius: 10px; 
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    color: var(--danger); 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+    background: linear-gradient(135deg, #ffe8e8 0%, #ffd5d5 100%);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.2);
+}
+
+/* ========== 聊天区域 ========== */
+
+.chat-viewport { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    background: #fafafa;
+}
+
+.messages-area { 
+    flex: 1; 
+    padding: 30px; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px;
+    scroll-behavior: smooth;
+}
+
+/* 自定义滚动条 */
+.messages-area::-webkit-scrollbar {
+    width: 8px;
+}
+
+.messages-area::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.messages-area::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.messages-area::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+.msg-row { 
+    display: flex; 
+    width: 100%; 
+    position: relative; 
+    cursor: pointer;
+    animation: messageFadeIn 0.4s ease-out;
+}
+
+@keyframes messageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.msg-row.user { 
+    justify-content: flex-end; 
+}
+
+.bubble { 
+    max-width: 80%; 
+    padding: 15px 20px; 
+    border-radius: 15px; 
+    line-height: 1.8; 
+    font-size: 14px; 
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bubble:hover {
+    transform: translateY(-2px);
+}
+
+.user .bubble { 
+    background: linear-gradient(135deg, var(--accent) 0%, #1a5bb8 100%);
+    color: white; 
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 15px rgba(21, 67, 145, 0.25);
+}
+
+.bot .bubble { 
+    background: white; 
+    border: 1px solid #eee; 
+    border-bottom-left-radius: 4px; 
+    box-shadow: var(--shadow-light);
+    color: #333;
+}
+
+.bot .bubble:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 复制反馈动画 */
+.copied::after { 
+    content: "✓ 已复制"; 
+    position: absolute; 
+    top: -30px; 
+    right: 0; 
+    background: rgba(21, 67, 145, 0.95);
+    color: white; 
+    font-size: 11px; 
+    padding: 6px 12px; 
+    border-radius: 6px; 
+    animation: copyFeedback 2s forwards;
+    box-shadow: 0 4px 12px rgba(21, 67, 145, 0.3);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+@keyframes copyFeedback { 
+    0% {
+        opacity: 0; 
+        transform: translateY(10px);
+    } 
+    15% {
+        opacity: 1; 
+        transform: translateY(0);
+    } 
+    85% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* ========== 输入栏 ========== */
+
+.input-bar { 
+    padding: 20px; 
+    background: #fff; 
+    border-top: 1px solid #f0f0f0; 
+    display: flex; 
+    gap: 10px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+}
+
+#user-input { 
+    flex: 1; 
+    padding: 12px 16px; 
+    border: 2px solid #e0e0e0; 
+    border-radius: 10px; 
+    outline: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+#user-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(21, 67, 145, 0.1);
+}
+
+#user-input:disabled { 
+    background: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#send-btn { 
+    padding: 0 30px; 
+    background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
+    color: white; 
+    border: none; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#send-btn:hover {
+    background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#send-btn:active {
+    transform: translateY(0);
+}
+
+#send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ========== 响应式设计 ========== */
+
+@media (max-width: 768px) {
+    .glass-container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    .side-panel {
+        width: 220px;
+        min-width: 220px;
+        padding: 20px;
+    }
+    
+    .avatar-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .messages-area {
+        padding: 20px 15px;
+    }
+    
+    .bubble {
+        max-width: 90%;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .side-panel {
+        display: none;
+    }
+    
+    .input-bar {
+        padding: 15px;
+    }
+    
+    #send-btn {
+        padding: 0 20px;
+    }
+}
