@@ -2,8 +2,10 @@
     let knowledgeBase = [];
     let isProcessing = false;
     let semanticCache = new Map();
+    let cacheHitCount = 0;
+    const CACHE_CLEAR_THRESHOLD = 500; // 每500次命中清空缓存
     
-    // ========== V47.0 企业级语义路由引擎 ==========
+    // ========== V47.1 企业级语义路由引擎 ==========
     
     // 语言检测系统
     function detectLanguage(text) {
@@ -56,6 +58,15 @@
         const cacheKey = `${text}_${detectedLang}`;
         if (semanticCache.has(cacheKey)) {
             console.log('🎯 缓存命中:', cacheKey);
+            cacheHitCount++;
+            
+            // 缓存清理机制：防止内存泄漏
+            if (cacheHitCount >= CACHE_CLEAR_THRESHOLD) {
+                console.log('🧹 缓存清理：已达到', CACHE_CLEAR_THRESHOLD, '次命中');
+                semanticCache.clear();
+                cacheHitCount = 0;
+            }
+            
             return semanticCache.get(cacheKey);
         }
         
@@ -213,33 +224,18 @@
                     chat.innerHTML = "";
                     localStorage.clear();
                     semanticCache.clear();
+                    cacheHitCount = 0;
                     console.log('🧹 哨兵清除完成');
                     location.reload();
                 }
             };
             
-        } catch (e) { 
-            console.error("❌ Sentinel System Error:", e); 
-        }
-    });
-    
-    // 消息追加函数
-    function appendMessage(role, html) {
-        const chat = document.getElementById('chat-container');
-        const div = document.createElement('div');
-        div.className = `msg-row ${role}`;
-        div.innerHTML = `<div class="bubble">${html}</div>`;
-        
-        // 点击复制功能
-        div.onclick = () => {
-            navigator.clipboard.writeText(div.innerText).then(() => {
-                div.classList.add('copied');
-                setTimeout(() => div.classList.remove('copied'), 2000);
-            }).catch(err => console.error('复制失败:', err));
-        };
-        
-        chat.appendChild(div);
-        chat.scrollTop = chat.scrollHeight;
-    }
-    
-})();
+            // ========== 文件上传功能 ==========
+            const uploadBtn = document.getElementById('upload-btn');
+            const fileUpload = document.getElementById('file-upload');
+            
+            uploadBtn.onclick = () => {
+                fileUpload.click();
+            };
+            
+            fileUpload.o
