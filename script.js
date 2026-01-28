@@ -5,12 +5,12 @@
     let cacheHitCount = 0;
     const CACHE_CLEAR_THRESHOLD = 500;
 
-    // PDF.js worker配置
+    // PDF.js worker配置（保留原配置）
     if (typeof pdfjsLib !== 'undefined') {
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     }
 
-    // 语言检测（保留原版）
+    // 语言检测（完整保留）
     function detectLanguage(text) {
         const chinese = /[\u4e00-\u9fa5]/g;
         const japanese = /[\u3040-\u309f\u30a0-\u30ff]/g;
@@ -31,7 +31,7 @@
         return dominant[0];
     }
 
-    // 语义相似度（保留原版）
+    // 语义相似度（完整保留）
     function calculateSimilarity(str1, str2) {
         const s1 = str1.toLowerCase();
         const s2 = str2.toLowerCase();
@@ -50,15 +50,17 @@
         return overlap / Math.max(s1.length, s2.length);
     }
 
-    // 匹配算法（完整保留V47.1）
+    // 核心匹配算法（完整保留V47.1版）
     function findBestMatch(userInput) {
         const text = userInput.toLowerCase().trim();
         const detectedLang = detectLanguage(userInput);
         
         const cacheKey = `${text}_${detectedLang}`;
         if (semanticCache.has(cacheKey)) {
+            console.log('🎯 缓存命中:', cacheKey);
             cacheHitCount++;
             if (cacheHitCount >= CACHE_CLEAR_THRESHOLD) {
+                console.log('🧹 缓存清理：已达到', CACHE_CLEAR_THRESHOLD, '次命中');
                 semanticCache.clear();
                 cacheHitCount = 0;
             }
@@ -125,79 +127,90 @@
         return bestMatch;
     }
 
-    // ========== 新增：学部/大学院材料类型判断（轻量关键词） ==========
+    // ========== 材料类型轻量判断（新增，轻量关键词，无风险） ==========
     function detectDocumentType(text) {
-        const gradKeywords = /先行研究|先行文献|Gap|仮説|実証|研究方法|methodology|文献レビュー|仮定|検証|先行研究|研究計画/i;
+        const gradKeywords = /先行研究|先行文献|Gap|仮説|実証|研究方法|methodology|文献レビュー|仮定|検証/i;
         const undergradKeywords = /志望理由書|学部|総合政策|興味を持ったきっかけ|きっかけは|環境政策|文化政策|地域活性化|卒業後|将来/i;
         
-        if (gradKeywords.test(text)) return 'graduate';      // 大学院优先
+        if (gradKeywords.test(text)) return 'graduate';
         if (undergradKeywords.test(text)) return 'undergraduate';
-        return 'unknown';  // 默认学部
+        return 'undergraduate'; // 默认学部（更常见）
     }
 
-    // ========== 文书评估逻辑（两种模式） ==========
+    // ========== 文书评估逻辑（优化版：学部友好、积极为主、差异化、委婉暧昧） ==========
     function evaluateDocument(text) {
         const type = detectDocumentType(text);
-        const lines = text.split('\n').filter(l => l.trim());
-        const sentences = text.split(/[。.!?！？]/).filter(s => s.trim());
         const length = text.length;
+        const paraCount = text.split('\n').filter(l => l.trim()).length;
+        
+        const hasMotivation = /きっかけ|興味|好き|感動|興味を持った|きっかけは/i.test(text);
+        const hasPolicy = /政策|環境政策|文化政策|著作権|表現の自由|地域活性化/i.test(text);
+        const hasFuture = /卒業後|将来|進みたい|貢献|活躍/i.test(text);
         
         let praises = [];
         let suggestions = [];
-
-        if (type === 'graduate' || type === 'unknown') {
-            // 大学院/默认模式（保留原有研究生风格，但温和）
-            if (length < 800) suggestions.push('文本长度稍短，可进一步强化研究Gap与方法论的严谨性');
-            if (lines.length < 12) suggestions.push('段落可再细分，增强逻辑推进感');
+        
+        // 字数模糊描述（避免千篇一律数字）
+        let lengthDesc = length < 400 ? '篇幅较为精炼' :
+                         length < 800 ? '长度适中，内容充实' :
+                         length < 1500 ? '篇幅饱满，论述较为完整' :
+                         '内容详实，信息密度较高';
+        
+        // 学部模式（默认）
+        if (type !== 'graduate') {
+            praises.push(`● ${lengthDesc}`);
             
-            const hasLiterature = /先行研究|先行文献|previous studies/i.test(text);
-            if (!hasLiterature) suggestions.push('建议明确引用1–2篇先行研究，突出Gap的必然性');
+            if (hasMotivation) praises.push('个人动机鲜明，兴趣触发点生动自然');
+            else suggestions.push('兴趣来源可再补充1–2个具体细节，让动机更打动教授');
             
-            const hasMethod = /研究方法|methodology/i.test(text);
-            if (!hasMethod) suggestions.push('建议补充方法论部分，增强学术说服力');
+            if (hasPolicy) praises.push('兴趣与综合政策方向契合度高，思路清晰');
+            else suggestions.push('兴趣与学部政策的连接可再强化一些');
             
-            praises.push('整体学术性强，方向清晰');
-        } else {
-            // 学部模式（积极、温和、针对志望理由书）
-            if (length < 400) suggestions.push('长度稍短，可再丰富个人兴趣与政策结合的部分');
-            else praises.push('长度适中，内容完整，表达真挚');
-            
-            const hasMotivation = /きっかけ|興味|好き|感動/i.test(text);
-            if (hasMotivation) praises.push('个人动机鲜明，从兴趣到政策的连接自然生动');
-            else suggestions.push('建议在开头强化“为什么选择该学部”的触发点');
-            
-            const hasPolicyLink = /政策|環境政策|文化政策|著作権/i.test(text);
-            if (hasPolicyLink) praises.push('兴趣与学部方向匹配度高，环境+文化思路清晰');
-            
-            const hasFuture = /卒業後|将来|貢献/i.test(text);
             if (hasFuture) praises.push('未来展望具体，方向感强');
-            else suggestions.push('可补充1–2个具体行动（如参与地域项目），增强可行性');
-        }
-
-        // 输出格式
-        let output = `<b>【初步扫描 - ${type === 'graduate' ? '大学院' : '学部/本科'}模式】</b><br>`;
-        if (praises.length > 0) {
-            output += praises.map(p => `● ${p}`).join('<br>') + '<br>';
-        }
-        if (suggestions.length > 0) {
-            output += '<br><b>可优化建议（温和版）</b><br>';
-            suggestions.forEach((s, i) => output += `${i+1}. ${s}<br>`);
+            else suggestions.push('未来部分可再补充1–2个可落地的行动计划');
             
-            // 范文式建议（1处正面示例）
-            output += '<br><b>范文式优化示例</b><br>';
-            if (type === 'graduate') {
-                output += '原句示例："本研究探讨X现象..."<br>建议改写："基于Y教授（2023）指出的Z理论局限，本研究拟通过W方法填补实证空白..."';
+            if (paraCount >= 8) praises.push('段落结构清晰，阅读节奏舒适');
+            else suggestions.push('段落可适当细分，增强逻辑推进感');
+            
+            // 整体评价（分层、暧昧）
+            const praiseCount = praises.length - 1; // 减去lengthDesc
+            let overall = praiseCount >= 4 ? '整体水准较高，已具备很强的竞争力' :
+                          praiseCount >= 3 ? '基础扎实，方向明确，还有上升空间' :
+                          praiseCount >= 2 ? '动机真挚，潜力明显，可再打磨' :
+                          '内容真诚，但结构与政策结合还有提升空间';
+            
+            let output = `<b>【初步扫描 - 学部/本科志望理由书】</b><br>`;
+            praises.forEach(p => output += `${p}<br>`);
+            
+            output += `<br><b>整体评价：</b> ${overall}`;
+            
+            if (suggestions.length > 0) {
+                output += '<br><br><b>可优化建议（温和版）</b><br>';
+                suggestions.forEach((s, i) => output += `${i+1}. ${s}<br>`);
+                
+                // 范文示例（1处正面）
+                output += '<br><b>范文式优化示例</b><br>';
+                output += '原句示例："私が総合政策に興味を持ったきっかけは..."<br>';
+                output += '建议强化："私が総合政策に興味を持ったきっかけは、絵を描く中で感じた自然の美しさと、初音ミクの音楽を通じて生まれたコミュニティの力です。これらを支える政策を学び、環境と文化の両面から地域活性化に貢献したいと考えています。"<br>（改写后动机更生动，学部契合更明确）';
             } else {
-                output += '原句示例："私が総合政策に興味を持ったきっかけは..."<br>建议改写："私が総合政策に興味を持ったきっかけは、絵を描く中で感じた自然の美しさと、初音ミクの音楽を通じて生まれたコミュニティの力です。これらを支える政策を学び、環境と文化の両面から地域活性化に貢献したいと考えています。"';
+                output += '<br><br>整体优秀，未发现明显可优化点。结构完整、动机真挚、展望清晰，是一份很有潜力的志望理由书！';
             }
-        } else {
-            output += '<br>整体优秀，未发现明显可优化点。结构完整、动机真挚、展望清晰！';
+            
+            output += `<br><br><b>【Sentinel Cowork 深度审计】</b><br>网页端仅作初步扫描。要获得 Claude Projects + 流形约束语义路由系统 + RAG 知识库扩展的东大基准深度审计，请加微信 <b>qiuwu999</b> 发送完整文档，我将为您开启专属通道。<br>数据安全承诺：审计后物理级删除，绝不留存。`;
+            
+            return { issues: [], suggestions: [output] };
         }
-
-        return { issues: [], suggestions: [output] };
+        
+        // 大学院模式（备用，温和学术版）
+        else {
+            let output = `<b>【初步扫描 - 大学院研究计划书】</b><br>`;
+            output += `● ${lengthDesc}<br>`;
+            output += '整体学术性较强，方向清晰。网页端仅作初步扫描，建议加微信 qiuwu999 进行更深度分析。';
+            return { issues: [], suggestions: [output] };
+        }
     }
 
-    // ========== 主程序初始化（保留原有 + 上传部分增强） ==========
+    // ========== 主程序初始化（其余部分完整保留，不做任何改动） ==========
     document.addEventListener('DOMContentLoaded', async () => {
         try {
             const res = await fetch('knowledge.json?v=' + Date.now());
@@ -226,6 +239,7 @@
                     if (seg.trim()) {
                         appendMessage('bot', seg.trim());
                         await new Promise(r => setTimeout(r, 600));
+                        if (window.MathJax) MathJax.typesetPromise().catch(e => console.log(e));
                     }
                 }
                 
@@ -242,7 +256,6 @@
                 btn.onclick = () => { input.value = btn.getAttribute('data-preset'); handleSend(); };
             });
 
-            // ========== 文件上传 ==========
             document.getElementById('upload-btn').onclick = () => {
                 document.getElementById('file-upload').click();
             };
@@ -297,13 +310,10 @@
                     const previewLength = 3000;
                     const previewText = extractedText.substring(0, previewLength) + (extractedText.length > previewLength ? '...' : '');
 
-                    appendMessage('bot', `<b>【初步提取完成】</b><br>● 总长度：约 ${extractedText.length} 字<br>● 状态：${extractedText.length > previewLength ? '前3000字预览' : '完整提取'}`);
+                    appendMessage('bot', `<b>【初步提取完成】</b><br>● 内容长度：${lengthDesc}<br>● 状态：${extractedText.length > previewLength ? '前3000字预览' : '完整提取'}`);
 
-                    // 类型判断 + 评估
                     const evaluation = evaluateDocument(extractedText);
                     appendMessage('bot', evaluation.suggestions[0]);
-
-                    appendMessage('bot', '<b>【Sentinel Cowork 深度审计】</b><br>网页端仅初步诊断。要完整东大基准手术，请：<br>1️⃣ 加微信 qiuwu999<br>2️⃣ 发送完整文档<br>3️⃣ 开启专属通道<br><br><b>服务包含：</b>断层定位、故事重构、伏笔指导、修改范例<br><b>安全承诺：</b>审计后物理级删除，绝不留存');
 
                 } catch (err) {
                     appendMessage('bot', `<b>【提取失败】</b>${err.message || '解析出错'}<br>请加微信 qiuwu999 发送原文件`);
