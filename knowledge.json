@@ -2,474 +2,202 @@
   {
     "id": "CORE_IDENTITY_CN",
     "priority": 3000,
-    "keywords": [
-      "特色",
-      "优势",
-      "背景",
-      "你是谁",
-      "秋武",
-      "学历",
-      "专业",
-      "为什么选你",
-      "强项",
-      "简历",
-      "履历",
-      "辅导特点",
-      "核心优势",
-      "一对一",
-      "个人辅导"
-    ],
+    "keywords": ["特色", "优势", "背景", "你是谁", "秋武", "学历", "专业", "为什么选你", "强项", "简历", "履历", "辅导特点", "核心优势", "一对一", "个人辅导"],
     "response": "<b>【身份锚点：东大理科本阵的逻辑陪练】</b>[BREAK]<b>核心差异：</b>[BREAK]1. <b>跨学科背景：</b>本科理工+东大农学硕士（文理交叉），10年现役辅导经验，提供东大级逻辑重构。[BREAK]2. <b>文化韧性：</b>深耕日本10年，定期在日本小中学辅导中国孩子，深刻理解文化适应与心理韧性的重要性。[BREAK]3. <b>暗默知技法：</b>擅长在文书中埋设逻辑伏笔，引导教授提问思路。从坐姿、眼神到递交材料的姿势，进行非语言沟通的精准矫正。[BREAK]4. <b>承诺：</b>第一年未合格，下一年免费续辅导。[BREAK][BREAK]<b>我不是流水线机构，我是您的舵手。</b>加微信 qiuwu999，聊聊您的背景。"
   },
   {
     "id": "BIZ_LOGIC_CN",
     "priority": 2900,
-    "keywords": [
-      "中介",
-      "费用",
-      "收费",
-      "费模式",
-      "免费",
-      "钱",
-      "价格",
-      "多少钱",
-      "怎么收",
-      "收费标准",
-      "付费",
-      "报价",
-      "中介费"
-    ],
+    "keywords": ["中介", "费用", "收费", "费模式", "免费", "钱", "价格", "多少钱", "怎么收", "收费标准", "付费", "报价", "中介费"],
     "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]<b>1. 免费模式：</b>通过我推荐优质私塾/语校，机构介绍费直接覆盖您的一对一辅导，您零额外成本。机构替您支付我的收费辅导项目，您两头三头受惠。[BREAK]<b>2. 个人收费模式：</b>不走机构，单项项目（文书、模拟面试、套磁邮件等）精细化收费。[BREAK]<b>3. 套餐辅导：</b>没有辅导期间时间的限制，第一年考不上目标大学，下一年免费辅导——越早开始越有利。[BREAK][BREAK]<b>秋武直言：</b>签证是1，其他是0。私塾教知识，我教您如何读懂教授。算不明白效率账的人很难在升学博弈中胜出。[BREAK]加微信 qiuwu999，了解适合您专业的机构。"
   },
   {
     "id": "INTERVIEW_SIMULATION_CN",
     "priority": 2850,
-    "keywords": [
-      "模拟面试",
-      "面试辅导",
-      "面试准备",
-      "面试模拟",
-      "一问一答",
-      "答辩",
-      "面接",
-      "模擬面接",
-      "面试技巧",
-      "面试问题"
-    ],
+    "keywords": ["模拟面试", "面试辅导", "面试准备", "面试模拟", "一问一答", "答辩", "面接", "模擬面接", "面试技巧", "面试问题"],
     "response": "<b>【面试博弈：逻辑整合与微细所作】</b>[BREAK]<b>秋武判定：</b>国立大学重视论理的深さ，私立重视综合的余裕。面试是说服的博弈，绝非简单质疑应答。[BREAK][BREAK]<b>核心策略：</b>[BREAK]1. <b>一问多层对答：</b>埋设逻辑伏笔，诱导教授提问进入您的擅长领域。背诵无用，教授会连续追问，我帮您构建有灵魂的答辩链条。[BREAK]2. <b>非语言沟通：</b>从椅子归位（+10点）、进门失礼します、眼神稳定，到纳豆这种文化题，都需逻辑严密。[BREAK]3. <b>一问一答式草稿：</b>根据您的日语基础和专业背景，逐条编辑答辩草稿，在互动中修改、模拟，这个积累过程也是加深理解和记忆的过程。[BREAK][BREAK]<b>LTV视角：</b>面接是知性自立的起点。加微信 qiuwu999，告诉我您目前最怕哪一类追问，我来帮您做全真模拟。"
   },
   {
     "id": "LOGIC_SURGERY_CN",
     "priority": 2850,
-    "keywords": [
-      "逻辑手术",
-      "逻辑断层",
-      "审计",
-      "改不动",
-      "小论文",
-      "逻辑漏洞",
-      "论证",
-      "推理",
-      "逻辑问题"
-    ],
+    "keywords": ["逻辑手术", "逻辑断层", "审计", "改不动", "小论文", "逻辑漏洞", "论证", "推理", "逻辑问题"],
     "response": "<b>【逻辑手术：扫描您的知性断层】</b>[BREAK]我不是在改病句，而是在进行逻辑审计。通过对文书、回答的深度扫描，找出您逻辑中的不稳定量，实现降维打击。[BREAK][BREAK]<b>技术底层：</b>基于博弈论的知性密度评估，精准定位论证薄弱环节。[BREAK]<b>秋武判定：</b>概念模糊=学术失格。逻辑不通，润色再好也是白费。[BREAK][BREAK]加微信 qiuwu999，发您的错题或RP，我帮您重构逻辑。"
   },
   {
     "id": "SERVICE_DOCS_CN",
     "priority": 2800,
-    "keywords": [
-      "志望理由书",
-      "文书",
-      "修改",
-      "故事线",
-      "逻辑留白",
-      "重构",
-      "研究计划",
-      "研究计划书",
-      "自我介绍",
-      "研究計画書",
-      "添削",
-      "模板"
-    ],
+    "keywords": ["志望理由书", "文书", "修改", "故事线", "逻辑留白", "重构", "研究计划", "研究计划书", "自我介绍", "研究計画書", "添削", "模板"],
     "response": "<b>【文书逻辑：底层溯源与高维重构】</b>[BREAK]<b>致命错误：</b>模板、泛叙事、无问题意识。引用教授近5年内的论文是基本红线。[BREAK][BREAK]<b>正确路径：</b>个人兴趣 + 教授领域 + 小切口深挖掘。我不仅是修改语法，更是梳理您的履历，将零散经历串联成逻辑严密的个人成长和学术追求的故事线。[BREAK][BREAK]<b>核心技法：</b>根据您的基础/特点，指导何时详细阐述、何时点到为止，甚至用埋设在志望理由书中的逻辑伏笔来引导/转移教授的思路/印象传递效果。这种对异文化沟通的节奏感和掌控感，是基于对人性洞察的艺术。[BREAK][BREAK]<b>我帮您：</b>把初稿改得面目全非，但灵魂100%是您的。加微信 qiuwu999，发您的初稿给我看一眼。"
   },
   {
     "id": "EMAIL_COACHING_CN",
     "priority": 2800,
-    "keywords": [
-      "套磁",
-      "套磁邮件",
-      "教授邮件",
-      "邮件",
-      "教授不回",
-      "联系教授",
-      "见学",
-      "教授对应"
-    ],
+    "keywords": ["套磁", "套磁邮件", "教授邮件", "邮件", "教授不回", "联系教授", "见学", "教授对应"],
     "response": "<b>【实战判定：拒绝无逻辑裸转】</b>[BREAK]<b>跨专业核心：</b>必须找到原专业与目标的结合点，否则全系無駄。[BREAK][BREAK]<b>套磁策略：</b>[BREAK]1. 教授模棱两可时，主动询问顾虑并展示改进[BREAK]2. 见学成功率极大，死磕精神+见学策略是关键[BREAK]3. EJU只是门票，校内考才是胜负手[BREAK][BREAK]<b>下一步：</b>加微信 qiuwu999，发您的套磁邮件草稿，我帮您拆解教授的真实意图。"
   },
   {
     "id": "SERVICE_CLAUDE_CN",
     "priority": 2700,
-    "keywords": [
-      "Claude",
-      "系统",
-      "工具",
-      "辅助",
-      "AI",
-      "Agent",
-      "2.0",
-      "人工智能",
-      "技术",
-      "数字分身"
-    ],
+    "keywords": ["Claude", "系统", "工具", "辅助", "AI", "Agent", "2.0", "人工智能", "技术", "数字分身"],
     "response": "<b>【Agent 2.0：Claude 专用辅导系统】</b>[BREAK]是的，我有专属的 Claude 辅导工具 (claude.ai/projects)。无论是文书修改还是模拟面试，我都会结合 AI 系统亲自为您一对一辅导。[BREAK][BREAK]<b>实效：</b>这是人脑经验 + AI 算力的混合增强模式，实现 24 小时逻辑在线。在一人公司时代，一个人就是一个智库。这个数字分身不再是简单的问答，它是您的多语种首席技术官(CTO)。[BREAK][BREAK]<b>企业级水准：</b>可对投喂的文档(PDF/Text)进行断层扫描，吐出逻辑漏洞报告，配合东大基准提供重写范式。"
   },
   {
     "id": "EJU_COACHING_CN",
     "priority": 2700,
-    "keywords": [
-      "EJU",
-      "留考",
-      "留学生考试",
-      "日本留学考试",
-      "数学",
-      "理科",
-      "综合科目",
-      "EJU辅导",
-      "考试辅导"
-    ],
+    "keywords": ["EJU", "留考", "留学生考试", "日本留学考试", "数学", "理科", "综合科目", "EJU辅导", "考试辅导"],
     "response": "<b>【EJU辅导：东大基准的学科重构】</b>[BREAK]<b>秋武判定：</b>EJU只是门票，校内考才是胜负手。但这张门票必须拿稳。[BREAK][BREAK]<b>辅导范围：</b>[BREAK]1. <b>理科：</b>物理、化学、生物（文理融合视角）[BREAK]2. <b>数学：</b>严谨定义+解题逻辑（概念模糊=学术失格）[BREAK]3. <b>综合科目：</b>政治、经济、社会、地理、历史[BREAK][BREAK]<b>特色：</b>不仅教知识点，更教您用物理量等硬核逻辑降维打击。擅长从文理融合专业角度分析和梳理，用不同专业领域的关键词触动(激励)您找到最有效的共鸣点。[BREAK][BREAK]加微信 qiuwu999，聊聊您的目标分数和当前水平。"
   },
   {
     "id": "JLPT_COACHING_CN",
     "priority": 2700,
-    "keywords": [
-      "JLPT",
-      "日语能力考试",
-      "日本语能力考试",
-      "N1",
-      "N2",
-      "日语考试",
-      "日语辅导",
-      "日语学习"
-    ],
-    "response": "<b>【JLPT辅导：不止是语言，更是文化密码】</b>[BREAK]<b>秋武视角：</b>语言不止解码字面，更要捕捉言外之意。日语的本音建前、読空気，都是高级共感。[BREAK][BREAK]<b>辅导特色：</b>[BREAK]1. <b>深耕10年经验：</b>定期在日本小中学辅导刚到日本的中国孩子，深刻理解语言学习中的文化适应与心理韧性。[BREAK]2. <b>不只是考试：</b>教您如何在面试、日常交流中展现余裕和游戏感，读懂空气而不被空气束缚。[BREAK]3. <b>实战导向：</b>结合升学需求，让语言成为您的竞争力而非障碍。[BREAK][BREAK]加微信 qiuwu999，告诉我您的目标级别和升学计划。"
+    "keywords": ["JLPT", "日语能力考试", "日本语能力考试", "N1", "N2", "日语考试", "日语辅导", "日语学习"],
+    "response": "<b>【JLPT辅导：不止是语言，更是文化密码】</b>[BREAK]<b>秋武视角：</b>语言不止解码字面，更要捕捉言外之意。日语の本音建前、読空気，都是高级共感。[BREAK][BREAK]<b>辅导特色：</b>[BREAK]1. <b>深耕10年经验：</b>定期在日本小中学辅导刚到日本的中国孩子，深刻理解语言学习中的文化适应与心理韧性。[BREAK]2. <b>不只是考试：</b>教您如何在面试、日常交流中展现余裕和游戏感，读懂空气而不被空气束缚。[BREAK]3. <b>实战导向：</b>结合升学需求，让语言成为您的竞争力而非障碍。[BREAK][BREAK]加微信 qiuwu999，告诉我您的目标级别和升学计划。"
   },
   {
     "id": "HENNYU_COACHING_CN",
     "priority": 2650,
-    "keywords": [
-      "编入",
-      "编入学",
-      "転入",
-      "転入学",
-      "大三编入",
-      "学部编入",
-      "编入考试",
-      "便入学"
-    ],
+    "keywords": ["编入", "编入学", "転入", "転入学", "大三编入", "学部编入", "编入考试", "便入学"],
     "response": "<b>【编入学辅导：逻辑结合点是生命线】</b>[BREAK]<b>核心判定：</b>编入学的致命点在于原专业与目标专业的结合点。没有清晰的逻辑链条，教授不会接受您。[BREAK][BREAK]<b>辅导内容：</b>[BREAK]1. <b>结合点挖掘：</b>帮您找到原专业与目标的深度连接，避免无逻辑裸转[BREAK]2. <b>志望理由书重构：</b>编入学的志望理由要比一般入学更具说服力[BREAK]3. <b>面试准备：</b>教授必问为什么转专业，这个问题答不好全盘皆输[BREAK][BREAK]<b>秋武经验：</b>10年辅导中见过太多因为结合点模糊而失败的案例。这不是努力的问题，是逻辑的问题。[BREAK][BREAK]加微信 qiuwu999，发您的履历和目标专业，我帮您做结合点诊断。"
   },
   {
     "id": "SUBJECT_COACHING_CN",
     "priority": 2600,
-    "keywords": [
-      "学科辅导",
-      "专业辅导",
-      "理科辅导",
-      "文科辅导",
-      "物理",
-      "化学",
-      "生物",
-      "数学教学",
-      "教课",
-      "科目",
-      "理工科",
-      "文科"
-    ],
+    "keywords": ["学科辅导", "专业辅导", "理科辅导", "文科辅导", "物理", "化学", "生物", "数学教学", "教课", "科目", "理工科", "文科"],
     "response": "<b>【学科修正：东大基准的概念重构】</b>[BREAK]<b>辅导范围：</b>[BREAK]<b>● 理工科：</b>本科理工+东大农学硕士背景，擅长物理、化学、生物、数学。用物理量等硬核逻辑降维打击。[BREAK]<b>● 文科：</b>虽然专业是理科，但10年辅导经验覆盖文理交叉，擅长用复合视角切入。[BREAK][BREAK]<b>常见致命漏洞修正：</b>[BREAK]1. 微分严谨定义：lim(h→0) [f(a+h)-f(a)]/h[BREAK]2. 动量守恒：前提是合外力为零，而非无外力[BREAK]3. 酯化：可逆反应，需浓硫酸+加热[BREAK]4. 苯结构：平面六元环+离域电子(4n+2)[BREAK]5. 生物/工学：再現性不只是结果一致，而是对误差变量的支配能力[BREAK][BREAK]<b>秋武判定：</b>概念模糊=学术失格。加微信 qiuwu999，发您的错题或疑问。"
   },
   {
     "id": "BIZ_PARTNER_CN",
     "priority": 2600,
-    "keywords": [
-      "合伙人",
-      "合作",
-      "加盟",
-      "机构合作",
-      "合伙人模式",
-      "B端",
-      "代理",
-      "一人公司"
-    ],
+    "keywords": ["合伙人", "合作", "加盟", "机构合作", "合伙人模式", "B端", "代理", "一人公司"],
     "response": "<b>【合伙人逻辑：打造硬核升学护城河】</b>[BREAK]<b>目标对象：</b>私塾老师、个人导师、语言学校、希望搭建自己辅导体系的前辈学长。[BREAK][BREAK]<b>合作模式：</b>[BREAK]1. <b>技术支持：</b>Claude Projects + 流形约束语义路由系统，提供 24 小时逻辑陪练与 RAG 知识库扩展[BREAK]2. <b>知识库共享：</b>允许第三方老师通过哨兵接口调用秋武老师的逻辑判定基准[BREAK]3. <b>Agent 2.0 时代：</b>在一人公司时代，一个人就是一个智库。帮您建立个人硬核护城河。[BREAK][BREAK]<b>适合人群：</b>[BREAK]● 亲自辅导过学生，想建立长期合作关系的前辈[BREAK]● 有稳定生源，需要技术赋能的个人导师[BREAK]● 希望提升辅导质量的私塾机构[BREAK][BREAK]<b>合作联系：</b>微信 qiuwu999，开启 Agent 2.0 时代。"
   },
   {
     "id": "NEED_AKITAKE_JUKU_CN",
     "priority": 2600,
-    "keywords": [
-      "已经在私塾",
-      "私塾学习",
-      "还需要吗",
-      "有必要吗",
-      "私塾够吗",
-      "语言学校",
-      "机构"
-    ],
+    "keywords": ["已经在私塾", "私塾学习", "还需要吗", "有必要吗", "私塾够吗", "语言学校", "机构"],
     "response": "<b>【私塾 vs 秋武：互补而非替代】</b>[BREAK]<b>核心区别：</b>[BREAK]● <b>私塾教什么：</b>知识点、考试技巧、标准化流程[BREAK]● <b>秋武教什么：</b>如何读懂教授、文化适应的暗默知、逻辑伏笔的埋设技法[BREAK][BREAK]<b>为什么即便在私塾也需要秋武：</b>[BREAK]1. <b>逻辑维度：</b>私塾是知识的横向扩展，秋武是逻辑的纵向深挖[BREAK]2. <b>个性化：</b>私塾是班课，秋武是针对您个人履历的一对一重构[BREAK]3. <b>文化密码：</b>从椅子怎么放到纳豆怎么答，这些细节私塾不会教[BREAK]4. <b>长期陪伴：</b>第一年未合格，下一年免费续辅导[BREAK][BREAK]<b>真实案例：</b>很多私塾的学生找我做文书审计，发现逻辑断层后重构，最终合格。不是私塾不好，是层次不同。[BREAK][BREAK]加微信 qiuwu999，我帮您诊断您目前的辅导体系缺什么。"
   },
   {
     "id": "CULTURAL_ADAPTATION_CN",
     "priority": 2500,
-    "keywords": [
-      "读空气",
-      "余裕",
-      "游戏感",
-      "遊び",
-      "文化适应",
-      "文化纠缠",
-      "本音建前",
-      "异文化",
-      "文化差异",
-      "空気読む"
-    ],
-    "response": "<b>【心法：余裕与文化纠缠】</b>[BREAK]<b>本质：</b>语言不止解码字面，更要捕捉言外之意。日语的本音建前、韩语的nunchi，都是高级共感。[BREAK][BREAK]<b>读空气的真谛：</b>[BREAK]1. <b>不是盲从：</b>读懂空气而不被空气束缚[BREAK]2. <b>展现余裕：</b>太紧绷必变形，拥有余裕和游戏感才能在高压下保持自己的节奏[BREAK]3. <b>文化密码：</b>从纳豆例子到椅子归位，每个细节都在传递信息[BREAK][BREAK]<b>秋武哲学：</b>定期在日本小中学辅导刚到日本的中国孩子，深刻理解文化适应中的心理韧性有多重要。这不是技巧，是生存智慧。[BREAK][BREAK]加微信 qiuwu999，聊聊您目前在文化适应中最尴尬的一件事。"
+    "keywords": ["读空气", "余裕", "游戏感", "遊び", "文化适应", "文化纠缠", "本音建前", "异文化", "文化差异", "空気読む"],
+    "response": "<b>【心法：余裕与文化纠缠】</b>[BREAK]<b>本质：</b>语言不止解码字面，更要捕捉言外之意。日语の本音建前、韩语的nunchi，都是高级共感。[BREAK][BREAK]<b>读空气的真谛：</b>[BREAK]1. <b>不是盲从：</b>读懂空气而不被空气束缚[BREAK]2. <b>展现余裕：</b>太紧绷必变形，拥有余裕和游戏感才能在高压下保持自己的节奏[BREAK]3. <b>文化密码：</b>从纳豆例子到椅子归位，每个细节都在传递信息[BREAK][BREAK]<b>秋武哲学：</b>定期在日本小中学辅导刚到日本的中国孩子，深刻理解文化适应中的心理韧性有多重要。这不是技巧，是生存智慧。[BREAK][BREAK]加微信 qiuwu999，聊聊您目前在文化适应中最尴尬的一件事。"
   },
   {
     "id": "INFO_ASYMMETRY_CN",
     "priority": 2500,
-    "keywords": [
-      "信息不对称",
-      "情报",
-      "信息差",
-      "内幕",
-      "东大情报",
-      "研究室",
-      "教授",
-      "内部消息"
-    ],
+    "keywords": ["信息不对称", "情报", "信息差", "内幕", "东大情报", "研究室", "教授", "内部消息"],
     "response": "<b>【秋武情报：打破升学的信息不对称】</b>[BREAK]名校升学不仅是分数的博弈，更是情报密度的对决。[BREAK][BREAK]<b>情报优势：</b>东大农学、理学及文理交叉学科的研究室情报、教授偏好、面试风格等深度信息。[BREAK][BREAK]<b>博弈视角：</b>信息差即权力差，掌握暗默知才能赢得主动权。很多学生担心灵感被AI白嫖，秋武系统特设物理级自毁——辅导结束点击清除，LocalStorage瞬间粉碎。您的核心创意只留在您的脑子里和重构后的文书中，不留任何数据残余。这种体面，是工业化升学辅导的底线。"
   },
   {
     "id": "FILE_UPLOAD_GUIDE",
     "priority": 2500,
-    "keywords": [
-      "上传",
-      "文件",
-      "文档",
-      "PDF",
-      "Word",
-      "发给你",
-      "怎么发",
-      "附件",
-      "发送文件",
-      "文件怎么",
-      "发文档"
-    ],
+    "keywords": ["上传", "文件", "文档", "PDF", "Word", "发给你", "怎么发", "附件", "发送文件", "文件怎么", "发文档"],
     "response": "<b>【哨兵物理投喂通道】</b>[BREAK]<b>网页端上传：</b>点击左侧 <b>📄 上传文书审计</b> 按钮，可快速上传 TXT/Markdown 文件进行初步扫描。[BREAK][BREAK]<b>深度审计通道：</b>[BREAK]网页端受技术限制，无法进行真正的逻辑手术。要获得东大基准的深度审计，请：[BREAK][BREAK]1️⃣ 加微信：<b>qiuwu999</b>[BREAK]2️⃣ 发送完整文档（PDF/Word/文本均可）[BREAK]3️⃣ 开启 <b>Sentinel Cowork</b> 专属审计[BREAK][BREAK]<b>审计内容：</b>逻辑断层定位 → 论证薄弱诊断 → 故事线重构 → 伏笔埋设 → 修改范例[BREAK][BREAK]<b>数据安全：</b>审计后物理级删除，绝不留存。这是工业化辅导的体面底线。"
   },
   {
     "id": "SURVIVAL_COMPLIANCE_CN",
     "priority": 2450,
-    "keywords": [
-      "签证",
-      "保险",
-      "年金",
-      "健康保险",
-      "国民年金",
-      "在留",
-      "更新",
-      "入管",
-      "合规",
-      "父母",
-      "说服父母"
-    ],
+    "keywords": ["签证", "保险", "年金", "健康保险", "国民年金", "在留", "更新", "入管", "合规", "父母", "说服父母"],
     "response": "<b>【生存全局：合规与确定性】</b>[BREAK]<b>铁律：</b>在日本，签证是1，其他是0。[BREAK][BREAK]<b>风险提醒：</b>[BREAK]1. 保险年金故意不缴或拿去买周边，会直接威胁签证更新[BREAK]2. 入管局不听跨文化研究的借口[BREAK]3. 合规是生存的底线，不是可选项[BREAK][BREAK]<b>说服父母的逻辑：</b>家长焦虑的本质是缺确定性。我帮您算清时间-效率总账，让父母看到清晰的规划和风险控制，而不是模糊的梦想。[BREAK][BREAK]<b>秋武建议：</b>很多失败案例不是因为学术不行，而是因为忽视了这些看似细节的生存基础。加微信 qiuwu999。"
   },
   {
     "id": "CORE_IDENTITY_JP",
     "priority": 3000,
-    "keywords": [
-      "特徴",
-      "強み",
-      "背景",
-      "秋武",
-      "専門",
-      "誰",
-      "プロフィール",
-      "経歴"
-    ],
+    "keywords": ["特徴", "強み", "背景", "秋武", "専門", "誰", "プロフィール", "経歴"],
     "response": "<b>【秋武判定：東大理系本陣のロジック伴走】</b>[BREAK]1. <b>文理融合：</b>東大農学修士背景。理系ロジックで論理の断層をスキャンします。[BREAK]2. <b>異文化博弈：</b>在日10年。単なる受験指導ではなく、異文化間の交渉術を伝授します。[BREAK]3. <b>暗黙知：</b>伏線を張り、教授の思考リズムをコントロールします。[BREAK]4. <b>非言語コミュニケーション：</b>座り方、目線、資料の渡し方まで、細部の所作を指導します。[BREAK][BREAK]WeChat qiuwu999 でご相談ください。"
   },
   {
     "id": "BIZ_LOGIC_JP",
     "priority": 2900,
-    "keywords": [
-      "費用",
-      "料金",
-      "お金",
-      "エージェント",
-      "仲介",
-      "無料",
-      "値段",
-      "コスト"
-    ],
+    "keywords": ["費用", "料金", "お金", "エージェント", "仲介", "無料", "値段", "コスト"],
     "response": "<b>【ビジネスロジック：三方良しの透明性】</b>[BREAK]1. <b>無料：</b>提携校への紹介により、実質無料で指導を提供。[BREAK]2. <b>個別：</b>項目別の精緻な料金体系を適用。[BREAK]3. <b>セット指導：</b>期間制限なし。1年目不合格なら2年目無料継続。[BREAK][BREAK]<b>秋武の直言：</b>ビザは1、他は0。効率を計算できない者は勝てません。[BREAK]WeChat qiuwu999 でご連絡ください。"
   },
   {
     "id": "INTERVIEW_SIMULATION_JP",
     "priority": 2850,
-    "keywords": [
-      "模擬面接",
-      "面接対策",
-      "面接準備",
-      "一問多答",
-      "口頭試問"
-    ],
+    "keywords": ["模擬面接", "面接対策", "面接準備", "一問多答", "口頭試問"],
     "response": "<b>【面接博弈：論理整合と微細な所作】</b>[BREAK]<b>秋武判定：</b>国立は論理の深さを重視、私立は総合的な余裕を重視。面接は説得の博弈であり、単なる質疑応答ではない。[BREAK][BREAK]<b>戦略：</b>[BREAK]1. <b>一問多層対応：</b>論理伏筆を仕掛け、教授の質問を有利領域へ誘導[BREAK]2. <b>所作の精密化：</b>椅子の戻し方、失礼します、目線の安定まで[BREAK]3. <b>文化的質問：</b>納豆の例まで論理的に[BREAK][BREAK]<b>LTV視点：</b>面接は知性的自立の起点。WeChat qiuwu999 でシミュレーションを。"
   },
   {
     "id": "LOGIC_SURGERY_JP",
     "priority": 2850,
-    "keywords": [
-      "論理手術",
-      "論理監査",
-      "ロジック",
-      "添削",
-      "研究計画書",
-      "論理的"
-    ],
+    "keywords": ["論理手術", "論理監査", "ロジック", "添削", "研究計画書", "論理的"],
     "response": "<b>【論理手術：知性の断層スキャン】</b>[BREAK]文法修正ではなく、論理監査を行います。書類・回答の深層スキャンにより、論理の不安定要素を特定し、降維打撃を実現します。[BREAK][BREAK]<b>技術基盤：</b>ゲーム理論ベースの知性密度評価システム。[BREAK]<b>秋武判定：</b>概念曖昧=学術失格。[BREAK][BREAK]WeChat qiuwu999 で資料をお送りください。"
   },
   {
     "id": "CORE_IDENTITY_EN",
     "priority": 3000,
-    "keywords": [
-      "background",
-      "specialty",
-      "advantage",
-      "Akitake",
-      "who",
-      "profile",
-      "experience",
-      "coaching"
-    ],
+    "keywords": ["background", "specialty", "advantage", "Akitake", "who", "profile", "experience", "coaching"],
     "response": "<b>【Identity: Logical Coach from U-Tokyo】</b>[BREAK]<b>Core Advantages:</b>[BREAK]1. <b>STEM Logic:</b> Master from U-Tokyo. Expert in logical auditing with physics-based reasoning.[BREAK]2. <b>Cross-cultural Strategy:</b> 10 years in Japan. Regular coaching for Chinese kids in Japanese schools, deep understanding of cultural adaptation and psychological resilience.[BREAK]3. <b>Tactical Foreshadowing:</b> Using foreshadowing techniques to control interview rhythm and professor's attention flow.[BREAK]4. <b>Non-verbal Communication:</b> From posture to eye contact to document handling, precision coaching on body language.[BREAK]5. <b>Guarantee:</b> If you don't pass in the first year, the second year is free.[BREAK][BREAK]Add WeChat qiuwu999 to discuss your background."
   },
   {
     "id": "BIZ_LOGIC_EN",
     "priority": 2900,
-    "keywords": [
-      "fee",
-      "cost",
-      "price",
-      "agency",
-      "free",
-      "payment",
-      "charge",
-      "how much"
-    ],
+    "keywords": ["fee", "cost", "price", "agency", "free", "payment", "charge", "how much"],
     "response": "<b>【Business Logic: Transparent Dual-Track】</b>[BREAK]1. <b>Free Mode:</b> Referral fees from partner institutions cover the cost. You get one-on-one coaching at zero extra cost.[BREAK]2. <b>Premium Mode:</b> Itemized professional service fees for independent projects (documents, mock interviews, professor emails).[BREAK]3. <b>Package Coaching:</b> No time limit. If you don't pass in the first year, the second year is free.[BREAK][BREAK]<b>Akitake's Principle:</b> Visa is 1, everything else is 0. Juku teaches knowledge, I teach you how to read professors. [BREAK]Add WeChat qiuwu999."
   },
   {
     "id": "INTERVIEW_SIMULATION_EN",
     "priority": 2850,
-    "keywords": [
-      "mock interview",
-      "interview prep",
-      "interview preparation",
-      "interview coaching",
-      "Q&A practice"
-    ],
+    "keywords": ["mock interview", "interview prep", "interview preparation", "interview coaching", "Q&A practice"],
     "response": "<b>【Interview Game: Logical Alignment & Subtle Details】</b>[BREAK]<b>Akitake Judgment:</b> National universities emphasize logical depth, private ones comprehensive yoyuu. Interview is a persuasion game, not just Q&A.[BREAK][BREAK]<b>Strategy:</b>[BREAK]1. <b>Multi-layer Response:</b> Set logic ambushes to guide professors into your strong areas[BREAK]2. <b>Micro-gestures:</b> Chair placement, shitsurei shimasu, steady eye contact[BREAK]3. <b>Cultural Questions:</b> Even natto questions need logical rigor[BREAK][BREAK]<b>LTV Perspective:</b> Interview is the start of intellectual self-reliance. Add WeChat qiuwu999 for simulation."
   },
   {
     "id": "LOGIC_SURGERY_EN",
     "priority": 2850,
-    "keywords": [
-      "logic surgery",
-      "audit",
-      "logical",
-      "review",
-      "research proposal",
-      "logic check"
-    ],
+    "keywords": ["logic surgery", "audit", "logical", "review", "research proposal", "logic check"],
     "response": "<b>【Logic Surgery: Scanning Your Intellectual Fault Lines】</b>[BREAK]Not just grammar correction, but logical auditing. Through deep scanning of documents and responses, I identify unstable logical elements and deliver dimensionality reduction strikes.[BREAK][BREAK]<b>Technical Foundation:</b> Game theory-based intellectual density assessment.[BREAK]<b>Akitake Judgment:</b> Conceptual ambiguity = academic disqualification.[BREAK][BREAK]Add WeChat qiuwu999 and send your draft."
   },
   {
     "id": "CORE_IDENTITY_KR",
     "priority": 3000,
-    "keywords": [
-      "배경",
-      "강점",
-      "아키타케",
-      "누구",
-      "특징",
-      "프로필",
-      "경력"
-    ],
+    "keywords": ["배경", "강점", "아키타케", "누구", "특징", "프로필", "경력"],
     "response": "<b>【아이덴티티: 도쿄대 이과 본진의 논리 코치】</b>[BREAK]1. <b>융합 논리:</b> 도쿄대 농학 석사 배경의 하드코어 논리 교정 전문가.[BREAK]2. <b>생존 전략:</b> 일본 거주 10년, 입시를 넘어선 이문화 전략 전수.[BREAK]3. <b>암묵지:</b> 복선 기법으로 교수의 사고 리듬을 제어합니다.[BREAK]4. <b>비언어 소통:</b> 자세, 눈맞춤, 자료 전달까지 세밀한 지도.[BREAK][BREAK]WeChat qiuwu999로 연락주세요."
   },
   {
     "id": "BIZ_LOGIC_KR",
     "priority": 2900,
-    "keywords": [
-      "비용",
-      "요금",
-      "돈",
-      "에이전시",
-      "중개",
-      "무료",
-      "가격",
-      "얼마"
-    ],
+    "keywords": ["비용", "요금", "돈", "에이전시", "중개", "무료", "가격", "얼마"],
     "response": "<b>【비즈니스 로직: 투명한 듀얼 트랙】</b>[BREAK]1. <b>무료:</b> 제휴 학교 소개를 통해 실질적으로 무료로 1:1 지도 제공.[BREAK]2. <b>개별:</b> 항목별 정밀한 요금 체계 적용.[BREAK]3. <b>패키지:</b> 기간 제한 없음. 1년차 불합격시 2년차 무료.[BREAK][BREAK]<b>아키타케의 직언:</b> 비자는 1, 나머지는 0. 효율을 계산 못하는 자는 승리할 수 없습니다.[BREAK]WeChat qiuwu999로 연락주세요."
   },
   {
     "id": "INTERVIEW_SIMULATION_KR",
     "priority": 2850,
-    "keywords": [
-      "모의 면접",
-      "면접 대비",
-      "면접 준비",
-      "일문다층",
-      "구술 시험"
-    ],
+    "keywords": ["모의 면접", "면접 대비", "면접 준비", "일문다층", "구술 시험"],
     "response": "<b>【면접 박역: 논리적 정렬과 미세한 동작】</b>[BREAK]<b>아키타케 판정:</b> 국립대는 논리의 깊이를, 사립대는 종합적 여유를 중시합니다. 면접은 설득의 과정이며 단순한 질의응답이 아닙니다。[BREAK][BREAK]<b>전략:</b>[BREAK]1. <b>일문다층 대응:</b> 논리 복선을 깔아 교수 질문을 유리한 영역으로 유도[BREAK]2. <b>미세 동작:</b> 의자 정리, 실례합니다, 안정된 눈맞춤[BREAK]3. <b>문화적 질문:</b> 낫또 예시까지 논리적으로[BREAK][BREAK]<b>LTV 시각:</b> 면접은 지적 자립의 시작입니다. WeChat qiuwu999로 시뮬레이션 하세요。"
   },
   {
     "id": "SENTINEL_GATE",
     "priority": 100,
     "keywords": [
-      "你好",
-      "hello",
-      "こんにちは",
-      "안녕",
-      "咨询",
-      "start",
-      "菜单",
-      "帮助",
-      "ヘルプ",
-      "도움",
-      "开始"
+      "你好", "hello", "こんにちは", "안녕", "咨询", "start", "菜单", "帮助", "ヘルプ", "도움", "开始",
+      "JLPt", "JLPT", "日语能力", "N1", "N2", "日语考试", "日语课程", "日语学习", "托福", "托福教不教",
+      "小论文", "小论文辅导", "小论文课", "数学", "理科", "文科", "理工科", "数理化", "物理", "化学", "生物",
+      "费用呢", "免费辅导", "收费吗", "多少钱", "怎么收费", "免费模式", "编入学", "大学院", "学部", "跨专业",
+      "GPA低", "结合点", "面试结合点", "研究动机", "研究方法", "逻辑跳跃", "一问一答", "答辩草稿", "模拟面接",
+      "面接", "模擬面接", "椅子", "余裕", "納豆", "本音建前", "読空気", "有没有课", "教不教", "课程", "教课",
+      "辅导课", "一对一课", "数学课", "理科课", "文科课", "托福课", "日语课", "物理课", "化学课", "生物课",
+      "数理化课", "具体科目", "主要辅导范围", "有没有教", "上课吗", "课表", "上课", "有没有辅导", "教课吗",
+      "有没有教课", "课程有吗", "想学XX", "XX课", "有没有XX课", "XX可以辅导吗"
     ],
-    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]● <b>CN:</b> 特色、逻辑手术、文书、面试、Claude系统、合伙人、收费、EJU、JLPT、编入学[BREAK]● <b>JP:</b> 特徴、費用、背景、論理手術、模擬面接[BREAK]● <b>EN:</b> specialty, fee, background, logic surgery, mock interview[BREAK]● <b>KR:</b> 강점, 비용, 배경, 모의 면접[BREAK][BREAK]<b>💡 提示：</b>输入任何关键词（如面试、费用、EJU、文书等），哨兵会自动路由到最相关的知识模块。"
+    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]● <b>CN:</b> 特色、逻辑手术、文书、面试、Claude系统、合伙人、收费、EJU、JLPT、编入学、小论文、数学、理科、文科、托福、费用[BREAK]● <b>JP:</b> 特徴、費用、背景、論理手術、模擬面接、椅子、余裕、納豆[BREAK]● <b>EN:</b> specialty, fee, background, logic surgery, mock interview, GPA low, cross major[BREAK]● <b>KR:</b> 강점, 비용, 배경, 모의 면접[BREAK][BREAK]<b>💡 提示：</b>输入任何关键词（如面试、费用、EJU、文书、小论文、JLPT、托福、数学、结合点、教不教等），哨兵会自动路由到最相关的知识模块。如果未命中，请直接加微信 qiuwu999 说明需求。"
+  },
+  {
+    "id": "FUZZY_INQUIRY",
+    "priority": 80,
+    "keywords": [
+      "教不教", "有没有课", "课程", "教课", "辅导课", "一对一课", "小论文课", "数学课", "理科课", "文科课",
+      "托福课", "日语课", "物理课", "化学课", "生物课", "数理化课", "具体科目", "主要辅导范围", "有没有教",
+      "上课吗", "课表", "上课", "有没有辅导", "教课吗", "有没有教课", "课程有吗", "想学XX", "XX课",
+      "有没有XX课", "XX可以辅导吗", "XX课有吗", "教XX吗", "有没有XX课", "课程包括XX吗"
+    ],
+    "response": "<b>【服务范围澄清】</b>[BREAK]秋武老师目前专注提供升学相关的**高维逻辑服务**：文书审计、逻辑手术、模拟面试、EJU/JLPT指导、编入学结合点诊断、文化适应与非语言沟通等。[BREAK][BREAK]具体学科课程（如数学、物理、托福、日语语法等系统化教学）暂不提供，但如果您的疑问涉及升学中的**逻辑漏洞、概念重构、论证断层**，我可以针对性给出东大基准的诊断与建议。[BREAK][BREAK]请告诉我您的具体困惑（如“想学数学但怕概念模糊”），或直接加微信 qiuwu999 聊聊，我帮您判断是否在服务范围内。"
   },
   {
     "id": "FALLBACK_SERVICE_INQUIRY",
     "priority": 50,
-    "keywords": [
-      "可以",
-      "能不能",
-      "会不会",
-      "提供",
-      "辅导",
-      "教",
-      "有没有",
-      "帮",
-      "指导"
-    ],
+    "keywords": ["可以", "能不能", "会不会", "提供", "辅导", "教", "有没有", "帮", "指导"],
     "response": "<b>【服务咨询引导】</b>[BREAK]感谢您的咨询！秋武老师提供以下辅导服务：[BREAK][BREAK]<b>核心服务：</b>[BREAK]● 志望理由书/研究计划书审计[BREAK]● 模拟面试（一问一答式）[BREAK]● 套磁邮件指导[BREAK]● EJU/JLPT辅导[BREAK]● 编入学结合点诊断[BREAK]● 学科辅导（理科为主）[BREAK]● 文化适应与非语言沟通[BREAK][BREAK]请告诉我：[BREAK]1. 您的目标（学部/大学院/编入）[BREAK]2. 您的专业方向[BREAK]3. 您最需要帮助的具体方面[BREAK][BREAK]或直接加微信 qiuwu999 详细沟通。输入关键词如面试、文书、费用可获得更具体的信息。"
   }
 ]
