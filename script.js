@@ -127,17 +127,17 @@
         return bestMatch;
     }
 
-    // ========== 材料类型轻量判断（新增，轻量关键词，无风险） ==========
+    // 材料类型轻量判断（完整保留）
     function detectDocumentType(text) {
         const gradKeywords = /先行研究|先行文献|Gap|仮説|実証|研究方法|methodology|文献レビュー|仮定|検証/i;
         const undergradKeywords = /志望理由書|学部|総合政策|興味を持ったきっかけ|きっかけは|環境政策|文化政策|地域活性化|卒業後|将来/i;
         
         if (gradKeywords.test(text)) return 'graduate';
         if (undergradKeywords.test(text)) return 'undergraduate';
-        return 'undergraduate'; // 默认学部（更常见）
+        return 'undergraduate'; // 默认学部
     }
 
-    // ========== 文书评估逻辑（优化版：学部友好、积极为主、差异化、委婉暧昧） ==========
+    // 文书评估逻辑（优化版：学部友好、积极为主、差异化、委婉暧昧、字数模糊化）
     function evaluateDocument(text) {
         const type = detectDocumentType(text);
         const length = text.length;
@@ -307,10 +307,17 @@
                         return;
                     }
 
-                    const previewLength = 3000;
-                    const previewText = extractedText.substring(0, previewLength) + (extractedText.length > previewLength ? '...' : '');
+                    // 提前计算 lengthDesc（模糊字数描述，避免千篇一律）
+                    const length = extractedText.length;
+                    const lengthDesc = length < 400 ? '篇幅较为精炼' :
+                                       length < 800 ? '长度适中，内容充实' :
+                                       length < 1500 ? '篇幅饱满，论述较为完整' :
+                                       '内容详实，信息密度较高';
 
-                    appendMessage('bot', `<b>【初步提取完成】</b><br>● 内容长度：${lengthDesc}<br>● 状态：${extractedText.length > previewLength ? '前3000字预览' : '完整提取'}`);
+                    const previewLength = 3000;
+                    const previewText = extractedText.substring(0, previewLength) + (length > previewLength ? '...' : '');
+
+                    appendMessage('bot', `<b>【初步提取完成】</b><br>● ${lengthDesc}<br>● 状态：${length > previewLength ? '前3000字预览' : '完整提取'}`);
 
                     const evaluation = evaluateDocument(extractedText);
                     appendMessage('bot', evaluation.suggestions[0]);
