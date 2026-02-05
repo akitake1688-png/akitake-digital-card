@@ -4,13 +4,25 @@
     let semanticCache = new Map();
     let cacheHitCount = 0;
     const CACHE_CLEAR_THRESHOLD = 500;
+    
+    // === 行为追踪系统 ===
+    let userBehavior = {
+        sessionId: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        queries: [],
+        conversationDepth: 0,
+        wechatMentioned: false,
+        wechatRejected: false,  // 新增：拒绝标记
+        uploadAttempted: false,
+        highValueTopics: new Set()
+    };
 
-    // PDF.js worker配置（保留原配置）
+    // 配置 PDF.js workerSrc
     if (typeof pdfjsLib !== 'undefined') {
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     }
 
-    // 语言检测（完整保留）
+    // === 语义路由引擎 ===
+    
     function detectLanguage(text) {
         const chinese = /[\u4e00-\u9fa5]/g;
         const japanese = /[\u3040-\u309f\u30a0-\u30ff]/g;
@@ -31,7 +43,6 @@
         return dominant[0];
     }
 
-    // 语义相似度（完整保留）
     function calculateSimilarity(str1, str2) {
         const s1 = str1.toLowerCase();
         const s2 = str2.toLowerCase();
@@ -50,20 +61,27 @@
         return overlap / Math.max(s1.length, s2.length);
     }
 
-    // 核心匹配算法（完整保留V47.1版）
     function findBestMatch(userInput) {
         const text = userInput.toLowerCase().trim();
         const detectedLang = detectLanguage(userInput);
         
+        // 记录查询
+        userBehavior.queries.push({
+            text: text,
+            timestamp: Date.now(),
+            language: detectedLang
+        });
+        userBehavior.conversationDepth++;
+        
         const cacheKey = `${text}_${detectedLang}`;
         if (semanticCache.has(cacheKey)) {
-            console.log('🎯 缓存命中:', cacheKey);
             cacheHitCount++;
+            
             if (cacheHitCount >= CACHE_CLEAR_THRESHOLD) {
-                console.log('🧹 缓存清理：已达到', CACHE_CLEAR_THRESHOLD, '次命中');
                 semanticCache.clear();
                 cacheHitCount = 0;
             }
+            
             return semanticCache.get(cacheKey);
         }
         
@@ -99,6 +117,7 @@
                 const priorityWeight = item.priority / 100;
                 score += priorityWeight;
                 
+                // 慢权重保护
                 if (item.priority >= 2800) {
                     score *= 1.2;
                     matchDetails.push('🛡️慢权重保护(x1.2)');
@@ -122,103 +141,134 @@
         
         matches.sort((a, b) => b.score - a.score);
         
+        console.log('🎯 匹配结果 Top 3:');
+        matches.slice(0, 3).forEach((m, i) => {
+            console.log(`   ${i + 1}. [${m.id}] 得分:${m.score.toFixed(2)}`, m.details);
+        });
+        
+        // 记录高价值主题
+        const topMatch = matches[0].item;
+        if (topMatch.priority >= 2800) {
+            userBehavior.highValueTopics.add(topMatch.id);
+        }
+        
         const bestMatch = matches[0].item;
         semanticCache.set(cacheKey, bestMatch);
         return bestMatch;
     }
 
-    // 材料类型轻量判断（完整保留）
-    function detectDocumentType(text) {
-        const gradKeywords = /先行研究|先行文献|Gap|仮説|実証|研究方法|methodology|文献レビュー|仮定|検証/i;
-        const undergradKeywords = /志望理由書|学部|総合政策|興味を持ったきっかけ|きっかけは|環境政策|文化政策|地域活性化|卒業後|将来/i;
-        
-        if (gradKeywords.test(text)) return 'graduate';
-        if (undergradKeywords.test(text)) return 'undergraduate';
-        return 'undergraduate'; // 默认学部
+    // === 微信转化检测 ===
+    function detectWechatIntent(text) {
+        const wechatKeywords = ['qiuwu999', '微信', 'wechat', '联系', '咨询', '加你'];
+        return wechatKeywords.some(kw => text.includes(kw));
     }
 
-    // 文书评估逻辑（优化版：学部友好、积极为主、差异化、委婉暧昧、字数模糊化）
+    // === 转化率优化：智能微信引导（V48.1 降低强度版）===
+    function shouldShowWechatPrompt() {
+        // 安全阀：用户明确拒绝后不再提示
+        if (userBehavior.wechatRejected) {
+            return false;
+        }
+        
+        // 条件1：对话深度达到4-5轮以上（降低强度）
+        if (userBehavior.conversationDepth >= 4 && !userBehavior.wechatMentioned) {
+            return true;
+        }
+        
+        // 条件2：访问了3个以上高价值主题（提高门槛）
+        if (userBehavior.highValueTopics.size >= 3 && !userBehavior.wechatMentioned) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // === 检测用户拒绝微信 ===
+    function detectWechatRejection(text) {
+        const rejectionKeywords = ['不加', '不想加', '不要微信', '别推', '不用', '算了'];
+        return rejectionKeywords.some(kw => text.includes(kw));
+    }
+
+    // === 文书评估逻辑 ===
     function evaluateDocument(text) {
-        const type = detectDocumentType(text);
+        const lines = text.split('\n').filter(l => l.trim());
+        const sentences = text.split(/[。.!?！？]/);
         const length = text.length;
-        const paraCount = text.split('\n').filter(l => l.trim()).length;
         
-        const hasMotivation = /きっかけ|興味|好き|感動|興味を持った|きっかけは/i.test(text);
-        const hasPolicy = /政策|環境政策|文化政策|著作権|表現の自由|地域活性化/i.test(text);
-        const hasFuture = /卒業後|将来|進みたい|貢献|活躍/i.test(text);
-        
-        let praises = [];
+        let issues = [];
         let suggestions = [];
         
-        // 字数模糊描述（避免千篇一律数字）
-        let lengthDesc = length < 400 ? '篇幅较为精炼' :
-                         length < 800 ? '长度适中，内容充实' :
-                         length < 1500 ? '篇幅饱满，论述较为完整' :
-                         '内容详实，信息密度较高';
-        
-        // 学部模式（默认）
-        if (type !== 'graduate') {
-            praises.push(`● ${lengthDesc}`);
-            
-            if (hasMotivation) praises.push('个人动机鲜明，兴趣触发点生动自然');
-            else suggestions.push('兴趣来源可再补充1–2个具体细节，让动机更打动教授');
-            
-            if (hasPolicy) praises.push('兴趣与综合政策方向契合度高，思路清晰');
-            else suggestions.push('兴趣与学部政策的连接可再强化一些');
-            
-            if (hasFuture) praises.push('未来展望具体，方向感强');
-            else suggestions.push('未来部分可再补充1–2个可落地的行动计划');
-            
-            if (paraCount >= 8) praises.push('段落结构清晰，阅读节奏舒适');
-            else suggestions.push('段落可适当细分，增强逻辑推进感');
-            
-            // 整体评价（分层、暧昧）
-            const praiseCount = praises.length - 1; // 减去lengthDesc
-            let overall = praiseCount >= 4 ? '整体水准较高，已具备很强的竞争力' :
-                          praiseCount >= 3 ? '基础扎实，方向明确，还有上升空间' :
-                          praiseCount >= 2 ? '动机真挚，潜力明显，可再打磨' :
-                          '内容真诚，但结构与政策结合还有提升空间';
-            
-            let output = `<b>【初步扫描 - 学部/本科志望理由书】</b><br>`;
-            praises.forEach(p => output += `${p}<br>`);
-            
-            output += `<br><b>整体评价：</b> ${overall}`;
-            
-            if (suggestions.length > 0) {
-                output += '<br><br><b>可优化建议（温和版）</b><br>';
-                suggestions.forEach((s, i) => output += `${i+1}. ${s}<br>`);
-                
-                // 范文示例（1处正面）
-                output += '<br><b>范文式优化示例</b><br>';
-                output += '原句示例："私が総合政策に興味を持ったきっかけは..."<br>';
-                output += '建议强化："私が総合政策に興味を持ったきっかけは、絵を描く中で感じた自然の美しさと、初音ミクの音楽を通じて生まれたコミュニティの力です。これらを支える政策を学び、環境と文化の両面から地域活性化に貢献したいと考えています。"<br>（改写后动机更生动，学部契合更明确）';
-            } else {
-                output += '<br><br>整体优秀，未发现明显可优化点。结构完整、动机真挚、展望清晰，是一份很有潜力的志望理由书！';
-            }
-            
-            output += `<br><br><b>【Sentinel Cowork 深度审计】</b><br>网页端仅作初步扫描。要获得 Claude Projects + 流形约束语义路由系统 + RAG 知识库扩展的东大基准深度审计，请加微信 <b>qiuwu999</b> 发送完整文档，我将为您开启专属通道。<br>数据安全承诺：审计后物理级删除，绝不留存。`;
-            
-            return { issues: [], suggestions: [output] };
+        if (length < 500) {
+            issues.push('文本长度不足500字，论证支撑力度严重不足');
+            suggestions.push('<b>建议：</b>扩充"问题意识"部分，增加先行研究引用，强化研究Gap的必然性论证<br><br><b>💡 深度重构：</b>加微信 <b>qiuwu999</b> 获得完整框架模板');
         }
         
-        // 大学院模式（备用，温和学术版）
-        else {
-            let output = `<b>【初步扫描 - 大学院研究计划书】</b><br>`;
-            output += `● ${lengthDesc}<br>`;
-            output += '整体学术性较强，方向清晰。网页端仅作初步扫描，建议加微信 qiuwu999 进行更深度分析。';
-            return { issues: [], suggestions: [output] };
+        if (lines.length < 10) {
+            issues.push('段落结构过于松散（少于10个有效段落）');
+            suggestions.push('<b>建议：</b>采用"问题提出→先行研究→Gap定位→研究方法→预期成果"五段式结构<br><br><b>💡 框架指导：</b>微信发送 <b>qiuwu999</b>，我提供东大基准模板');
         }
+        
+        const hasLiterature = /先行研究|先行文献|previous studies|literature review|背景文献/i.test(text);
+        if (!hasLiterature) {
+            issues.push('未见明显先行研究引用，Gap来源不明确');
+            suggestions.push('<b>范文示例：</b><br>❌ 原句："本研究旨在探讨X现象..."<br>✅ 改写："基于Y教授（2023）指出的Z理论局限，本研究拟通过W方法填补该领域的实证空白..."<br><br><b>💡 教授论文分析：</b>加微信 <b>qiuwu999</b>，我帮您找到最佳引用文献');
+        }
+        
+        const hasMethod = /研究方法|调查方法|实验设计|分析手法|methodology|approach/i.test(text);
+        if (!hasMethod && length > 300) {
+            issues.push('缺少明确的研究方法论述');
+            suggestions.push('<b>建议：</b>采用"方法→预期结果→学术贡献"三层论证<br><br><b>💡 方法论指导：</b>微信 <b>qiuwu999</b>，我为您设计严谨的研究路径');
+        }
+        
+        const connectors = (text.match(/因此|所以|然而|但是|虽然|尽管|furthermore|however|therefore/gi) || []).length;
+        const connectorDensity = connectors / sentences.length;
+        if (connectorDensity < 0.15) {
+            issues.push('逻辑连接词密度过低，段落间转换生硬');
+            suggestions.push('<b>建议：</b>在段落衔接处增加"基于此逻辑"、"由此可见"等过渡句<br><br><b>💡 逻辑重构：</b>加微信 <b>qiuwu999</b>，我逐段修正逻辑链条');
+        }
+        
+        const hasPersonal = /本人|笔者|我的|自身经历|实习|实践|my experience/i.test(text);
+        if (!hasPersonal && length > 500) {
+            suggestions.push('<b>故事线建议：</b>在"研究动机"部分，适度融入个人经历（如实习观察、课题启发）<br><br><b>💡 履历串联：</b>微信 <b>qiuwu999</b>，我帮您挖掘个人亮点并自然嵌入');
+        }
+        
+        return { issues, suggestions };
     }
 
-    // ========== 主程序初始化（其余部分完整保留，不做任何改动） ==========
+    // === 主程序初始化 ===
     document.addEventListener('DOMContentLoaded', async () => {
         try {
             const res = await fetch('knowledge.json?v=' + Date.now());
             knowledgeBase = await res.json();
+            console.log('✅ 知识库加载完成:', knowledgeBase.length, '条目');
 
             const input = document.getElementById('user-input');
             const sendBtn = document.getElementById('send-btn');
             const chat = document.getElementById('chat-container');
+            
+            // === 隐私提示（首次访问）===
+            if (!localStorage.getItem('privacyNotified')) {
+                setTimeout(() => {
+                    appendMessage('bot', '<b>📋 隐私说明</b><br>本站使用浏览器本地存储（localStorage）记录会话数据，用于优化您的咨询体验。所有数据仅存储在您的设备上，不会上传到服务器。您可随时点击"🧹 哨兵物理清除"按钮删除所有数据。', 'privacy-notice');
+                    localStorage.setItem('privacyNotified', 'true');
+                }, 2000);
+            }
+            
+            // === 开发者工具：查看行为数据 ===
+            window.viewUserBehavior = function() {
+                console.log('📊 用户行为数据：', {
+                    sessionId: userBehavior.sessionId,
+                    queryCount: userBehavior.queries.length,
+                    depth: userBehavior.conversationDepth,
+                    highValueTopics: Array.from(userBehavior.highValueTopics),
+                    wechatMentioned: userBehavior.wechatMentioned,
+                    wechatRejected: userBehavior.wechatRejected,
+                    uploadAttempted: userBehavior.uploadAttempted,
+                    queries: userBehavior.queries
+                });
+                return userBehavior;
+            };
+            console.log('💡 提示：在 Console 输入 viewUserBehavior() 查看用户行为数据');
 
             const handleSend = async () => {
                 const text = input.value.trim();
@@ -227,6 +277,17 @@
                 isProcessing = true;
                 input.disabled = true;
                 sendBtn.disabled = true;
+                
+                // 检测微信意图
+                if (detectWechatIntent(text)) {
+                    userBehavior.wechatMentioned = true;
+                }
+                
+                // 检测拒绝微信
+                if (detectWechatRejection(text)) {
+                    userBehavior.wechatRejected = true;
+                    console.log('🚫 用户拒绝微信引导，停止后续提示');
+                }
                 
                 appendMessage('user', text);
                 input.value = '';
@@ -239,14 +300,29 @@
                     if (seg.trim()) {
                         appendMessage('bot', seg.trim());
                         await new Promise(r => setTimeout(r, 600));
-                        if (window.MathJax) MathJax.typesetPromise().catch(e => console.log(e));
                     }
+                }
+                
+                // === 智能微信引导提示 ===
+                if (shouldShowWechatPrompt()) {
+                    await new Promise(r => setTimeout(r, 800));
+                    appendMessage('bot', '<b>💡 深度咨询建议</b><br>看到您对升学很重视，已咨询多个问题。建议加微信 <b>qiuwu999</b> 进行一对一深度评估，我将为您：<br>● 制定完整升学路径<br>● 评估具体背景优劣势<br>● 提供针对性策略方案<br><br>网页端适合快速了解，微信端才能真正解决您的个性化问题。', 'wechat-prompt');
+                    userBehavior.wechatMentioned = true;
                 }
                 
                 isProcessing = false;
                 input.disabled = false;
                 sendBtn.disabled = false;
                 input.focus();
+                
+                // 保存行为数据到 localStorage
+                localStorage.setItem('userBehavior', JSON.stringify({
+                    sessionId: userBehavior.sessionId,
+                    queryCount: userBehavior.queries.length,
+                    depth: userBehavior.conversationDepth,
+                    highValueTopics: Array.from(userBehavior.highValueTopics),
+                    wechatMentioned: userBehavior.wechatMentioned
+                }));
             };
 
             sendBtn.onclick = handleSend;
@@ -256,8 +332,10 @@
                 btn.onclick = () => { input.value = btn.getAttribute('data-preset'); handleSend(); };
             });
 
+            // === 文件上传 ===
             document.getElementById('upload-btn').onclick = () => {
                 document.getElementById('file-upload').click();
+                userBehavior.uploadAttempted = true;
             };
 
             document.getElementById('file-upload').onchange = async (e) => {
@@ -266,19 +344,19 @@
 
                 const supported = /\.(txt|md|csv|json|html|xml|pdf|docx|doc)$/i;
                 if (!supported.test(file.name)) {
-                    appendMessage('bot', '<b>【哨兵警报】</b>仅支持 TXT/MD/CSV/JSON/HTML/XML/PDF/DOCX/DOC');
+                    appendMessage('bot', '<b>【哨兵警报】</b>仅支持 TXT/MD/CSV/JSON/HTML/XML/PDF/DOCX 格式文件。');
                     e.target.value = '';
                     return;
                 }
 
                 if (file.size > 10 * 1024 * 1024) {
-                    appendMessage('bot', '<b>【哨兵警报】</b>文件超过10MB，请加微信 qiuwu999 发送');
+                    appendMessage('bot', '<b>【哨兵警报】</b>文件大小超过 10MB 限制。<br>大文件请直接加微信 <b>qiuwu999</b> 发送，我将为您开启 Sentinel Cowork 专属审计通道。');
                     e.target.value = '';
                     return;
                 }
 
-                appendMessage('user', `📄 已上传：${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
-                appendMessage('bot', '<b>【哨兵扫描中】</b>正在提取文本...');
+                appendMessage('user', `📄 已上传文件：${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
+                appendMessage('bot', '<b>【哨兵扫描中】</b>正在提取文本内容...');
 
                 let extractedText = '';
                 const ext = file.name.split('.').pop().toLowerCase();
@@ -288,12 +366,16 @@
                         extractedText = await file.text();
                     } else if (ext === 'pdf') {
                         const arrayBuffer = await file.arrayBuffer();
-                        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                        const pdf = await loadingTask.promise;
                         const maxPages = Math.min(pdf.numPages, 10);
                         for (let i = 1; i <= maxPages; i++) {
                             const page = await pdf.getPage(i);
                             const content = await page.getTextContent();
                             extractedText += content.items.map(item => item.str).join(' ') + '\n\n';
+                        }
+                        if (pdf.numPages > 10) {
+                            extractedText += `\n[注：文件共${pdf.numPages}页，已提取前10页]`;
                         }
                     } else if (ext === 'docx' || ext === 'doc') {
                         const arrayBuffer = await file.arrayBuffer();
@@ -302,53 +384,87 @@
                     }
 
                     if (!extractedText || extractedText.trim().length < 50) {
-                        appendMessage('bot', '<b>【提取失败】</b>内容为空或无法解析，请加微信 qiuwu999 发送原文件');
+                        appendMessage('bot', '<b>【提取失败】</b>文件内容为空或无法解析。<br>请确认文件格式正确，或直接加微信 <b>qiuwu999</b> 发送原文件。');
                         e.target.value = '';
                         return;
                     }
 
-                    // 提前计算 lengthDesc（模糊字数描述，避免千篇一律）
-                    const length = extractedText.length;
-                    const lengthDesc = length < 400 ? '篇幅较为精炼' :
-                                       length < 800 ? '长度适中，内容充实' :
-                                       length < 1500 ? '篇幅饱满，论述较为完整' :
-                                       '内容详实，信息密度较高';
-
                     const previewLength = 3000;
-                    const previewText = extractedText.substring(0, previewLength) + (length > previewLength ? '...' : '');
+                    const isTruncated = extractedText.length > previewLength;
 
-                    appendMessage('bot', `<b>【初步提取完成】</b><br>● ${lengthDesc}<br>● 状态：${length > previewLength ? '前3000字预览' : '完整提取'}`);
+                    appendMessage('bot', `<b>【初步提取完成】</b><br>● 文本总长度：约 ${extractedText.length} 字<br>● 提取状态：${isTruncated ? '部分预览（前3000字）' : '完整提取'}`);
+                    await new Promise(r => setTimeout(r, 400));
 
                     const evaluation = evaluateDocument(extractedText);
-                    appendMessage('bot', evaluation.suggestions[0]);
+                    
+                    if (evaluation.issues.length > 0) {
+                        appendMessage('bot', `<b>【逻辑断层诊断】</b><br>${evaluation.issues.map((issue, i) => `${i + 1}. ${issue}`).join('<br>')}`);
+                        await new Promise(r => setTimeout(r, 600));
+                    }
+                    
+                    if (evaluation.suggestions.length > 0) {
+                        for (let suggestion of evaluation.suggestions.slice(0, 2)) {
+                            appendMessage('bot', suggestion);
+                            await new Promise(r => setTimeout(r, 600));
+                        }
+                    }
+                    
+                    if (evaluation.issues.length === 0 && evaluation.suggestions.length === 0) {
+                        appendMessage('bot', '<b>【初步扫描】</b>结构基本完整，未发现明显逻辑断层。<br>但网页端仅作表层扫描，深度伏笔设计、教授心理诱导等高维技法需人工审计。<br><br><b>💡 建议：</b>加微信 <b>qiuwu999</b> 进行完整审计');
+                        await new Promise(r => setTimeout(r, 600));
+                    }
+
+                    // 最终微信引导（强化）
+                    appendMessage('bot', '<b>【🎯 Sentinel Cowork 深度审计】</b><br>网页端仅提供初步诊断（逻辑断层识别 + 基础建议）。<br><br>要获得完整的东大基准逻辑手术，请：<br><br>1️⃣ 加微信：<b>qiuwu999</b><br>2️⃣ 发送完整文档（支持所有格式）<br>3️⃣ 开启专属审计通道<br><br><b>深度服务包含：</b><br>● 逻辑断层精准定位<br>● 故事线重构方案<br>● 逻辑伏笔埋设指导（诱导教授进入您的擅长领域）<br>● 面试预判与对策<br>● 完整修改范例<br><br><b>数据安全：</b>审计后物理级删除，绝不留存。这是工业化辅导的体面底线。');
+                    
+                    // 记录上传行为
+                    userBehavior.uploadAttempted = true;
 
                 } catch (err) {
-                    appendMessage('bot', `<b>【提取失败】</b>${err.message || '解析出错'}<br>请加微信 qiuwu999 发送原文件`);
+                    console.error('文件处理错误:', err);
+                    appendMessage('bot', `<b>【提取失败】</b>${err.message || '文件解析出错，可能是格式损坏或加密文件。'}<br><br>请直接加微信 <b>qiuwu999</b> 发送文档，我将亲自为您审计。`);
                 }
 
                 e.target.value = '';
             };
 
+            // 哨兵清除
             document.getElementById('clear-btn').onclick = () => {
-                if (confirm('⚠️ 确认物理清除？所有记录永久删除')) {
-                    document.getElementById('chat-container').innerHTML = "";
+                if (confirm('⚠️ 确认执行哨兵物理清除？所有对话记录将被永久删除。')) {
+                    chat.innerHTML = "";
                     localStorage.clear();
                     semanticCache.clear();
                     cacheHitCount = 0;
+                    userBehavior = {
+                        sessionId: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                        queries: [],
+                        conversationDepth: 0,
+                        wechatMentioned: false,
+                        uploadAttempted: false,
+                        highValueTopics: new Set()
+                    };
+                    console.log('🧹 哨兵清除完成');
                     location.reload();
                 }
             };
 
         } catch (e) {
-            console.error("Sentinel System Error:", e);
+            console.error("❌ Sentinel System Error:", e);
+            appendMessage('bot', '<b>【系统错误】</b>知识库加载失败，请刷新页面重试。');
         }
     });
 
-    function appendMessage(role, html) {
+    function appendMessage(role, html, className = '') {
         const chat = document.getElementById('chat-container');
         const div = document.createElement('div');
-        div.className = `msg-row ${role}`;
+        div.className = `msg-row ${role} ${className}`;
         div.innerHTML = `<div class="bubble">${html}</div>`;
+        
+        // 微信引导消息特殊样式
+        if (className === 'wechat-prompt') {
+            div.querySelector('.bubble').style.background = 'linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%)';
+            div.querySelector('.bubble').style.border = '2px solid #ff9800';
+        }
         
         div.onclick = () => {
             navigator.clipboard.writeText(div.innerText).then(() => {
