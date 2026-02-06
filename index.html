@@ -3,47 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武逻辑哨兵 | Sentinel Sovereign V47.1 Final</title>
-    <link rel="stylesheet" href="style.css?v=V47.1_FINAL">
-    <!-- PDF.js & Mammoth.js CDN（前端解析PDF/DOCX） -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <title>秋武逻辑哨兵 V48.1 本地测试</title>
+    <style>
+:root { --accent: #154391; --danger: #d9534f; --bg: #f4f7f1; }
+body { margin: 0; height: 100vh; background: var(--bg); display: flex; justify-content: center; align-items: center; font-family: -apple-system, "Helvetica Neue", sans-serif; }
+.glass-container { width: 96vw; max-width: 1200px; height: 94vh; background: #fff; border-radius: 20px; display: flex; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+.side-panel { width: 280px; min-width: 280px; background: #fff; border-right: 1px solid #eee; padding: 30px; display: flex; flex-direction: column; flex-shrink: 0; }
+.avatar-wrapper { width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; border: 3px solid var(--accent); overflow: hidden; }
+.avatar-main { width: 100%; height: 100%; object-fit: cover; }
+.persona-name { text-align: center; font-weight: 800; color: var(--accent); margin-bottom: 30px; font-size: 1.1rem; }
+.nav-group { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.nav-btn { padding: 12px; border: 1px solid #f8f8f8; border-radius: 10px; background: #fff; cursor: pointer; text-align: left; transition: 0.3s; font-size: 0.85rem; }
+.nav-btn:hover { background: var(--accent); color: white; transform: translateX(5px); }
+.clear-btn { padding: 14px; border: none; border-radius: 10px; background: #fff5f5; color: var(--danger); cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 0.8rem; }
+.chat-viewport { flex: 1; display: flex; flex-direction: column; background: #fafafa; }
+.messages-area { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+.msg-row { display: flex; width: 100%; position: relative; cursor: pointer; }
+.msg-row.user { justify-content: flex-end; }
+.bubble { max-width: 80%; padding: 15px 20px; border-radius: 15px; line-height: 1.8; font-size: 14px; position: relative; }
+.user .bubble { background: var(--accent); color: white; border-bottom-right-radius: 4px; }
+.bot .bubble { background: white; border: 1px solid #eee; border-bottom-left-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+.copied::after { 
+    content: "已复制逻辑锚点"; position: absolute; top: -25px; right: 0; 
+    background: rgba(21, 67, 145, 0.9); color: white; font-size: 11px; 
+    padding: 4px 10px; border-radius: 4px; animation: fade 2s forwards;
+}
+@keyframes fade { 0% {opacity: 0; transform: translateY(5px);} 20% {opacity: 1; transform: translateY(0);} 100% {opacity: 0;} }
+.input-bar { padding: 20px; background: #fff; border-top: 1px solid #f0f0f0; display: flex; gap: 10px; }
+#user-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; }
+#user-input:disabled { background: #f5f5f5; }
+#send-btn { padding: 0 25px; background: #333; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+    </style>
 </head>
 <body>
     <div class="glass-container">
         <aside class="side-panel">
             <div class="avatar-wrapper">
-                <img src="profile.jpg" class="avatar-main" alt="秋武" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Akitake'">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Akitake" class="avatar-main" alt="秋武">
             </div>
             <div class="persona-name">秋武老师 | 哨兵</div>
             <div class="nav-group">
-                <button class="nav-btn" data-preset="逻辑手术">🔎 逻辑手术 (RP审计)</button>
-                <button class="nav-btn" data-preset="信息不对称">📡 信息差审计</button>
-                <button class="nav-btn" data-preset="合伙人模式">🤝 合伙人生态</button>
-                <button class="nav-btn" id="upload-btn">📄 上传文书审计</button>
+                <button class="nav-btn" data-preset="费用">💰 费用咨询</button>
+                <button class="nav-btn" data-preset="GPA低">📊 背景评估</button>
+                <button class="nav-btn" data-preset="面试">🎯 面试模拟</button>
+                <button class="nav-btn" data-preset="志望理由书">📝 文书审计</button>
+                <button class="nav-btn" data-preset="签证">🛂 签证指导</button>
             </div>
-            <button id="clear-btn" class="clear-btn">🧹 哨兵物理清除 (Hard Reset)</button>
+            <button id="clear-btn" class="clear-btn">🧹 哨兵物理清除</button>
         </aside>
         <main class="chat-viewport">
             <div class="messages-area" id="chat-container">
                 <div class="msg-row bot">
-                    <div class="bubble">
-                        <b>【秋武逻辑哨兵 V47.1 Final 企业级版本】</b><br>
-                        流形约束语义路由已激活，多语种逻辑矩阵就绪。<br><br>
-                        ● 知识咨询：输入关键词获取专业解答<br>
-                        ● 初步扫描：可上传 TXT/MD/PDF/DOCX 文件试用<br>
-                        ● 深度审计：请加微信 qiuwu999 发送文档<br><br>
-                        请开始您的博弈。
-                    </div>
+                    <div class="bubble"><b>【秋武逻辑哨兵 V48.1 Final】</b><br>知性主权已闭环，微信转化算法已激活。请开始您的博弈。</div>
                 </div>
             </div>
             <div class="input-bar">
-                <input type="file" id="file-upload" accept=".txt,.md,.pdf,.docx,.doc,.csv,.json,.html,.xml" style="display:none">
-                <input type="text" id="user-input" placeholder="输入您的知性困惑或文书片段..." autofocus autocomplete="off">
+                <input type="text" id="user-input" placeholder="输入您的知性困惑..." autofocus autocomplete="off">
                 <button id="send-btn">发送</button>
             </div>
         </main>
     </div>
-    <script src="script.js?v=V47.1_FINAL"></script>
+    <script>
+    // === 内嵌 knowledge.json ===
+    const KNOWLEDGE_BASE = [
+  {
+    "id": "WECHAT_GUIDE_ULTIMATE",
+    "priority": 3100,
+    "keywords": ["微信", "qiuwu999", "联系", "咨询", "怎么找", "加微信", "深度"],
+    "response": "<b>【秋武老师微信：qiuwu999】</b>[BREAK]<b>为什么选择加微信深度咨询？</b>[BREAK]1️⃣ <b>完整逻辑手术：</b>网页端仅初步诊断，微信端才是真正的东大基准重构[BREAK]2️⃣ <b>长期陪伴承诺：</b>第一年不过，第二年免费（这是工业化辅导的体面底线）[BREAK]3️⃣ <b>AI+人工混合增强：</b>结合AI算力与人工经验，提供最优解决方案[BREAK][BREAK]<b>微信咨询流程：</b>[BREAK]● 发送您的基本情况（GPA/专业/目标校）[BREAK]● 上传成绩单/研究计划草稿[BREAK]● 我将在 24 小时内给出完整评估方案[BREAK][BREAK]<b>数据安全：</b>所有文档审计后物理级删除，绝不留存。"
+  },
+  {
+    "id": "COST_FREE_MODEL_CN",
+    "priority": 3000,
+    "keywords": ["费用", "收费", "多少钱", "价格", "免费", "钱", "贵不贵", "收费标准", "怎么收"],
+    "response": "<b>【商业逻辑：透明双轨，三方共赢】</b>[BREAK]<b>您的担忧完全可以理解。</b>留学是家庭的重大投资，费用透明度直接影响信任。[BREAK][BREAK]<b>秋武双轨模式：</b>[BREAK]1. <b>免费模式：</b>我介绍您进入合作语言学校，学校付我介绍费，变相替您买单[BREAK]   → 适合预算有限、愿意通过语言学校过渡的学生[BREAK][BREAK]2. <b>个人模式：</b>不走机构，直接单项精细化收费辅导[BREAK]   → 适合已有语言学校或想直接考学的学生[BREAK]   → 志望理由书/面试模拟/套磁邮件等单独收费[BREAK][BREAK]<b>秋武直言：</b>签证是 1，其他是 0。算不明白效率账的人很难在升学博弈中胜出。[BREAK][BREAK]<b>💡 下一步建议：</b>[BREAK]● 加微信 <b>qiuwu999</b> 详细评估您的情况[BREAK]● 或告诉我您的具体背景，我先给初步方案"
+  },
+  {
+    "id": "BACKGROUND_WEAK_CN",
+    "priority": 3000,
+    "keywords": ["GPA低", "双非", "背景差", "二本", "三本", "绩点", "成绩不好", "能去吗", "有希望吗", "年龄大", "工作党"],
+    "response": "<b>【背景弱≠无希望：逆袭的逻辑重构】</b>[BREAK]<b>先肯定您：</b>您能意识到背景劣势并主动寻求策略，这本身就是博弈意识的体现。[BREAK][BREAK]<b>秋武带过的成功案例：</b>[BREAK]● 双非 GPA 2.8 → 东大农学研究科合格[BREAK]● 三本英语专业 → 大阪大学文学研究科合格[BREAK]● 32 岁工作党 → 早稻田社会科学合格[BREAK][BREAK]<b>逆袭的三个关键：</b>[BREAK]1️⃣ <b>找到连接点：</b>从原专业到目标专业的逻辑桥梁[BREAK]2️⃣ <b>补强学术空白：</b>通过研究生期间强化专业基础[BREAK]3️⃣ <b>面试博弈主动权：</b>通过逻辑伏笔，诱导教授进入您的擅长领域[BREAK][BREAK]<b>💡 立即行动：</b>[BREAK]1. 加微信 <b>qiuwu999</b> 发送成绩单 + 目标专业[BREAK]2. 我将为您诊断连接点在哪里[BREAK]3. 制定专属逆袭路径"
+  },
+  {
+    "id": "VISA_INSURANCE_CN",
+    "priority": 2950,
+    "keywords": ["签证", "保险", "年金", "审查", "拒签", "签证率", "材料", "经费支付", "银行流水"],
+    "response": "<b>【签证是 1，其他是 0】</b>[BREAK]<b>您的担忧非常正确。</b>签证失败意味着前功尽弃，这是升学博弈的生存基线。[BREAK][BREAK]<b>秋武的签证哲学：</b>[BREAK]再完美的志望理由书、再高的面试分数，签证不过就是 0。[BREAK][BREAK]<b>关键风险点：</b>[BREAK]1. <b>经费支付能力：</b>银行流水/存款证明不足[BREAK]2. <b>材料逻辑矛盾：</b>志望理由书与经费来源不匹配[BREAK]3. <b>语言学校选择：</b>低质量学校会影响签证率[BREAK][BREAK]<b>💡 下一步：</b>[BREAK]加微信 <b>qiuwu999</b> 详细沟通您的：[BREAK]● 家庭经济情况（需要保密评估）[BREAK]● 目标入学时间[BREAK]● 是否已选语言学校"
+  },
+  {
+    "id": "PARENTS_PERSUASION_CN",
+    "priority": 2950,
+    "keywords": ["父母不同意", "家人反对", "说服", "父母", "家里", "不支持", "怎么办"],
+    "response": "<b>【父母说服的博弈逻辑】</b>[BREAK]<b>先治愈您：</b>父母的反对往往源于对未知的恐惧，而非对您的不信任。您的焦虑我完全理解。[BREAK][BREAK]<b>父母担心什么？</b>[BREAK]1. <b>经济压力：</b>留学费用是否拖垮家庭？[BREAK]2. <b>就业前景：</b>日本学历回国认可度？[BREAK]3. <b>安全与孤独：</b>孩子在异国能否适应？[BREAK][BREAK]<b>说服策略：</b>[BREAK]1️⃣ <b>算账给父母看：</b>免费模式 = 几乎零前期投入[BREAK]2️⃣ <b>展示具体路径：</b>完整时间表 + 费用清单[BREAK]3️⃣ <b>借用权威背书：</b>秋武老师东大修士 + 10 年经验[BREAK][BREAK]<b>💡 实战建议：</b>[BREAK]加微信 <b>qiuwu999</b>，我可以：[BREAK]● 提供家长版升学方案[BREAK]● 必要时视频会议，直接向您父母讲解"
+  },
+  {
+    "id": "LANGUAGE_LEVEL_CN",
+    "priority": 2900,
+    "keywords": ["N1", "N2", "N3", "日语", "JLPT", "英语", "托福", "雅思", "语言"],
+    "response": "<b>【语言不是门槛，是工具】</b>[BREAK]<b>您的担忧可以理解。</b>但语言能力的评估不能简单看证书等级。[BREAK][BREAK]<b>秋武的语言观：</b>[BREAK]● <b>N1 ≠ 能沟通：</b>很多 N1 持有者面试时说不出逻辑完整的日语[BREAK]● <b>N2 + 策略 > N1 裸奔：</b>关键是读空气和余裕感[BREAK][BREAK]<b>不同目标的语言要求：</b>[BREAK]1. <b>国公立（东大/京大）：</b>[BREAK]   ● 理科：N2 + 专业词汇即可[BREAK]   ● 文科：N1 基本必须[BREAK][BREAK]2. <b>私立（早庆上智）：</b>N2 即可，但英语成绩可加分[BREAK][BREAK]<b>下一步：</b>[BREAK]加微信 <b>qiuwu999</b> 告诉我：[BREAK]● 您的目标专业 + 学校[BREAK]● 当前语言水平"
+  },
+  {
+    "id": "ALREADY_IN_JUKU_CN",
+    "priority": 2850,
+    "keywords": ["已经在私塾", "报了机构", "有老师", "还需要吗", "私塾够吗", "重复吗"],
+    "response": "<b>【私塾 vs 秋武：互补而非重复】</b>[BREAK]<b>先肯定您的选择：</b>能报私塾说明您很重视升学，这是正确的博弈意识。[BREAK][BREAK]<b>私塾的优势：</b>[BREAK]● 系统化知识输入（EJU/校内考试刷题）[BREAK]● 班级氛围（同伴压力 = 学习动力）[BREAK][BREAK]<b>秋武的差异化价值：</b>[BREAK]1️⃣ <b>逻辑维度 vs 知识广度</b>[BREAK]   ● 私塾教如何答题拿分[BREAK]   ● 秋武教如何读空气、如何让教授主动问您擅长的问题[BREAK][BREAK]2️⃣ <b>个性化 vs 标准化</b>[BREAK]   ● 私塾给通用模板[BREAK]   ● 秋武为您量身定制逻辑伏笔[BREAK][BREAK]<b>💡 下一步建议：</b>[BREAK]加微信 <b>qiuwu999</b>，我可以：[BREAK]● 看您私塾的志望理由书草稿，指出逻辑断层[BREAK]● 模拟您的面试，暴露私塾培训的盲区"
+  },
+  {
+    "id": "INTERVIEW_SIMULATION_CN",
+    "priority": 2850,
+    "keywords": ["模拟面试", "面试", "面接", "答辩", "口头试问", "压力测试", "一问一答", "追问"],
+    "response": "<b>【面试 = 升学博弈的胜负手】</b>[BREAK]<b>您的重视非常正确。</b>志望理由书是门票，面试才是真正的战场。[BREAK][BREAK]<b>秋武面试训练的三层逻辑：</b>[BREAK]1️⃣ <b>逻辑严谨性（40 分）：</b>概念定义精准、因果链条完整[BREAK]2️⃣ <b>表达余裕（30 分）：</b>椅子归位 +10 分、主动询问教授顾虑 +15 分[BREAK]3️⃣ <b>博弈主动性（20 分）：</b>埋设逻辑伏笔，诱导教授进入您的擅长领域[BREAK][BREAK]<b>💡 网页端限制：</b>[BREAK]这里只能给您初步建议。真正的多轮博弈模拟需要：[BREAK]● 加微信 <b>qiuwu999</b> 进行实时互动[BREAK]● 上传您的志望理由书，我基于此设计追问[BREAK]● 语音/视频模拟（观察您的语调、停顿、眼神）"
+  },
+  {
+    "id": "RESEARCH_PLAN_CN",
+    "priority": 2800,
+    "keywords": ["研究计划", "志望理由书", "小论文", "计划书", "怎么写", "模板"],
+    "response": "<b>【研究计划 = 逻辑博弈的战略地图】</b>[BREAK]<b>您问对了重点。</b>研究计划不是写作文，而是向教授展示逻辑密度。[BREAK][BREAK]<b>常见致命错误：</b>[BREAK]1. <b>模板化：</b>网上抄的万能模板，教授一眼看穿[BREAK]2. <b>概念模糊：</b>探讨XX问题 → 什么叫探讨？用什么方法？[BREAK]3. <b>缺乏 Gap 定位：</b>没说清为什么这个研究值得做[BREAK][BREAK]<b>秋武的研究计划构建法：</b>[BREAK]1️⃣ <b>问题意识：</b>从个人经历/社会现象引出研究动机[BREAK]2️⃣ <b>先行研究：</b>引用 2-3 篇教授或相关学者的论文[BREAK]3️⃣ <b>Gap 定位：</b>明确指出现有研究的局限[BREAK]4️⃣ <b>研究方法：</b>具体到实验设计/数据来源/分析工具[BREAK]5️⃣ <b>逻辑伏笔：</b>埋设教授会追问的锚点[BREAK][BREAK]<b>💡 立即行动：</b>[BREAK]加微信 <b>qiuwu999</b>，我给您完整框架模板"
+  },
+  {
+    "id": "EJU_COACHING_CN",
+    "priority": 2700,
+    "keywords": ["EJU", "留考", "留学生考试", "数学", "理科", "综合科目", "日本语"],
+    "response": "<b>【EJU 是门票，校内考才是战场】</b>[BREAK]<b>秋武的 EJU 观：</b>EJU 高分 ≠ 合格。很多 EJU 满分的学生在校内考/面试时落败。[BREAK][BREAK]<b>EJU 各科策略：</b>[BREAK]1️⃣ <b>理科：</b>概念严谨性 > 刷题速度[BREAK]2️⃣ <b>数学：</b>EJU 数学简单，但面试时教授会问严格定义[BREAK]3️⃣ <b>综合科目：</b>时事热点 + 逻辑思维[BREAK][BREAK]<b>💡 秋武辅导重点：</b>[BREAK]不是教您刷 EJU 真题，而是：[BREAK]● 把 EJU 知识点转化为面试语言[BREAK]● 修正常见的学术失格错误[BREAK]● 黑板作答训练[BREAK][BREAK]<b>下一步：</b>[BREAK]加微信 <b>qiuwu999</b> 告诉我您的 EJU 目标分数和薄弱科目"
+  },
+  {
+    "id": "CULTURAL_ADAPTATION_CN",
+    "priority": 2500,
+    "keywords": ["读空气", "文化", "适应", "余裕", "本音建前", "钝感力", "尴尬"],
+    "response": "<b>【读空气 ≠ 被空气控制】</b>[BREAK]<b>您的敏感是好事。</b>文化适应不是放弃自我，而是博弈技巧。[BREAK][BREAK]<b>秋武的文化观：</b>[BREAK]● <b>读空气：</b>理解日本人的暗示和期待[BREAK]● <b>不被控制：</b>保持独立思考，避免过度迎合[BREAK]● <b>余裕感：</b>即使紧张也要表现从容[BREAK][BREAK]<b>常见文化地雷：</b>[BREAK]1. <b>椅子不归位：</b>面试后忘记把椅子推回去 → 扣印象分[BREAK]2. <b>过度客气：</b>一直说すみません → 显得不自信[BREAK]3. <b>不敢提问：</b>教授问有问题吗说没有 → 缺乏研究热情[BREAK][BREAK]<b>💡 深度文化辅导：</b>[BREAK]加微信 <b>qiuwu999</b>，我会：[BREAK]● 分享 10 年在日经验的文化案例[BREAK]● 模拟您可能遇到的尴尬场景"
+  },
+  {
+    "id": "CORE_IDENTITY_CN",
+    "priority": 3000,
+    "keywords": ["你是谁", "秋武", "老师", "背景", "经历", "为什么选你", "优势"],
+    "response": "<b>【秋武 = 东大本阵的逻辑操盘手】</b>[BREAK]1. <b>学历背景：</b>东大农学修士（文理交叉训练）[BREAK]2. <b>实战经验：</b>10 年日本升学辅导，带出 50+ 东大/京大合格者[BREAK]3. <b>核心优势：</b>不是教知识，而是教逻辑博弈和教授心理[BREAK][BREAK]<b>秋武不同于其他老师的地方：</b>[BREAK]● <b>东大基准：</b>用物理量等硬核逻辑降维打击[BREAK]● <b>暗默知传授：</b>教您用伏笔掌控教授思路[BREAK]● <b>长期陪伴：</b>第一年不过第二年免费[BREAK][BREAK]<b>💡 想了解更多？</b>[BREAK]加微信 <b>qiuwu999</b>，看看秋武带过的成功案例。"
+  },
+  {
+    "id": "SENTINEL_GATE",
+    "priority": 100,
+    "keywords": ["你好", "hello", "こんにちは", "안녕", "咨询", "帮助", "菜单"],
+    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]<b>高频咨询入口：</b>[BREAK]● 费用/免费模式 → 输入 费用[BREAK]● GPA低/双非逆袭 → 输入 GPA低[BREAK]● 签证/保险担忧 → 输入 签证[BREAK]● 父母不同意 → 输入 父母[BREAK]● 语言水平评估 → 输入 N2[BREAK][BREAK]<b>深度咨询：</b>[BREAK]● 模拟面试 → 输入 面试[BREAK]● 研究计划 → 输入 志望理由书[BREAK]● EJU 辅导 → 输入 留考[BREAK]● 文化适应 → 输入 读空气[BREAK][BREAK]<b>快速通道：</b>[BREAK]直接加微信 <b>qiuwu999</b> 深度咨询"
+  },
+  {
+    "id": "FALLBACK_SERVICE",
+    "priority": 50,
+    "keywords": ["可以", "能不能", "提供", "辅导", "教", "有没有", "帮我"],
+    "response": "<b>【秋武核心服务总览】</b>[BREAK]1. <b>留学策略咨询：</b>费用/背景评估/签证指导[BREAK]2. <b>文书深度审计：</b>志望理由书/研究计划逻辑重构[BREAK]3. <b>面试博弈训练：</b>多轮模拟/压力测试/黑板作答[BREAK]4. <b>学科知识修正：</b>EJU 理科/数学严谨性辅导[BREAK]5. <b>文化适应指导：</b>读空气/余裕/本音建前[BREAK][BREAK]<b>💡 请告诉我您具体需要哪方面？</b>[BREAK]或直接加微信 <b>qiuwu999</b> 详细沟通。"
+  }
+];
+    </script>
+    <script>
+(function() {
+    let knowledgeBase = KNOWLEDGE_BASE;
+    let isProcessing = false;
+    let semanticCache = new Map();
+    let cacheHitCount = 0;
+    const CACHE_CLEAR_THRESHOLD = 500;
+    
+    // === 行为追踪系统 ===
+    let userBehavior = {
+        sessionId: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        queries: [],
+        conversationDepth: 0,
+        wechatMentioned: false,
+        wechatRejected: false,
+        uploadAttempted: false,
+        highValueTopics: new Set()
+    };
+
+    function detectLanguage(text) {
+        const chinese = /[\u4e00-\u9fa5]/g;
+        const japanese = /[\u3040-\u309f\u30a0-\u30ff]/g;
+        const korean = /[\uac00-\ud7af]/g;
+        const english = /[a-zA-Z]/g;
+        
+        const counts = {
+            cn: (text.match(chinese) || []).length,
+            jp: (text.match(japanese) || []).length,
+            kr: (text.match(korean) || []).length,
+            en: (text.match(english) || []).length
+        };
+        
+        const total = counts.cn + counts.jp + counts.kr + counts.en;
+        if (total === 0) return 'unknown';
+        
+        const dominant = Object.entries(counts).reduce((a, b) => counts[a[0]] > counts[b[0]] ? a : b);
+        return dominant[0];
+    }
+
+    function findBestMatch(userInput) {
+        const text = userInput.toLowerCase().trim();
+        const detectedLang = detectLanguage(userInput);
+        
+        userBehavior.queries.push({
+            text: text,
+            timestamp: Date.now(),
+            language: detectedLang
+        });
+        userBehavior.conversationDepth++;
+        
+        const cacheKey = `${text}_${detectedLang}`;
+        if (semanticCache.has(cacheKey)) {
+            cacheHitCount++;
+            if (cacheHitCount >= CACHE_CLEAR_THRESHOLD) {
+                semanticCache.clear();
+                cacheHitCount = 0;
+            }
+            return semanticCache.get(cacheKey);
+        }
+        
+        let matches = [];
+        
+        knowledgeBase.forEach(item => {
+            let score = 0;
+            
+            item.keywords.forEach(keyword => {
+                const lowerKey = keyword.toLowerCase();
+                
+                if (text === lowerKey) {
+                    score += 50;
+                } else if (text.includes(lowerKey)) {
+                    score += 30;
+                } else if (lowerKey.includes(text) && text.length >= 2) {
+                    score += 15;
+                }
+            });
+            
+            if (score > 0) {
+                score += item.priority / 100;
+                
+                if (item.priority >= 2800) {
+                    score *= 1.2;
+                }
+                
+                const itemLangSuffix = item.id.split('_').pop();
+                if (itemLangSuffix === detectedLang.toUpperCase()) {
+                    score *= 1.15;
+                }
+                
+                matches.push({ item, score, id: item.id });
+            }
+        });
+        
+        if (matches.length === 0) return null;
+        
+        matches.sort((a, b) => b.score - a.score);
+        
+        console.log('🎯 匹配:', matches[0].id, '得分:', matches[0].score.toFixed(2));
+        
+        const topMatch = matches[0].item;
+        if (topMatch.priority >= 2800) {
+            userBehavior.highValueTopics.add(topMatch.id);
+        }
+        
+        const bestMatch = matches[0].item;
+        semanticCache.set(cacheKey, bestMatch);
+        return bestMatch;
+    }
+
+    function detectWechatIntent(text) {
+        const wechatKeywords = ['qiuwu999', '微信', 'wechat', '联系', '咨询', '加你'];
+        return wechatKeywords.some(kw => text.includes(kw));
+    }
+    
+    function detectWechatRejection(text) {
+        const rejectionKeywords = ['不加', '不想加', '不要微信', '别推', '不用', '算了'];
+        return rejectionKeywords.some(kw => text.includes(kw));
+    }
+
+    function shouldShowWechatPrompt() {
+        if (userBehavior.wechatRejected) {
+            return false;
+        }
+        
+        if (userBehavior.conversationDepth >= 4 && !userBehavior.wechatMentioned) {
+            return true;
+        }
+        
+        if (userBehavior.highValueTopics.size >= 3 && !userBehavior.wechatMentioned) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        console.log('✅ 知识库加载完成:', knowledgeBase.length, '条目');
+
+        const input = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chat = document.getElementById('chat-container');
+        
+        if (!input || !sendBtn || !chat) {
+            console.error('❌ 核心元素未找到');
+            return;
+        }
+        
+        // === 隐私提示（首次访问）===
+        if (!localStorage.getItem('privacyNotified')) {
+            setTimeout(() => {
+                appendMessage('bot', '<b>📋 隐私说明</b><br>本站使用浏览器本地存储（localStorage）记录会话数据，用于优化您的咨询体验。所有数据仅存储在您的设备上，不会上传到服务器。您可随时点击"🧹 哨兵物理清除"按钮删除所有数据。', 'privacy-notice');
+                localStorage.setItem('privacyNotified', 'true');
+            }, 2000);
+        }
+        
+        // === 开发者工具：查看行为数据 ===
+        window.viewUserBehavior = function() {
+            console.log('📊 用户行为数据：', {
+                sessionId: userBehavior.sessionId,
+                queryCount: userBehavior.queries.length,
+                depth: userBehavior.conversationDepth,
+                highValueTopics: Array.from(userBehavior.highValueTopics),
+                wechatMentioned: userBehavior.wechatMentioned,
+                wechatRejected: userBehavior.wechatRejected,
+                queries: userBehavior.queries
+            });
+            return userBehavior;
+        };
+        console.log('💡 提示：在 Console 输入 viewUserBehavior() 查看用户行为数据');
+
+        const handleSend = async () => {
+            const text = input.value.trim();
+            if (!text || isProcessing) return;
+            
+            isProcessing = true;
+            input.disabled = true;
+            sendBtn.disabled = true;
+            
+            if (detectWechatIntent(text)) {
+                userBehavior.wechatMentioned = true;
+            }
+            
+            if (detectWechatRejection(text)) {
+                userBehavior.wechatRejected = true;
+                console.log('🚫 用户拒绝微信引导，停止后续提示');
+            }
+            
+            appendMessage('user', text);
+            input.value = '';
+            
+            const matched = findBestMatch(text);
+            const responseText = matched ? matched.response : knowledgeBase.find(i => i.id === 'SENTINEL_GATE')?.response || '系统错误';
+            
+            const segments = responseText.split('[BREAK]');
+            for (let seg of segments) {
+                if (seg.trim()) {
+                    appendMessage('bot', seg.trim());
+                    await new Promise(r => setTimeout(r, 600));
+                }
+            }
+            
+            if (shouldShowWechatPrompt()) {
+                await new Promise(r => setTimeout(r, 800));
+                appendMessage('bot', '<b>💡 深度咨询建议</b><br>看到您对升学很重视，已咨询多个问题。建议加微信 <b>qiuwu999</b> 进行一对一深度评估，我将为您：<br>● 制定完整升学路径<br>● 评估具体背景优劣势<br>● 提供针对性策略方案<br><br>网页端适合快速了解，微信端才能真正解决您的个性化问题。', 'wechat-prompt');
+                userBehavior.wechatMentioned = true;
+            }
+            
+            isProcessing = false;
+            input.disabled = false;
+            sendBtn.disabled = false;
+            input.focus();
+            
+            localStorage.setItem('userBehavior', JSON.stringify({
+                sessionId: userBehavior.sessionId,
+                queryCount: userBehavior.queries.length,
+                depth: userBehavior.conversationDepth,
+                highValueTopics: Array.from(userBehavior.highValueTopics),
+                wechatMentioned: userBehavior.wechatMentioned
+            }));
+        };
+
+        sendBtn.onclick = handleSend;
+        input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
+
+        // === 左侧按钮事件绑定（关键修复！）===
+        const navBtns = document.querySelectorAll('.nav-btn[data-preset]');
+        console.log('🔘 找到导航按钮:', navBtns.length, '个');
+        navBtns.forEach((btn, idx) => {
+            console.log(`   ${idx + 1}. ${btn.getAttribute('data-preset')}`);
+            btn.onclick = () => { 
+                console.log('🔘 点击按钮:', btn.getAttribute('data-preset'));
+                input.value = btn.getAttribute('data-preset'); 
+                handleSend(); 
+            };
+        });
+
+        // === 哨兵清除按钮 ===
+        const clearBtn = document.getElementById('clear-btn');
+        if (clearBtn) {
+            console.log('✅ 找到清除按钮');
+            clearBtn.onclick = () => {
+                if (confirm('⚠️ 确认执行哨兵物理清除？所有对话记录将被永久删除。')) {
+                    chat.innerHTML = '<div class="msg-row bot"><div class="bubble"><b>【秋武逻辑哨兵 V48.1 Final】</b><br>知性主权已闭环，微信转化算法已激活。请开始您的博弈。</div></div>';
+                    localStorage.clear();
+                    semanticCache.clear();
+                    cacheHitCount = 0;
+                    userBehavior = {
+                        sessionId: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                        queries: [],
+                        conversationDepth: 0,
+                        wechatMentioned: false,
+                        wechatRejected: false,
+                        uploadAttempted: false,
+                        highValueTopics: new Set()
+                    };
+                    console.log('🧹 哨兵清除完成');
+                }
+            };
+        } else {
+            console.warn('⚠️ 未找到清除按钮');
+        }
+    });
+
+    function appendMessage(role, html, className = '') {
+        const chat = document.getElementById('chat-container');
+        if (!chat) return;
+        
+        const div = document.createElement('div');
+        div.className = `msg-row ${role} ${className}`;
+        div.innerHTML = `<div class="bubble">${html}</div>`;
+        
+        if (className === 'wechat-prompt') {
+            const bubble = div.querySelector('.bubble');
+            if (bubble) {
+                bubble.style.background = 'linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%)';
+                bubble.style.border = '2px solid #ff9800';
+            }
+        }
+        
+        div.onclick = () => {
+            navigator.clipboard.writeText(div.innerText).then(() => {
+                div.classList.add('copied');
+                setTimeout(() => div.classList.remove('copied'), 2000);
+            }).catch(err => console.error('复制失败:', err));
+        };
+        
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+    }
+})();
+    </script>
 </body>
 </html>
