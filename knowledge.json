@@ -63,5 +63,45 @@
     "response": "<b>【研究计划 = 逻辑博弈的战略地图】</b>[BREAK]<b>您问对了重点。</b>研究计划不是写作文，而是向教授展示逻辑密度。[BREAK][BREAK]<b>常见致命错误：</b>[BREAK]1. <b>模板化：</b>网上抄的万能模板，教授一眼看穿[BREAK]2. <b>概念模糊：</b>探讨XX问题 → 什么叫探讨？用什么方法？[BREAK]3. <b>缺乏 Gap 定位：</b>没说清为什么这个研究值得做[BREAK][BREAK]<b>秋武的研究计划构建法：</b>[BREAK]1️⃣ <b>问题意识：</b>从个人经历/社会现象引出研究动机[BREAK]2️⃣ <b>先行研究：</b>引用 2-3 篇教授或相关学者的论文[BREAK]3️⃣ <b>Gap 定位：</b>明确指出现有研究的局限[BREAK]4️⃣ <b>研究方法：</b>具体到实验设计/数据来源/分析工具[BREAK]5️⃣ <b>逻辑伏笔：</b>埋设教授会追问的锚点[BREAK][BREAK]<b>💡 立即行动：</b>[BREAK]1. 如果已有草稿 → 上传到本页面，我做初步诊断[BREAK]2. 如果还没写 → 加微信 <b>qiuwu999</b>，我给您框架模板"
   },
   {
-    "id": "EJU_COACHING_CN",    "priority": 2700,    "keywords": ["EJU", "留考", "留学生考试", "数学", "理科", "综合科目", "日本语", "黑板作答", "课", "辅导课"],    "dependencies": ["LANGUAGE_LEVEL_CN"],    "response": "<b>【EJU 是门票，校内考才是战场】</b>[BREAK]<b>秋武的 EJU 观：</b>EJU 高分 ≠ 合格。很多 EJU 满分的学生在校内考/面试时落败。[BREAK][BREAK]<b>EJU 各科策略：</b>[BREAK]1️⃣ <b>理科：</b>概念严谨性 > 刷题速度[BREAK]2️⃣ <b>数学：</b>EJU 数学简单，但面试时教授会问严格定义[BREAK]3️⃣ <b>综合科目：</b>时事热点 + 逻辑思维[BREAK][BREAK]<b>💡 秋武辅导重点：</b>[BREAK]不是教您刷 EJU 真题，而是：[BREAK]● 把 EJU 知识点转化为面试语言[BREAK]● 修正常见的学术失格错误[BREAK]● 黑板作答训练[BREAK][BREAK]<b>下一步：</b>[BREAK]加微信 <b>qiuwu999</b> 告诉我您的 EJU 目标分数和薄弱科目"  },  {    "id": "CULTURAL_ADAPTATION_CN",    "priority": 2500,    "keywords": ["读空气", "文化", "适应", "余裕", "本音建前", "钝感力", "尴尬", "椅子归位"],    "dependencies": ["INTERVIEW_SIMULATION_CN"],    "response": "<b>【读空气 ≠ 被空气控制】</b>[BREAK]<b>您的敏感是好事。</b>文化适应不是放弃自我，而是博弈技巧。[BREAK][BREAK]<b>秋武的文化观：</b>[BREAK]● <b>读空气：</b>理解日本人的暗示和期待[BREAK]● <b>不被控制：</b>保持独立思考，避免过度迎合[BREAK]● <b>余裕感：</b>即使紧张也要表现从容[BREAK][BREAK]<b>常见文化地雷：</b>[BREAK]1. <b>椅子不归位：</b>面试后忘记把椅子推回去 → 扣印象分[BREAK]2. <b>过度客气：</b>一直说すみません → 显得不自信[BREAK]3. <b>不敢提问：</b>教授问有问题吗说没有 → 缺乏研究热情[BREAK][BREAK]<b>💡 深度文化辅导：</b>[BREAK]加微信 <b>qiuwu999</b>，我会：[BREAK]● 分享 10 年在日经验的文化案例[BREAK]● 模拟您可能遇到的尴尬场景"  },  {    "id": "CORE_IDENTITY_CN",    "priority": 3000,    "keywords": ["你是谁", "秋武", "老师", "背景", "经历", "为什么选你", "优势"],    "dependencies": [],    "response": "<b>【秋武 = 东大本阵的逻辑操盘手】</b>[BREAK]1. <b>学历背景：</b>东大农学修士（文理交叉训练）[BREAK]2. <b>实战经验：</b>10 年日本升学辅导，带出 50+ 东大/京大合格者[BREAK]3. <b>核心优势：</b>不是教知识，而是教逻辑博弈和教授心理[BREAK][BREAK]<b>秋武不同于其他老师的地方：</b>[BREAK]● <b>东大基准：</b>用物理量等硬核逻辑降维打击[BREAK]● <b>暗默知传授：</b>教您用伏笔掌控教授思路[BREAK]● <b>长期陪伴：</b>第一年不过第二年免费[BREAK][BREAK]<b>💡 想了解更多？</b>[BREAK]加微信 <b>qiuwu999</b>，看看秋武带过的成功案例。"  },  {    "id": "FILE_UPLOAD_GUIDE",    "priority": 2500,    "keywords": ["上传", "文件", "文档", "PDF", "Word", "发给你", "怎么发", "附件"],    "dependencies": ["RESEARCH_PLAN_CN"],    "response": "<b>【文件上传 → 初步诊断 → 微信深度审计】</b>[BREAK]<b>网页端支持：</b>[BREAK]点击左侧 <b>📄 上传文书审计</b> 按钮，可上传：[BREAK]● TXT / Markdown（完整解析）[BREAK]● PDF / Word（提取文本 + 初步评估）[BREAK][BREAK]<b>重要提示：</b>[BREAK]网页端仅做初步诊断，无法进行：[BREAK]● 完整的东大基准重构[BREAK]● 逻辑伏笔埋设指导[BREAK]● 面试预判与对策[BREAK][BREAK]<b>深度审计流程：</b>[BREAK]1️⃣ 加微信：<b>qiuwu999</b>[BREAK]2️⃣ 发送完整文档（支持所有格式）[BREAK]3️⃣ 开启 Sentinel Cowork 专属通道[BREAK][BREAK]<b>数据安全承诺：</b>审计后物理级删除，绝不留存。"  },  {    "id": "SENTINEL_GATE",    "priority": 100,    "keywords": ["你好", "hello", "こんにちは", "안녕", "咨询", "帮助", "菜单"],    "dependencies": [],    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]<b>高频咨询入口：</b>[BREAK]● 费用/免费模式 → 输入 费用[BREAK]● GPA低/双非逆袭 → 输入 GPA低[BREAK]● 签证/保险担忧 → 输入 签证[BREAK]● 父母不同意 → 输入 父母[BREAK]● 语言水平评估 → 输入 N2[BREAK][BREAK]<b>深度咨询：</b>[BREAK]● 模拟面试 → 输入 面试[BREAK]● 研究计划 → 输入 志望理由书[BREAK]● EJU 辅导 → 输入 留考[BREAK]● 文化适应 → 输入 读空气[BREAK][BREAK]<b>快速通道：</b>[BREAK]直接加微信 <b>qiuwu999</b> 深度咨询"  },  {    "id": "FALLBACK_SERVICE",    "priority": 50,    "keywords": ["可以", "能不能", "提供", "辅导", "教", "有没有", "帮我", "日语口语", "编入学"],    "dependencies": ["SENTINEL_GATE"],    "response": "<b>【秋武核心服务总览】</b>[BREAK]1. <b>留学策略咨询：</b>费用/背景评估/签证指导[BREAK]2. <b>文书深度审计：</b>志望理由书/研究计划逻辑重构[BREAK]3. <b>面试博弈训练：</b>多轮模拟/压力测试/黑板作答[BREAK]4. <b>学科知识修正：</b>EJU 理科/数学严谨性辅导[BREAK]5. <b>文化适应指导：</b>读空气/余裕/本音建前[BREAK][BREAK]<b>💡 请告诉我您具体需要哪方面？</b>[BREAK]或直接加微信 <b>qiuwu999</b> 详细沟通。"  }
+    "id": "EJU_COACHING_CN",
+    "priority": 2700,
+    "keywords": ["EJU", "留考", "留学生考试", "数学", "理科", "综合科目", "日本语", "黑板作答", "课", "辅导课"],
+    "dependencies": ["LANGUAGE_LEVEL_CN"],
+    "response": "<b>【EJU 是门票，校内考才是战场】</b>[BREAK]<b>秋武的 EJU 观：</b>EJU 高分 ≠ 合格。很多 EJU 满分的学生在校内考/面试时落败。[BREAK][BREAK]<b>EJU 各科策略：</b>[BREAK]1️⃣ <b>理科：</b>概念严谨性 > 刷题速度[BREAK]2️⃣ <b>数学：</b>EJU 数学简单，但面试时教授会问严格定义[BREAK]3️⃣ <b>综合科目：</b>时事热点 + 逻辑思维[BREAK][BREAK]<b>💡 秋武辅导重点：</b>[BREAK]不是教您刷 EJU 真题，而是：[BREAK]● 把 EJU 知识点转化为面试语言[BREAK]● 修正常见的学术失格错误[BREAK]● 黑板作答训练[BREAK][BREAK]<b>下一步：</b>[BREAK]加微信 <b>qiuwu999</b> 告诉我您的 EJU 目标分数和薄弱科目"
+  },
+  {
+    "id": "CULTURAL_ADAPTATION_CN",
+    "priority": 2500,
+    "keywords": ["读空气", "文化", "适应", "余裕", "本音建前", "钝感力", "尴尬", "椅子归位"],
+    "dependencies": ["INTERVIEW_SIMULATION_CN"],
+    "response": "<b>【读空气 ≠ 被空气控制】</b>[BREAK]<b>您的敏感是好事。</b>文化适应不是放弃自我，而是博弈技巧。[BREAK][BREAK]<b>秋武的文化观：</b>[BREAK]● <b>读空气：</b>理解日本人的暗示和期待[BREAK]● <b>不被控制：</b>保持独立思考，避免过度迎合[BREAK]● <b>余裕感：</b>即使紧张也要表现从容[BREAK][BREAK]<b>常见文化地雷：</b>[BREAK]1. <b>椅子不归位：</b>面试后忘记把椅子推回去 → 扣印象分[BREAK]2. <b>过度客气：</b>一直说すみません → 显得不自信[BREAK]3. <b>不敢提问：</b>教授问有问题吗说没有 → 缺乏研究热情[BREAK][BREAK]<b>💡 深度文化辅导：</b>[BREAK]加微信 <b>qiuwu999</b>，我会：[BREAK]● 分享 10 年在日经验的文化案例[BREAK]● 模拟您可能遇到的尴尬场景"
+  },
+  {
+    "id": "CORE_IDENTITY_CN",
+    "priority": 3000,
+    "keywords": ["你是谁", "秋武", "老师", "背景", "经历", "为什么选你", "优势"],
+    "dependencies": [],
+    "response": "<b>【秋武 = 东大本阵的逻辑操盘手】</b>[BREAK]1. <b>学历背景：</b>东大农学修士（文理交叉训练）[BREAK]2. <b>实战经验：</b>10 年日本升学辅导，带出 50+ 东大/京大合格者[BREAK]3. <b>核心优势：</b>不是教知识，而是教逻辑博弈和教授心理[BREAK][BREAK]<b>秋武不同于其他老师的地方：</b>[BREAK]● <b>东大基准：</b>用物理量等硬核逻辑降维打击[BREAK]● <b>暗默知传授：</b>教您用伏笔掌控教授思路[BREAK]● <b>长期陪伴：</b>第一年不过第二年免费[BREAK][BREAK]<b>💡 想了解更多？</b>[BREAK]加微信 <b>qiuwu999</b>，看看秋武带过的成功案例。"
+  },
+  {
+    "id": "FILE_UPLOAD_GUIDE",
+    "priority": 2500,
+    "keywords": ["上传", "文件", "文档", "PDF", "Word", "发给你", "怎么发", "附件"],
+    "dependencies": ["RESEARCH_PLAN_CN"],
+    "response": "<b>【文件上传 → 初步诊断 → 微信深度审计】</b>[BREAK]<b>网页端支持：</b>[BREAK]点击左侧 <b>📄 上传文书审计</b> 按钮，可上传：[BREAK]● TXT / Markdown（完整解析）[BREAK]● PDF / Word（提取文本 + 初步评估）[BREAK][BREAK]<b>重要提示：</b>[BREAK]网页端仅做初步诊断，无法进行：[BREAK]● 完整的东大基准重构[BREAK]● 逻辑伏笔埋设指导[BREAK]● 面试预判与对策[BREAK][BREAK]<b>深度审计流程：</b>[BREAK]1️⃣ 加微信：<b>qiuwu999</b>[BREAK]2️⃣ 发送完整文档（支持所有格式）[BREAK]3️⃣ 开启 Sentinel Cowork 专属通道[BREAK][BREAK]<b>数据安全承诺：</b>审计后物理级删除，绝不留存。"
+  },
+  {
+    "id": "SENTINEL_GATE",
+    "priority": 100,
+    "keywords": ["你好", "hello", "こんにちは", "안녕", "咨询", "帮助", "菜单"],
+    "dependencies": [],
+    "response": "<b>【秋武逻辑哨兵：知性引导地图】</b>[BREAK]<b>高频咨询入口：</b>[BREAK]● 费用/免费模式 → 输入 费用[BREAK]● GPA低/双非逆袭 → 输入 GPA低[BREAK]● 签证/保险担忧 → 输入 签证[BREAK]● 父母不同意 → 输入 父母[BREAK]● 语言水平评估 → 输入 N2[BREAK][BREAK]<b>深度咨询：</b>[BREAK]● 模拟面试 → 输入 面试[BREAK]● 研究计划 → 输入 志望理由书[BREAK]● EJU 辅导 → 输入 留考[BREAK]● 文化适应 → 输入 读空气[BREAK][BREAK]<b>快速通道：</b>[BREAK]直接加微信 <b>qiuwu999</b> 深度咨询"
+  },
+  {
+    "id": "FALLBACK_SERVICE",
+    "priority": 50,
+    "keywords": ["可以", "能不能", "提供", "辅导", "教", "有没有", "帮我", "日语口语", "编入学"],
+    "dependencies": ["SENTINEL_GATE"],
+    "response": "<b>【秋武核心服务总览】</b>[BREAK]1. <b>留学策略咨询：</b>费用/背景评估/签证指导[BREAK]2. <b>文书深度审计：</b>志望理由书/研究计划逻辑重构[BREAK]3. <b>面试博弈训练：</b>多轮模拟/压力测试/黑板作答[BREAK]4. <b>学科知识修正：</b>EJU 理科/数学严谨性辅导[BREAK]5. <b>文化适应指导：</b>读空气/余裕/本音建前[BREAK][BREAK]<b>💡 请告诉我您具体需要哪方面？</b>[BREAK]或直接加微信 <b>qiuwu999</b> 详细沟通。"
+  }
 ]
