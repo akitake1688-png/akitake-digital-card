@@ -1,39 +1,62 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-JP">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>秋武逻辑哨兵 V53</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AKITAKE LOGIC SENTINEL | 秋武数字哨兵</title>
+    
+    <style id="fallback-css">
+        body { background: #000; color: #ccc; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .emergency-msg { text-align: center; padding: 20px; border: 1px solid #333; }
+    </style>
+
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div class="glass-container">
-        <aside class="side-panel">
-            <div class="avatar-wrapper">
-                <img src="profile.jpg" class="avatar-main" alt="秋武老师"> 
+    <div class="app-container">
+        <header class="system-header">
+            <div class="identity-group">
+                <div class="avatar-wrapper">
+                    <img src="profile.jpg" alt="AKITAKE" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=A&background=00ff9d&color=000'">
+                    <div class="status-dot"></div>
+                </div>
+                <div class="id-text">
+                    <span class="name">秋武 AKITAKE</span>
+                    <span class="title">战略架构师 / 逻辑哨兵</span>
+                </div>
             </div>
-            <div class="persona-name">秋武老师 | 哨兵</div>
-            <div class="nav-group">
-                <button class="nav-btn" data-preset="费用">💰 费用咨询</button>
-                <button class="nav-btn" data-preset="背景弱">📊 背景评估</button>
-                <button class="nav-btn" data-preset="面试">🎯 面试模拟</button>
-                <button class="nav-btn" data-preset="志望理由书">📝 文书审计</button>
-                <button class="nav-btn" data-preset="签证">🛂 签证指导</button>
+            <div class="hp-panel">
+                <div class="hp-label">LOGIC SYNC</div>
+                <div class="hp-track">
+                    <div id="logic-hp-bar" style="width: 50%;"></div>
+                </div>
             </div>
-            <button id="clear-btn" class="clear-btn">🧹 哨兵物理清除</button>
-        </aside>
-        <main class="chat-viewport">
-            <div class="messages-area" id="chat-container"></div>
-            <div class="input-bar">
-                <input type="text" id="user-input" placeholder="输入您的知性困惑..." autofocus autocomplete="off">
-                <button id="send-btn">发送</button>
-                <button id="upload-btn">📄 上传文书审计</button>
-                <input type="file" id="file-upload" style="display: none;">
+        </header>
+        
+        <main id="chat-viewport" class="chat-viewport"></main>
+
+        <div id="chips-container" class="chips-container"></div>
+
+        <footer class="control-panel">
+            <div class="input-group">
+                <input type="text" id="user-input" placeholder="输入指令或选择标签..." autocomplete="off">
+                <button id="send-btn">SEND</button>
             </div>
-        </main>
+            <div class="sys-footer">
+                <span id="sys-status">SYS-READY</span>
+                <button class="reset-btn" onclick="hardReset()">[ 物理清除 / RESET ]</button>
+            </div>
+        </footer>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
