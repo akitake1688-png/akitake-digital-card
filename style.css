@@ -3,7 +3,7 @@
     --panel: #1e1e1e;       /* 调亮面板 */
     --accent: #00ff9d;      /* 秋武绿 */
     --text: #f8f9fa;        /* 高对比度文字 */
-    --text-dim: #adb5bd;    /* 辅助文字 */
+    --text-dim: #b5bcc3;    /* 辅助文字，微调亮度 */
     --border: #333;
     --user-bg: #004d33;     /* 用户消息深绿 */
 }
@@ -25,7 +25,7 @@ body { background: #000; color: var(--text); height: 100vh; display: flex; justi
 .hp-bar { height: 100%; width: 100%; background: linear-gradient(90deg, #00ff9d, #00a8ff); box-shadow: 0 0 8px var(--accent); }
 
 /* 聊天区域 - 核心修复点 */
-.chat-viewport { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.chat-viewport { flex: 1; max-height: calc(100vh - 200px); overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
 
 .message { display: flex; flex-direction: column; max-width: 88%; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
