@@ -1,5 +1,5 @@
 /**
- * 秋武数字哨兵核心逻辑单元 v4.0
+ * 秋武数字哨兵核心逻辑单元 v4.1
  * 严格闭合，防语法报错
  */
 const CONFIG = {
@@ -30,8 +30,10 @@ function processQuery(rawInput) {
     if (!knowledgeData) return;
     const input = rawInput.trim().toLowerCase();
     
-    // 查找匹配项 (优先完全匹配，其次关键词包含)
+    // 优先完全匹配，其次关键词包含
     const matchedIntent = knowledgeData.intents.find(intent => 
+        intent.keywords.includes(input)
+    ) || knowledgeData.intents.find(intent => 
         intent.keywords.some(kw => input.includes(kw.toLowerCase()))
     );
 
@@ -42,6 +44,7 @@ function processQuery(rawInput) {
         const responseText = result.responses[Math.floor(Math.random() * result.responses.length)];
         renderMessage('bot', responseText);
         updateSuggestions(result.suggestions || []);
+        console.log(`匹配意图: ${result.id || 'fallback'}`); // 调试日志
     }, CONFIG.typingSpeed);
 }
 
