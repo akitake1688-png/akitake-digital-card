@@ -1,60 +1,109 @@
 <!DOCTYPE html>
-<html lang="zh-JP">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>AKITAKE LOGIC SENTINEL | 秋武数字哨兵</title>
-    
-    <style id="fallback-css">
-        body { background: #000; color: #ccc; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .emergency-msg { text-align: center; padding: 20px; border: 1px solid #333; }
-    </style>
-
+    <title>秋武数字哨兵</title>
     <link rel="stylesheet" href="style.css">
-
-    <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
-            svg: { fontCache: 'global' }
-        };
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* 关键：防止iOS橡皮筋效果 */
+        html {
+            overscroll-behavior: none;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+        }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <header class="system-header">
-            <div class="identity-group">
-                <div class="avatar-wrapper">
-                    <img src="profile.jpg" alt="AKITAKE" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=A&background=00ff9d&color=000'">
-                    <div class="status-dot"></div>
-                </div>
-                <div class="id-text">
-                    <span class="name">秋武 AKITAKE</span>
-                    <span class="title">战略架构师 / 逻辑哨兵</span>
-                </div>
+    <!-- 系统头部 -->
+    <header class="system-header">
+        <div class="identity-group">
+            <div class="avatar-wrapper">
+                <img src="profile.jpg" alt="秋武老师" class="avatar-img">
+                <div class="status-dot" id="status-dot"></div>
             </div>
-            <div class="hp-panel">
-                <div class="hp-label">LOGIC SYNC</div>
-                <div class="hp-track">
-                    <div id="logic-hp-bar" style="width: 50%;"></div>
-                </div>
+            <div class="id-text">
+                <div class="name">秋武 AKITAKE</div>
+                <div class="title">战略架构师 / 逻辑哨兵</div>
             </div>
-        </header>
-        
-        <main id="chat-viewport" class="chat-viewport"></main>
+        </div>
+        <div class="hp-panel">
+            <div class="hp-label">LOGIC SYNC</div>
+            <div class="hp-track">
+                <div class="hp-bar" id="logic-hp-bar"></div>
+            </div>
+        </div>
+    </header>
 
-        <div id="chips-container" class="chips-container"></div>
+    <!-- 核心聊天区域（滚动容器） -->
+    <main id="chat-scroll-container" class="chat-scroll-container">
+        <div class="messages-container" id="messages-container">
+            <!-- 消息将通过JS动态插入 -->
+        </div>
+    </main>
 
-        <footer class="control-panel">
-            <div class="input-group">
-                <input type="text" id="user-input" placeholder="输入指令或选择标签..." autocomplete="off">
-                <button id="send-btn">SEND</button>
+    <!-- 快捷标签 -->
+    <div class="quick-tags-container" id="quick-tags">
+        <!-- 标签将通过JS动态插入 -->
+    </div>
+
+    <!-- 控制面板 -->
+    <footer class="control-panel">
+        <div class="input-group">
+            <input type="text" 
+                   id="user-input" 
+                   placeholder="输入问题或关键词..."
+                   autocomplete="off"
+                   autocorrect="off"
+                   autocapitalize="off"
+                   spellcheck="false">
+            <button id="send-btn" class="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div class="panel-footer">
+            <button class="reset-btn" id="reset-btn">
+                <i class="fas fa-trash"></i> 清除对话
+            </button>
+            <div class="hint-text">
+                输入"帮助"查看功能列表
             </div>
-            <div class="sys-footer">
-                <span id="sys-status">SYS-READY</span>
-                <button class="reset-btn" onclick="hardReset()">[ 物理清除 / RESET ]</button>
+        </div>
+    </footer>
+
+    <!-- 紧急帮助浮层 -->
+    <div class="help-overlay" id="help-overlay">
+        <div class="help-content">
+            <h3><i class="fas fa-life-ring"></i> 使用帮助</h3>
+            <div class="help-list">
+                <div class="help-item">
+                    <strong>常见问题：</strong>
+                    <ul>
+                        <li>问"辅导特色" - 查看我的教学优势</li>
+                        <li>问"口语" - 日语面试对策</li>
+                        <li>问"费用" - 了解收费模式</li>
+                        <li>问"理科" - 理科面试逻辑</li>
+                    </ul>
+                </div>
+                <div class="help-item">
+                    <strong>技巧提示：</strong>
+                    <ul>
+                        <li>使用完整问题更容易匹配</li>
+                        <li>点击下方标签快速提问</li>
+                        <li>连续未匹配会自动引导</li>
+                    </ul>
+                </div>
             </div>
-        </footer>
+            <button class="close-help" id="close-help">关闭帮助</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
